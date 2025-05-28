@@ -122,8 +122,8 @@
         <canvas id="gameCanvas" width="800" height="500"></canvas>
         
         <div class="controls">
-            Drücke eine Pfeiltaste zum Starten!<br>
-            ↑↓ = Auf/Ab fliegen, ←→ = Links/Rechts fliegen<br>
+            Drücke WASD zum Starten!<br>
+            W = Hoch, S = Runter, A = Links, D = Rechts<br>
             Sammle nur Wörter der angezeigten Wortart! Du hast 3 Leben.
         </div>
         
@@ -183,11 +183,15 @@
         const keys = {};
         
         document.addEventListener('keydown', (e) => {
-            keys[e.key] = true;
+            keys[e.key.toLowerCase()] = true;
+            // Verhindere Standard-Verhalten für Spieltasten
+            if (['w', 'a', 's', 'd'].includes(e.key.toLowerCase())) {
+                e.preventDefault();
+            }
         });
         
         document.addEventListener('keyup', (e) => {
-            keys[e.key] = false;
+            keys[e.key.toLowerCase()] = false;
         });
         
         // Vogel zeichnen
@@ -256,7 +260,7 @@
         function update() {
             // Spiel starten beim ersten Tastendruck
             if (!gameStarted) {
-                if (keys['ArrowUp'] || keys['ArrowDown'] || keys['ArrowLeft'] || keys['ArrowRight']) {
+                if (keys['w'] || keys['a'] || keys['s'] || keys['d']) {
                     gameStarted = true;
                     gameRunning = true;
                 }
@@ -265,11 +269,11 @@
             
             if (!gameRunning) return;
             
-            // Vogel-Bewegung (direkte Steuerung ohne Gravitation)
-            if (keys['ArrowUp'] && bird.y > 0) bird.y -= bird.speed;
-            if (keys['ArrowDown'] && bird.y < canvas.height - bird.height) bird.y += bird.speed;
-            if (keys['ArrowLeft'] && bird.x > 0) bird.x -= bird.speed;
-            if (keys['ArrowRight'] && bird.x < canvas.width - bird.width) bird.x += bird.speed;
+            // Vogel-Bewegung (WASD-Steuerung)
+            if (keys['w'] && bird.y > 0) bird.y -= bird.speed;           // W = Hoch
+            if (keys['s'] && bird.y < canvas.height - bird.height) bird.y += bird.speed; // S = Runter
+            if (keys['a'] && bird.x > 0) bird.x -= bird.speed;          // A = Links
+            if (keys['d'] && bird.x < canvas.width - bird.width) bird.x += bird.speed;   // D = Rechts
             
             // Neue Wörter erstellen
             if (Math.random() < 0.015) {
@@ -369,10 +373,10 @@
                 ctx.fillText('🐦 Wortarten Flugspiel 🐦', canvas.width/2, canvas.height/2 - 60);
                 
                 ctx.font = '20px Arial';
-                ctx.fillText('Drücke eine Pfeiltaste zum Starten!', canvas.width/2, canvas.height/2 - 20);
+                ctx.fillText('Drücke WASD zum Starten!', canvas.width/2, canvas.height/2 - 20);
                 
                 ctx.font = '16px Arial';
-                ctx.fillText('↑↓ = Auf/Ab fliegen  ←→ = Links/Rechts fliegen', canvas.width/2, canvas.height/2 + 20);
+                ctx.fillText('W = Hoch, S = Runter, A = Links, D = Rechts', canvas.width/2, canvas.height/2 + 20);
                 ctx.fillText('Sammle nur Wörter der angezeigten Wortart!', canvas.width/2, canvas.height/2 + 50);
                 ctx.fillText('Du hast 3 Leben - sammle klug!', canvas.width/2, canvas.height/2 + 80);
                 
