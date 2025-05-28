@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nomen - Haus des Sammelns</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #2E7D32, #66BB6A);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            user-select: none;
+        }
+        
+        .game-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        #gameCanvas {
+            border: 4px solid #2E7D32;
+            border-radius: 15px;
+            background: linear-gradient(to bottom, #E8F5E8, #C8E6C9);
+            display: block;
+            margin: 0 auto;
+            cursor: crosshair;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .target-info {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .score {
+            color: #2E7D32;
+        }
+        
+        .controls {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .highscore-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f8e9;
+            border-radius: 10px;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        
+        input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        
+        .start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(46, 125, 50, 0.9);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            z-index: 100;
+        }
+        
+        .start-screen h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .start-screen p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .start-button {
+            background: #66BB6A !important;
+            font-size: 18px !important;
+            padding: 15px 30px !important;
+            margin-top: 20px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🏠 Nomen - Haus des Sammelns 🏠</h1>
+        
+        <div class="game-info">
+            <div class="score">Punkte: <span id="score">0</span></div>
+            <div class="target-info">Sammle: NOMEN</div>
+            <div class="score">Leben: <span id="lives">❤️❤️❤️</span></div>
+            <div class="score">Gesammelt: <span id="collected">0</span></div>
+        </div>
+        
+        <div style="position: relative;">
+            <canvas id="gameCanvas" width="800" height="500"></canvas>
+            
+            <div class="start-screen" id="startScreen">
+                <h2>🏠 Haus des Sammelns</h2>
+                <p>🎯 Ziehe nur die <strong>NOMEN</strong> in dein Sammelbuch!</p>
+                <p>⚠️ Andere Wortarten explodieren bei Berührung!</p>
+                <p>❤️ Du hast 3 Leben</p>
+                <p>🖱️ Verwende die Maus zum Ziehen</p>
+                <button class="start-button" onclick="startGame()">Spiel starten!</button>
+            </div>
+        </div>
+        
+        <div class="controls">
+            Ziehe mit der Maus die NOMEN in dein Sammelbuch!<br>
+            Berühre keine anderen Wortarten - sie explodieren! 💥
+        </div>
+        
+        <div class="highscore-section">
+            <h3>🏆 Highscore - Nomen</h3>
+            <div id="highscoreList">Lade Highscores...</div>
+        </div>
+        
+        <div class="game-over" id="gameOver">
+            <h2>Spiel vorbei!</h2>
+            <p>Deine Punkte: <span id="finalScore">0</span></p>
+            <input type="text" id="playerName" placeholder="Dein Name" maxlength="20">
+            <br>
+            <button onclick="saveHighscore()">Highscore speichern</button>
+            <button onclick="restartGame()">Nochmal spielen</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Firebase Database URL
+        const firebaseUrl = 'https://wortartenspiele-default-rtdb.europe-west1.firebasedatabase.app';
+        
+        // Spielvariablen
+        let gameRunning = false;
+        let gameStarted = false;
+        let score = 0;
+        let collected = 0;
+        let lives = 3;
+        let draggedWord = null;
+        let mousePos = { x: 0, y: 0 };
+        
+        // Wörter Datenbank
+        const nomenWords = ['Hund', 'Katze', 'Baum', 'Haus', 'Auto', 'Schule', 'Buch', 'Tisch', 'Stuhl', 'Blume', 'Kind', 'Mutter', 'Vater', 'Ball', 'Computer'];
+        const otherWords = [
+            'laufen', 'springen', 'essen', 'trinken', 'schlafen', // Verben
+            'groß', 'klein', 'schön', 'schnell', 'rot', 'blau', // Adjektive
+            'ich', 'du', 'er', 'sie', 'wir', // Pronomen
+            'sehr', 'auch', 'nur', 'schon', 'noch' // Partikel
+        ];
+        
+        // Spiel-Objekte
+        let fallingWords = [];
+        let particles = [];
+        let collectBook = { x: 50, y: 400, width: 120, height: 80 };
+        
+        // Maus-Events
+        canvas.addEventListener('mousedown', onMouseDown);
+        canvas.addEventListener('mousemove', onMouseMove);
+        canvas.addEventListener('mouseup', onMouseUp);
+        
+        function onMouseDown(e) {
+            if (!gameRunning) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            mousePos.x = e.clientX - rect.left;
+            mousePos.y = e.clientY - rect.top;
+            
+            // Prüfe ob ein Wort angeklickt wurde
+            for (let word of fallingWords) {
+                if (mousePos.x >= word.x && mousePos.x <= word.x + word.width &&
+                    mousePos.y >= word.y && mousePos.y <= word.y + word.height) {
+                    draggedWord = word;
+                    word.isDragged = true;
+                    break;
+                }
+            }
+        }
+        
+        function onMouseMove(e) {
+            if (!gameRunning) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            mousePos.x = e.clientX - rect.left;
+            mousePos.y = e.clientY - rect.top;
+            
+            if (draggedWord) {
+                draggedWord.x = mousePos.x - draggedWord.width / 2;
+                draggedWord.y = mousePos.y - draggedWord.height / 2;
+            }
+        }
+        
+        function onMouseUp(e) {
+            if (!gameRunning || !draggedWord) return;
+            
+            // Prüfe ob das Wort ins Sammelbuch gezogen wurde
+            if (isOverlapping(draggedWord, collectBook)) {
+                collectWord(draggedWord);
+            } else {
+                // Wort zurück in den Fall-Modus
+                draggedWord.isDragged = false;
+            }
+            
+            draggedWord = null;
+        }
+        
+        // Überschneidung prüfen
+        function isOverlapping(rect1, rect2) {
+            return rect1.x < rect2.x + rect2.width &&
+                   rect1.x + rect1.width > rect2.x &&
+                   rect1.y < rect2.y + rect2.height &&
+                   rect1.y + rect1.height > rect2.y;
+        }
+        
+        // Wort erstellen
+        function createWord() {
+            const isNomen = Math.random() < 0.4; // 40% Chance für Nomen
+            const wordList = isNomen ? nomenWords : otherWords;
+            const text = wordList[Math.floor(Math.random() * wordList.length)];
+            
+            return {
+                text: text,
+                isNomen: isNomen,
+                x: Math.random() * (canvas.width - 100) + 50,
+                y: -30,
+                width: 90,
+                height: 30,
+                speed: 1 + Math.random() * 1.5,
+                isDragged: false,
+                collected: false
+            };
+        }
+        
+        // Wort sammeln
+        function collectWord(word) {
+            if (word.isNomen) {
+                // Richtiges Nomen gesammelt
+                score += 15;
+                collected++;
+                createSuccessParticles(word.x + word.width/2, word.y + word.height/2);
+                
+                // Wort entfernen
+                const index = fallingWords.indexOf(word);
+                if (index > -1) fallingWords.splice(index, 1);
+                
+            } else {
+                // Falsches Wort - Explosion und Leben verlieren
+                lives--;
+                createExplosionParticles(word.x + word.width/2, word.y + word.height/2);
+                
+                const index = fallingWords.indexOf(word);
+                if (index > -1) fallingWords.splice(index, 1);
+                
+                if (lives <= 0) {
+                    gameOver();
+                } else {
+                    flashError();
+                }
+            }
+        }
+        
+        // Partikel erstellen
+        function createSuccessParticles(x, y) {
+            for (let i = 0; i < 10; i++) {
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8,
+                    life: 30,
+                    color: '#4CAF50',
+                    size: Math.random() * 6 + 2
+                });
+            }
+        }
+        
+        function createExplosionParticles(x, y) {
+            for (let i = 0; i < 15; i++) {
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() - 0.5) * 12,
+                    life: 40,
+                    color: '#F44336',
+                    size: Math.random() * 8 + 3
+                });
+            }
+        }
+        
+        // Wort zeichnen
+        function drawWord(word) {
+            if (word.collected) return;
+            
+            // Alle Wörter haben die gleiche Farbe (kein Hinweis!)
+            ctx.fillStyle = word.isDragged ? '#BBDEFB' : '#E3F2FD';
+            ctx.fillRect(word.x, word.y, word.width, word.height);
+            
+            // Rand
+            ctx.strokeStyle = word.isDragged ? '#1976D2' : '#42A5F5';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(word.x, word.y, word.width, word.height);
+            
+            // Text
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(word.text, word.x + word.width/2, word.y + 20);
+        }
+        
+        // Sammelbuch zeichnen
+        function drawCollectBook() {
+            // Buch-Hintergrund
+            ctx.fillStyle = '#8BC34A';
+            ctx.fillRect(collectBook.x, collectBook.y, collectBook.width, collectBook.height);
+            
+            // Buch-Rand
+            ctx.strokeStyle = '#689F38';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(collectBook.x, collectBook.y, collectBook.width, collectBook.height);
+            
+            // Buchseiten-Effekt
+            ctx.fillStyle = '#AED581';
+            ctx.fillRect(collectBook.x + 5, collectBook.y + 5, collectBook.width - 10, collectBook.height - 10);
+            
+            // Text
+            ctx.fillStyle = '#2E7D32';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('NOMEN', collectBook.x + collectBook.width/2, collectBook.y + 30);
+            ctx.font = '12px Arial';
+            ctx.fillText('SAMMELBUCH', collectBook.x + collectBook.width/2, collectBook.y + 50);
+            
+            // Buchsymbol
+            ctx.font = '20px Arial';
+            ctx.fillText('📚', collectBook.x + collectBook.width/2, collectBook.y + 70);
+        }
+        
+        // Partikel zeichnen
+        function drawParticles() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life / 40;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+                ctx.globalAlpha = 1;
+                
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life--;
+                
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+        }
+        
+        // Spiel-Update
+        function update() {
+            if (!gameRunning) return;
+            
+            // Neue Wörter erstellen
+            if (Math.random() < 0.02) {
+                fallingWords.push(createWord());
+            }
+            
+            // Wörter bewegen
+            for (let i = fallingWords.length - 1; i >= 0; i--) {
+                const word = fallingWords[i];
+                
+                if (!word.isDragged) {
+                    word.y += word.speed;
+                    
+                    // Wörter entfernen die den Bildschirm verlassen haben
+                    if (word.y > canvas.height) {
+                        fallingWords.splice(i, 1);
+                    }
+                }
+            }
+            
+            updateDisplay();
+        }
+        
+        // Display aktualisieren
+        function updateDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('collected').textContent = collected;
+            
+            // Leben als Herzen anzeigen
+            let heartsDisplay = '';
+            for (let i = 0; i < lives; i++) {
+                heartsDisplay += '❤️';
+            }
+            for (let i = lives; i < 3; i++) {
+                heartsDisplay += '🖤';
+            }
+            document.getElementById('lives').textContent = heartsDisplay;
+        }
+        
+        // Zeichnen
+        function draw() {
+            // Hintergrund löschen
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (!gameRunning) return;
+            
+            // Sammelbuch zeichnen
+            drawCollectBook();
+            
+            // Wörter zeichnen
+            fallingWords.forEach(word => drawWord(word));
+            
+            // Partikel zeichnen
+            drawParticles();
+        }
+        
+        // Fehler-Effekt
+        let errorFlash = false;
+        function flashError() {
+            errorFlash = true;
+            setTimeout(() => {
+                errorFlash = false;
+            }, 200);
+        }
+        
+        // Spiel starten
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            gameStarted = true;
+            gameRunning = true;
+            updateDisplay();
+        }
+        
+        // Spiel beenden
+        function gameOver() {
+            gameRunning = false;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('gameOver').style.display = 'block';
+        }
+        
+        // Spiel neustarten
+        function restartGame() {
+            gameRunning = false;
+            gameStarted = false;
+            score = 0;
+            collected = 0;
+            lives = 3;
+            fallingWords = [];
+            particles = [];
+            draggedWord = null;
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'flex';
+            updateDisplay();
+        }
+        
+        // Highscore speichern
+        async function saveHighscore() {
+            const playerName = document.getElementById('playerName').value.trim();
+            if (!playerName) {
+                alert('Bitte gib deinen Namen ein!');
+                return;
+            }
+            
+            try {
+                const highscoreData = {
+                    name: playerName,
+                    score: score,
+                    game: 'nomen',
+                    timestamp: Date.now(),
+                    date: new Date().toLocaleDateString('de-DE')
+                };
+                
+                const response = await fetch(`${firebaseUrl}/highscores.json`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(highscoreData)
+                });
+                
+                if (response.ok) {
+                    alert('Highscore gespeichert!');
+                    loadHighscores();
+                    document.getElementById('playerName').value = '';
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Fehler beim Speichern des Highscores:', error);
+                alert('Fehler beim Speichern des Highscores. Überprüfe deine Internetverbindung und versuche es nochmal.');
+            }
+        }
+        
+        // Highscores laden
+        async function loadHighscores() {
+            try {
+                const response = await fetch(`${firebaseUrl}/highscores.json`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data) {
+                    document.getElementById('highscoreList').innerHTML = 'Noch keine Highscores vorhanden.';
+                    return;
+                }
+                
+                // Nur Nomen-Highscores filtern und sortieren
+                const nomenHighscores = Object.values(data)
+                    .filter(entry => entry.game === 'nomen')
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 10); // Top 10
+                
+                if (nomenHighscores.length === 0) {
+                    document.getElementById('highscoreList').innerHTML = 'Noch keine Nomen-Highscores vorhanden.';
+                    return;
+                }
+                
+                let html = '<ol>';
+                nomenHighscores.forEach(entry => {
+                    html += `<li><strong>${entry.name}</strong>: ${entry.score} Punkte (${entry.date})</li>`;
+                });
+                html += '</ol>';
+                
+                document.getElementById('highscoreList').innerHTML = html;
+            } catch (error) {
+                console.error('Fehler beim Laden der Highscores:', error);
+                document.getElementById('highscoreList').innerHTML = 
+                    'Highscores werden geladen... <br><small>(Stelle sicher, dass deine Internetverbindung aktiv ist)</small>';
+                
+                setTimeout(() => {
+                    loadHighscores();
+                }, 3000);
+            }
+        }
+        
+        // Spiel-Loop
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // Spiel initialisieren
+        updateDisplay();
+        loadHighscores();
+        gameLoop();
+    </script>
+</body>
+</html>
