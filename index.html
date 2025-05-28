@@ -217,7 +217,7 @@
 
         <div class="stats">
             <div class="stat-card">
-                <span class="stat-number">1</span>
+                <span class="stat-number">2</span>
                 <span class="stat-label">Verfügbare Spiele</span>
             </div>
             <div class="stat-card">
@@ -225,7 +225,7 @@
                 <span class="stat-label">Wortarten</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number">50+</span>
+                <span class="stat-number">65+</span>
                 <span class="stat-label">Übungswörter</span>
             </div>
             <div class="stat-card">
@@ -235,100 +235,101 @@
         </div>
 
         <div class="games-grid">
+            <!-- Nomen Spiel -->
+            <div class="game-card">
+                <span class="game-icon">🏠</span>
+                <h2 class="game-title">Nomen</h2>
+                <p class="game-description">
+                    <strong>Haus des Sammelns:</strong> Ziehe mit der Maus nur die Nomen in dein magisches Sammelbuch! 
+                    Andere Wortarten explodieren bei Berührung - sei vorsichtig!
+                </p>
+                <ul class="game-features">
+                    <li>🖱️ Drag & Drop Mechanik</li>
+                    <li>💥 Explosive Partikel-Effekte</li>
+                    <li>❤️ 3-Leben-System</li>
+                    <li>🏆 Separate Nomen-Highscores</li>
+                </ul>
+                <a href="#" class="play-button" onclick="openNomenSpiel()">Jetzt Spielen</a>
+            </div>
+
             <!-- Wortartenjagd Spiel -->
             <div class="game-card">
                 <span class="game-icon">🐦</span>
                 <h2 class="game-title">Wortartenjagd</h2>
                 <p class="game-description">
                     Steuere einen Vogel durch die Lüfte und sammle Wörter der richtigen Wortart! 
-                    Ein spannendes Flugspiel, das dein Wissen über Nomen, Verben, Adjektive und mehr testet.
+                    Ein spannendes Flugspiel, das dein Wissen über alle Wortarten testet.
                 </p>
                 <ul class="game-features">
                     <li>🎯 5 verschiedene Wortarten</li>
                     <li>❤️ 3-Leben-System</li>
                     <li>🏆 Highscore mit Firebase</li>
-                    <li>🎮 Intuitive Pfeiltasten-Steuerung</li>
+                    <li>🎮 WASD-Steuerung</li>
                 </ul>
                 <a href="#" class="play-button" onclick="openWortartenjagd()">Jetzt Spielen</a>
             </div>
 
             <!-- Platzhalter für zukünftige Spiele -->
             <div class="game-card coming-soon">
-                <span class="game-icon">📝</span>
-                <h2 class="game-title">Satzpuzzle</h2>
+                <span class="game-icon">🏃‍♂️</span>
+                <h2 class="game-title">Verben - Action Runner</h2>
                 <p class="game-description">
-                    Setze Satzteile in der richtigen Reihenfolge zusammen und lerne dabei 
-                    die deutsche Satzstruktur kennen.
+                    Renne durch die Action-Welt und sammle nur Verben! Ein Endlos-Läufer 
+                    bei dem dein Charakter die gesammelten Aktionen ausführt.
                 </p>
                 <ul class="game-features">
-                    <li>🧩 Drag & Drop Mechanik</li>
-                    <li>📚 Verschiedene Schwierigkeitsgrade</li>
-                    <li>⭐ Sterne-Bewertungssystem</li>
-                    <li>🎨 Bunte Satzteile</li>
+                    <li>🏃‍♂️ Endlos-Läufer Gameplay</li>
+                    <li>⚡ Charakter führt Aktionen aus</li>
+                    <li>🎮 Springen und Ducken</li>
+                    <li>🏅 Action-Combo-System</li>
                 </ul>
                 <button class="play-button" disabled>Bald verfügbar</button>
             </div>
 
             <div class="game-card coming-soon">
-                <span class="game-icon">🎪</span>
-                <h2 class="game-title">Konjugations-Karussell</h2>
+                <span class="game-icon">🌈</span>
+                <h2 class="game-title">Adjektive - Farben-Mixer</h2>
                 <p class="game-description">
-                    Fahre mit dem Karussell und konjugiere Verben in verschiedenen Zeiten. 
-                    Ein buntes Spiel für alle Verb-Formen!
+                    Verbinde Eigenschaften mit passenden Objekten! Ein buntes Puzzle-Spiel 
+                    bei dem sich Objekte visuell verändern.
                 </p>
                 <ul class="game-features">
-                    <li>🎠 Rotierendes Karussell</li>
-                    <li>⏰ Verschiedene Zeitformen</li>
-                    <li>🎵 Fröhliche Musik</li>
-                    <li>🏅 Fortschritts-Tracking</li>
+                    <li>🧩 Puzzle-Matching Mechanik</li>
+                    <li>🎨 Visuelle Objektveränderungen</li>
+                    <li>🌈 Bunte Regenbogen-Optik</li>
+                    <li>⭐ Kombinationsbewertung</li>
                 </ul>
                 <button class="play-button" disabled>Bald verfügbar</button>
             </div>
 
             <div class="game-card coming-soon">
-                <span class="game-icon">🏰</span>
-                <h2 class="game-title">Rechtschreibburg</h2>
+                <span class="game-icon">👤</span>
+                <h2 class="game-title">Pronomen - Wer ist Wer?</h2>
                 <p class="game-description">
-                    Verteidige deine Burg vor Rechtschreibfehlern! Erkenne und korrigiere 
-                    falsch geschriebene Wörter, bevor sie deine Festung erreichen.
+                    Identifiziere Personen und ordne die richtigen Pronomen zu! 
+                    Ein Memory-Spiel mit animierten Charakteren.
                 </p>
                 <ul class="game-features">
-                    <li>🛡️ Tower Defense Stil</li>
-                    <li>📖 Häufige Rechtschreibfehler</li>
-                    <li>💥 Action-packed Gameplay</li>
-                    <li>🏆 Verschiedene Schwierigkeiten</li>
+                    <li>🎭 Animierte Charaktere</li>
+                    <li>🧠 Memory-Mechanik</li>
+                    <li>👥 Verschiedene Personen</li>
+                    <li>⏱️ Zeitbasierte Herausforderung</li>
                 </ul>
                 <button class="play-button" disabled>Bald verfügbar</button>
             </div>
 
             <div class="game-card coming-soon">
-                <span class="game-icon">🎭</span>
-                <h2 class="game-title">Synonym-Theater</h2>
+                <span class="game-icon">⚡</span>
+                <h2 class="game-title">Partikel - Verstärker-Labor</h2>
                 <p class="game-description">
-                    Bringe die Schauspieler auf die richtige Bühne, indem du Wörter mit 
-                    ihren Synonymen verbindest. Ein theatralisches Wortschatz-Abenteuer!
+                    Experimentiere im Wissenschaftslabor und verstärke Sätze mit den 
+                    richtigen Partikeln! Sätze ändern sich visuell.
                 </p>
                 <ul class="game-features">
-                    <li>🎬 Theatralische Animationen</li>
-                    <li>🎨 Wortschatz erweitern</li>
-                    <li>🎪 Verschiedene Bühnenbilder</li>
-                    <li>👏 Applaus-System</li>
-                </ul>
-                <button class="play-button" disabled>Bald verfügbar</button>
-            </div>
-
-            <div class="game-card coming-soon">
-                <span class="game-icon">🚂</span>
-                <h2 class="game-title">Grammatik-Eisenbahn</h2>
-                <p class="game-description">
-                    Fahre mit der Eisenbahn durch Deutschland und sammle dabei Grammatikregeln. 
-                    Jeder Bahnhof bringt neue grammatische Herausforderungen!
-                </p>
-                <ul class="game-features">
-                    <li>🚄 Interaktive Zugfahrt</li>
-                    <li>🗺️ Deutsche Städte bereisen</li>
-                    <li>📐 Verschiedene Grammatikthemen</li>
-                    <li>🎫 Sammelkarten-System</li>
+                    <li>🔬 Wissenschafts-Experiment</li>
+                    <li>📝 Satz-Lücken füllen</li>
+                    <li>💫 Visuelle Satz-Verstärkung</li>
+                    <li>🧪 Labor-Atmosphäre</li>
                 </ul>
                 <button class="play-button" disabled>Bald verfügbar</button>
             </div>
@@ -341,6 +342,11 @@
     </div>
 
     <script>
+        function openNomenSpiel() {
+            // Direkt zum Nomen-Spiel navigieren
+            window.location.href = 'hausdessammelns.html';
+        }
+        
         function openWortartenjagd() {
             // Direkt zum Spiel navigieren im gleichen Tab
             window.location.href = 'wortartenjagd.html';
