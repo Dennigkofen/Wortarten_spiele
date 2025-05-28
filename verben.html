@@ -1,0 +1,743 @@
+.timer-bar {
+            background: #FFE0B2;
+            border: 2px solid #FF9800;
+            border-radius: 10px;
+            height: 20px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timer-fill {
+            background: linear-gradient(90deg, #4CAF50, #FFC107, #F44336);
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+            transition: width 0.1s linear;
+        }
+        
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .difficulty-info {
+            background: #E3F2FD;
+            border: 2px solid #2196F3;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #1976D2;
+        }<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verben-Aufträge</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #FF9800, #FFC107);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            user-select: none;
+        }
+        
+        .game-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative;
+            width: 800px;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .score {
+            color: #FF6F00;
+        }
+        
+        .mission-area {
+            background: #FFF3E0;
+            border: 3px solid #FF9800;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mission-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #E65100;
+            text-align: center;
+        }
+        
+        .game-area {
+            background: linear-gradient(to bottom, #87CEEB, #98FB98);
+            border: 3px solid #4CAF50;
+            border-radius: 15px;
+            height: 300px;
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .character {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 60px;
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+        
+        .scene-background {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: #8BC34A;
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .scene-objects {
+            position: absolute;
+            bottom: 100px;
+            width: 100%;
+            font-size: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .verb-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .verb-button {
+            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        
+        .verb-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .verb-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .feedback {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+            min-height: 30px;
+        }
+        
+        .correct { color: #4CAF50; }
+        .wrong { color: #F44336; }
+        
+        .start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 152, 0, 0.95);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            z-index: 1000;
+        }
+        
+        .start-screen h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .start-screen p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .start-button {
+            background: #FF6F00 !important;
+            font-size: 18px !important;
+            padding: 15px 30px !important;
+            margin-top: 20px !important;
+            border-radius: 25px !important;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+        
+        button {
+            background: #FF9800;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #F57C00;
+            transform: translateY(-2px);
+        }
+        
+        input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        
+        .animation-active {
+            animation: characterAction 1s ease-in-out;
+        }
+        
+        @keyframes characterAction {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.2) rotateZ(10deg); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+        
+        .jump { 
+            animation: jump 0.8s ease-in-out !important;
+        }
+        
+        @keyframes jump {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-50px); }
+        }
+        
+        .run {
+            animation: run 1s ease-in-out !important;
+        }
+        
+        @keyframes run {
+            0% { left: 50%; }
+            50% { left: 70%; }
+            100% { left: 50%; }
+        }
+        
+        .dance {
+            animation: dance 1s ease-in-out !important;
+        }
+        
+        @keyframes dance {
+            0%, 100% { transform: translateX(-50%) rotateZ(0deg); }
+            25% { transform: translateX(-50%) rotateZ(-15deg); }
+            75% { transform: translateX(-50%) rotateZ(15deg); }
+        }
+        
+        .wave {
+            animation: wave 1s ease-in-out !important;
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: translateX(-50%) rotateZ(0deg); }
+            50% { transform: translateX(-50%) rotateZ(20deg) scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🏃‍♂️ Verben-Aufträge 🏃‍♂️</h1>
+        
+        <div class="game-info">
+            <div class="score">Punkte: <span id="score">0</span></div>
+            <div class="score">Leben: <span id="lives">❤️❤️❤️</span></div>
+            <div class="score">Korrekt: <span id="correctCount">0</span></div>
+        </div>
+        
+        <div class="difficulty-info">
+            Level <span id="currentLevel">1</span> - <span id="wordCount">3</span> Wörter zur Auswahl
+        </div>
+        
+        <div class="timer-bar">
+            <div class="timer-fill" id="timerFill"></div>
+            <div class="timer-text" id="timerText">5s</div>
+        </div>
+        
+        <div class="mission-area">
+            <div class="mission-text" id="missionText">Bereit für deinen ersten Auftrag?</div>
+        </div>
+        
+        <div class="game-area">
+            <div class="scene-background"></div>
+            <div class="scene-objects" id="sceneObjects">
+                <span>🌳</span>
+                <span>🏠</span>
+                <span>🚪</span>
+                <span>🌸</span>
+            </div>
+            <div class="character" id="character">🧑</div>
+        </div>
+        
+        <div class="verb-buttons" id="verbButtons">
+            <!-- Verb-Buttons werden dynamisch erstellt -->
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <div class="start-screen" id="startScreen">
+            <h2>🏃‍♂️ Verben-Aufträge</h2>
+            <p>⏰ Du hast nur 5 Sekunden pro Auftrag!</p>
+            <p>🎯 Lies den Auftrag und wähle das richtige Verb!</p>
+            <p>📈 Alle 5 korrekten Antworten wird es schwerer!</p>
+            <p>🎭 Dein Charakter führt die Aktion aus!</p>
+            <p>❤️ Du hast 3 Leben - sei schnell und präzise!</p>
+            <button class="start-button" onclick="startGame()">Abenteuer starten!</button>
+        </div>
+        
+        <div class="game-over" id="gameOver">
+            <h2>Abenteuer beendet!</h2>
+            <p>Deine Punkte: <span id="finalScore">0</span></p>
+            <input type="text" id="playerName" placeholder="Dein Name" maxlength="20">
+            <br>
+            <button onclick="saveHighscore()">Highscore speichern</button>
+            <button onclick="restartGame()">Nochmal spielen</button>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Database URL
+        const firebaseUrl = 'https://wortartenspiele-default-rtdb.europe-west1.firebasedatabase.app';
+        
+        // Spielvariablen
+        let gameRunning = false;
+        let gameStarted = false;
+        let score = 0;
+        let lives = 3;
+        let currentMission = 0;
+        let correctAnswers = 0;
+        let currentLevel = 1;
+        let wordsInLevel = 3;
+        let buttonsDisabled = false;
+        let timeRemaining = 5;
+        let timer = null;
+        
+        // Erweiterte Aufträge mit mehreren korrekten Antworten
+        const missions = [
+            { text: "Zeige Freude!", correctVerbs: ["jubeln", "lachen", "freuen"], animation: "jump", character: "🎉" },
+            { text: "Gehe zur Tür!", correctVerbs: ["laufen", "gehen", "schreiten"], animation: "run", character: "🏃‍♂️" },
+            { text: "Verstecke dich!", correctVerbs: ["ducken", "verstecken", "verbergen"], animation: "duck", character: "🙇‍♂️" },
+            { text: "Grüße deine Freunde!", correctVerbs: ["winken", "grüßen", "begrüßen"], animation: "wave", character: "👋" },
+            { text: "Zeige deine Tanzschritte!", correctVerbs: ["tanzen", "schwingen", "bewegen"], animation: "dance", character: "💃" },
+            { text: "Überquere den Bach!", correctVerbs: ["springen", "hüpfen", "schwimmen", "waten"], animation: "jump", character: "🤸‍♂️" },
+            { text: "Mache Lärm!", correctVerbs: ["rufen", "schreien", "brüllen", "kreischen"], animation: "wave", character: "📢" },
+            { text: "Bewege dich leise!", correctVerbs: ["schleichen", "huschen", "gleiten"], animation: "run", character: "🤫" },
+            { text: "Zeige Müdigkeit!", correctVerbs: ["gähnen", "strecken", "seufzen"], animation: "duck", character: "😴" },
+            { text: "Betrachte die Aussicht!", correctVerbs: ["schauen", "blicken", "betrachten", "beobachten"], animation: "wave", character: "👀" },
+            { text: "Steige nach oben!", correctVerbs: ["klettern", "steigen", "erklimmen"], animation: "jump", character: "🧗‍♂️" },
+            { text: "Bewege dich schnell fort!", correctVerbs: ["rennen", "laufen", "sprinten", "eilen", "rasen", "fahren"], animation: "run", character: "💨" },
+            { text: "Zeige Aufmerksamkeit!", correctVerbs: ["zuhören", "lauschen", "horchen"], animation: "wave", character: "👂" },
+            { text: "Sammle die Blumen!", correctVerbs: ["pflücken", "sammeln", "ernten"], animation: "duck", character: "🌸" },
+            { text: "Mache die Tür auf!", correctVerbs: ["öffnen", "aufmachen", "entriegeln"], animation: "wave", character: "🚪" },
+            { text: "Bringe es weg!", correctVerbs: ["tragen", "bringen", "transportieren", "schleppen"], animation: "run", character: "📦" },
+            { text: "Zeige deine Kraft!", correctVerbs: ["stemmen", "heben", "drücken", "ziehen"], animation: "jump", character: "💪" },
+            { text: "Beruhige dich!", correctVerbs: ["atmen", "entspannen", "beruhigen"], animation: "duck", character: "🧘‍♂️" },
+            { text: "Suche den Schlüssel!", correctVerbs: ["suchen", "finden", "erkunden", "durchsuchen"], animation: "run", character: "🔍" },
+            { text: "Reinige den Tisch!", correctVerbs: ["wischen", "putzen", "reinigen", "säubern"], animation: "wave", character: "🧽" },
+            { text: "Mache Musik!", correctVerbs: ["singen", "summen", "pfeifen", "musizieren"], animation: "dance", character: "🎵" },
+            { text: "Bereite das Essen vor!", correctVerbs: ["kochen", "braten", "backen", "zubereiten"], animation: "wave", character: "👨‍🍳" },
+            { text: "Hilf deinem Freund!", correctVerbs: ["helfen", "unterstützen", "assistieren"], animation: "wave", character: "🤝" },
+            { text: "Lerne die Lektion!", correctVerbs: ["studieren", "lernen", "pauken", "büffeln"], animation: "duck", character: "📚" },
+            { text: "Zeige deine Liebe!", correctVerbs: ["umarmen", "küssen", "liebkosen", "herzen"], animation: "wave", character: "🤗" },
+            { text: "Entferne den Schmutz!", correctVerbs: ["waschen", "schrubben", "spülen", "reinigen"], animation: "wave", character: "🧼" },
+            { text: "Bewege dich im Wasser!", correctVerbs: ["schwimmen", "tauchen", "planschen", "baden"], animation: "wave", character: "🏊‍♂️" },
+            { text: "Verbinde die Teile!", correctVerbs: ["kleben", "heften", "befestigen", "verbinden"], animation: "wave", character: "🔗" },
+            { text: "Erzeuge ein Geräusch!", correctVerbs: ["klopfen", "schlagen", "trommeln", "hämmern"], animation: "wave", character: "🔨" },
+            { text: "Verlasse diesen Ort!", correctVerbs: ["gehen", "weggehen", "verlassen", "fortgehen"], animation: "run", character: "🚶‍♂️" }
+        ];
+        
+        // Alle möglichen Verben (für falsche Antworten)
+        const allVerbs = [
+            "laufen", "springen", "tanzen", "singen", "lachen", "weinen", "schlafen", "essen", "trinken", "spielen",
+            "arbeiten", "lernen", "sprechen", "hören", "sehen", "fühlen", "denken", "träumen", "hoffen", "lieben",
+            "hassen", "helfen", "geben", "nehmen", "kaufen", "verkaufen", "fahren", "fliegen", "schwimmen", "tauchen",
+            "klettern", "fallen", "steigen", "rennen", "gehen", "stehen", "sitzen", "liegen", "knien", "bücken",
+            "ducken", "winken", "rufen", "flüstern", "schreien", "jubeln", "weinen", "gähnen", "niesen", "husten",
+            "atmen", "schauen", "blicken", "starren", "blinzeln", "zwinkern", "lächeln", "grinsen", "küssen", "umarmen",
+            "schlagen", "boxen", "treten", "werfen", "fangen", "halten", "loslassen", "greifen", "berühren", "streicheln",
+            "kratzen", "kämmen", "waschen", "duschen", "baden", "putzen", "reinigen", "wischen", "fegen", "saugen",
+            "kochen", "braten", "backen", "schneiden", "schälen", "rühren", "mischen", "gießen", "servieren", "probieren",
+            "malen", "zeichnen", "schreiben", "lesen", "buchstabieren", "rechnen", "zählen", "messen", "wiegen", "bauen"
+        ];
+        
+        // Falsche Wortarten (Nomen, Adjektive, Pronomen, Partikel)
+        const decoyWords = [
+            // Nomen
+            "Hund", "Katze", "Haus", "Auto", "Baum", "Blume", "Kind", "Mutter", "Vater", "Schule", "Buch", "Tisch", "Stuhl", "Computer", "Telefon",
+            "Musik", "Film", "Spiel", "Ball", "Fahrrad", "Zug", "Flugzeug", "Schiff", "Berg", "See", "Strand", "Sonne", "Mond", "Stern", "Wolke",
+            // Adjektive  
+            "groß", "klein", "schön", "hässlich", "gut", "schlecht", "schnell", "langsam", "alt", "jung", "neu", "alt", "warm", "kalt", "heiß", "kühl",
+            "rot", "blau", "grün", "gelb", "schwarz", "weiß", "laut", "leise", "hart", "weich", "süß", "sauer", "salzig", "bitter", "glücklich", "traurig",
+            // Pronomen
+            "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "mich", "dich", "ihn", "uns", "euch", "mein", "dein", "sein", "ihr", "unser", "euer",
+            // Partikel
+            "sehr", "auch", "nur", "schon", "noch", "etwa", "fast", "ganz", "recht", "wohl", "doch", "mal", "eben", "halt", "ja", "nein", "nicht"
+        ];
+        
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            gameStarted = true;
+            gameRunning = true;
+            currentMission = 0;
+            loadMission();
+        }
+        
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            gameStarted = true;
+            gameRunning = true;
+            currentMission = 0;
+            correctAnswers = 0;
+            currentLevel = 1;
+            wordsInLevel = 3;
+            loadMission();
+        }
+        
+        function startTimer() {
+            timeRemaining = 5;
+            updateTimerDisplay();
+            
+            timer = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    timeUp();
+                }
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const timerFill = document.getElementById('timerFill');
+            const timerText = document.getElementById('timerText');
+            
+            const percentage = (timeRemaining / 5) * 100;
+            timerFill.style.width = percentage + '%';
+            timerText.textContent = timeRemaining + 's';
+        }
+        
+        function timeUp() {
+            if (!gameRunning || buttonsDisabled) return;
+            
+            buttonsDisabled = true;
+            lives--;
+            
+            const feedbackElement = document.getElementById('feedback');
+            const mission = missions[currentMission];
+            const correctOptions = mission.correctVerbs.join(", ");
+            feedbackElement.textContent = `Zeit abgelaufen! ⏰ Richtig wäre gewesen: ${correctOptions}`;
+            feedbackElement.className = 'feedback wrong';
+            
+            // Charakter wird verwirrt
+            const character = document.getElementById('character');
+            character.textContent = '😵';
+            character.className = 'character dance';
+            
+            if (lives <= 0) {
+                setTimeout(() => {
+                    gameOver();
+                }, 2000);
+            } else {
+                setTimeout(() => {
+                    nextMission();
+                }, 2000);
+            }
+            
+            updateDisplay();
+        }
+        
+        function loadMission() {
+            if (currentMission >= missions.length) {
+                // Alle Missionen geschafft!
+                gameWon();
+                return;
+            }
+            
+            // Level-System: Alle 5 korrekte Antworten wird es schwerer
+            currentLevel = Math.floor(correctAnswers / 5) + 1;
+            wordsInLevel = Math.min(3 + Math.floor(correctAnswers / 5) * 2, 20); // 3, 5, 7, 9... bis max 20
+            
+            const mission = missions[currentMission];
+            document.getElementById('missionText').textContent = mission.text;
+            
+            // Schwierigkeits-Info aktualisieren
+            document.getElementById('currentLevel').textContent = currentLevel;
+            document.getElementById('wordCount').textContent = wordsInLevel;
+            
+            // Verb-Optionen erstellen
+            const correctVerbs = mission.correctVerbs;
+            const options = [...correctVerbs]; // Alle korrekten Verben sind dabei
+            
+            // Falsche Verben hinzufügen (andere Verben, die nicht korrekt sind)
+            const wrongVerbs = allVerbs.filter(verb => !correctVerbs.includes(verb));
+            const verbsNeeded = Math.floor(wordsInLevel * 0.6); // 60% Verben
+            const selectedWrongVerbs = wrongVerbs.sort(() => Math.random() - 0.5).slice(0, Math.max(0, verbsNeeded - correctVerbs.length));
+            options.push(...selectedWrongVerbs);
+            
+            // Falsche Wortarten hinzufügen (Nomen, Adjektive, etc.)
+            const decoyNeeded = wordsInLevel - options.length;
+            if (decoyNeeded > 0) {
+                const selectedDecoys = decoyWords.sort(() => Math.random() - 0.5).slice(0, decoyNeeded);
+                options.push(...selectedDecoys);
+            }
+            
+            // Falls wir immer noch nicht genug haben, fülle mit zufälligen Verben auf
+            while (options.length < wordsInLevel) {
+                const randomVerb = allVerbs[Math.floor(Math.random() * allVerbs.length)];
+                if (!options.includes(randomVerb)) {
+                    options.push(randomVerb);
+                }
+            }
+            
+            // Alle Optionen auf exakte Anzahl kürzen und mischen
+            const finalOptions = options.slice(0, wordsInLevel).sort(() => Math.random() - 0.5);
+            
+            // Buttons erstellen
+            const buttonContainer = document.getElementById('verbButtons');
+            buttonContainer.innerHTML = '';
+            
+            // Grid-Layout anpassen je nach Anzahl
+            const cols = Math.min(4, Math.ceil(Math.sqrt(wordsInLevel)));
+            buttonContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            
+            finalOptions.forEach(word => {
+                const button = document.createElement('button');
+                button.className = 'verb-button';
+                button.textContent = word;
+                button.onclick = () => selectVerb(word);
+                buttonContainer.appendChild(button);
+            });
+            
+            // Feedback zurücksetzen
+            document.getElementById('feedback').textContent = '';
+            buttonsDisabled = false;
+            
+            // Timer starten
+            startTimer();
+        }
+        
+        function selectVerb(selectedVerb) {
+            if (buttonsDisabled || !gameRunning) return;
+            
+            clearInterval(timer); // Timer stoppen
+            buttonsDisabled = true;
+            const mission = missions[currentMission];
+            const feedbackElement = document.getElementById('feedback');
+            const character = document.getElementById('character');
+            
+            // Alle Buttons deaktivieren
+            document.querySelectorAll('.verb-button').forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            // Prüfen ob das gewählte Verb zu den korrekten gehört
+            if (mission.correctVerbs.includes(selectedVerb)) {
+                // Richtig!
+                correctAnswers++;
+                const timeBonus = timeRemaining * 2; // Bonus für schnelle Antwort
+                score += 20 + timeBonus;
+                
+                feedbackElement.textContent = `Richtig! "${selectedVerb}" war korrekt! 🎉 (+${20 + timeBonus} Punkte)`;
+                feedbackElement.className = 'feedback correct';
+                
+                // Charakter Animation
+                character.textContent = mission.character;
+                character.className = `character ${mission.animation}`;
+                
+                setTimeout(() => {
+                    nextMission();
+                }, 1500);
+                
+            } else {
+                // Falsch!
+                lives--;
+                const correctOptions = mission.correctVerbs.join(", ");
+                feedbackElement.textContent = `Falsch! "${selectedVerb}" passt nicht. Richtig wäre: ${correctOptions}`;
+                feedbackElement.className = 'feedback wrong';
+                
+                // Falsche Animation (Charakter macht etwas Komisches)
+                character.textContent = '😵';
+                character.className = 'character dance';
+                
+                if (lives <= 0) {
+                    setTimeout(() => {
+                        gameOver();
+                    }, 2000);
+                } else {
+                    setTimeout(() => {
+                        nextMission();
+                    }, 2000);
+                }
+            }
+            
+            updateDisplay();
+        }
+        
+        function nextMission() {
+            const character = document.getElementById('character');
+            character.className = 'character';
+            character.textContent = '🧑';
+            currentMission++;
+            
+            setTimeout(() => {
+                loadMission();
+            }, 500);
+        }
+        
+        function updateDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('correctCount').textContent = correctAnswers;
+            
+            // Leben als Herzen anzeigen
+            let heartsDisplay = '';
+            for (let i = 0; i < lives; i++) {
+                heartsDisplay += '❤️';
+            }
+            for (let i = lives; i < 3; i++) {
+                heartsDisplay += '🖤';
+            }
+            document.getElementById('lives').textContent = heartsDisplay;
+        }
+        
+        function gameWon() {
+            gameRunning = false;
+            score += 50; // Bonus für alle Missionen geschafft
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('gameOver').querySelector('h2').textContent = 'Alle Aufträge erfüllt! 🏆';
+            document.getElementById('gameOver').style.display = 'block';
+        }
+        
+        function gameOver() {
+            gameRunning = false;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('gameOver').style.display = 'block';
+        }
+        
+        function restartGame() {
+            clearInterval(timer);
+            gameRunning = false;
+            gameStarted = false;
+            score = 0;
+            lives = 3;
+            currentMission = 0;
+            correctAnswers = 0;
+            currentLevel = 1;
+            wordsInLevel = 3;
+            buttonsDisabled = false;
+            timeRemaining = 5;
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'flex';
+            document.getElementById('character').textContent = '🧑';
+            document.getElementById('character').className = 'character';
+            updateDisplay();
+        }
+        
+        // Highscore-Funktionen (vereinfacht für Testlauf)
+        async function saveHighscore() {
+            const playerName = document.getElementById('playerName').value.trim();
+            if (!playerName) {
+                alert('Bitte gib deinen Namen ein!');
+                return;
+            }
+            
+            try {
+                const highscoreData = {
+                    name: playerName,
+                    score: score,
+                    game: 'verben',
+                    timestamp: Date.now(),
+                    date: new Date().toLocaleDateString('de-DE')
+                };
+                
+                const response = await fetch(`${firebaseUrl}/highscores.json`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(highscoreData)
+                });
+                
+                if (response.ok) {
+                    alert('Highscore gespeichert!');
+                    document.getElementById('playerName').value = '';
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Fehler beim Speichern des Highscores:', error);
+                alert('Fehler beim Speichern des Highscores. Überprüfe deine Internetverbindung und versuche es nochmal.');
+            }
+        }
+        
+        // Spiel initialisieren
+        updateDisplay();
+    </script>
+</body>
+</html>
