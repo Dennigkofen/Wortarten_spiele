@@ -342,47 +342,8 @@
 
     <script>
         function openWortartenjagd() {
-            // Hier würdest du normalerweise den Pfad zu deiner HTML-Datei angeben
-            // Zum Beispiel: window.open('wortartenjagd.html', '_blank');
-            
-            // Für die Demo öffnen wir ein neues Fenster mit einer Nachricht
-            const gameWindow = window.open('', '_blank', 'width=900,height=700');
-            gameWindow.document.write(`
-                <html>
-                <head>
-                    <title>Wortartenjagd wird geladen...</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            text-align: center;
-                            padding: 50px;
-                            background: linear-gradient(135deg, #87CEEB, #98FB98);
-                        }
-                        h1 { color: #333; }
-                        p { font-size: 18px; color: #666; margin: 20px 0; }
-                        .instruction {
-                            background: white;
-                            padding: 20px;
-                            border-radius: 15px;
-                            margin: 20px;
-                            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h1>🐦 Wortartenjagd startet...</h1>
-                    <div class="instruction">
-                        <p><strong>So gehst du vor:</strong></p>
-                        <p>1. Speichere das Wortartenjagd-Spiel als <code>wortartenjagd.html</code></p>
-                        <p>2. Lade beide HTML-Dateien auf GitHub hoch</p>
-                        <p>3. Aktiviere GitHub Pages in den Repository-Einstellungen</p>
-                        <p>4. Ersetze in dieser Übersichtsseite den Link zur korrekten URL</p>
-                    </div>
-                    <p>Das Spiel wird dann in einem neuen Tab geöffnet! 🎮</p>
-                    <button onclick="window.close()" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Fenster schließen</button>
-                </body>
-                </html>
-            `);
+            // Öffnet das Spiel direkt in einem neuen Fenster mit optimaler Größe
+            window.open('wortartenjagd', '_blank', 'width=900,height=700,scrollbars=yes,resizable=yes');
         }
 
         // Smooth scroll animation for better UX
