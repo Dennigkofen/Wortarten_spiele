@@ -503,18 +503,24 @@
             
             const userAnswer = document.getElementById('answerInput').value.trim().toLowerCase();
             const correctAnswer = currentGame.currentChallenge.correctAnswer.toLowerCase();
-            const isCorrect = userAnswer === correctAnswer;
+            let isCorrect = false;
+if (currentGame.currentChallenge.person === 'Er/Sie/Es') {
+    const answers = ['er', 'sie', 'es'].map(p => correctAnswer.toLowerCase().replace('er/sie/es', p));
+    isCorrect = answers.includes(userAnswer);
+} else {
+    isCorrect = userAnswer === correctAnswer;
+}
             
             clearInterval(currentGame.timer);
             
-            if (isCorrect) {
-                currentGame.correct++;
-                currentGame.streak++;
-                currentGame.timeLeft = 8; // Reset to 8 seconds for next round
-                showFeedback(true, currentGame.currentChallenge.correctAnswer);
-                setTimeout(() => {
-                    if (currentGame.isPlaying) {
-                        nextChallenge();
+       if (isCorrect) {
+    currentGame.correct++;
+    currentGame.streak++;
+    currentGame.timeLeft += 8; // Fügt 8 Sekunden hinzu
+    showFeedback(true, currentGame.currentChallenge.correctAnswer);
+    setTimeout(() => {
+        if (currentGame.isPlaying) {
+            nextChallenge();
                     }
                 }, 1500);
             } else {
