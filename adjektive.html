@@ -22,6 +22,7 @@
         .feedback { font-size: 18px; font-weight: bold; margin: 15px 0; min-height: 30px; }
         .correct { color: #4CAF50; }
         .wrong { color: #F44336; }
+        .highscore-section { margin-top: 20px; padding: 15px; background: #fce4ec; border-radius: 10px; }
         .start-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(233,30,99,0.95); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 20px; }
         .start-screen h2 { font-size: 2rem; margin-bottom: 20px; }
         .start-screen p { margin: 5px 0; }
@@ -61,6 +62,11 @@
         <div class="buttons" id="buttons"></div>
         <div class="feedback" id="feedback"></div>
         
+        <div class="highscore-section">
+            <h3>🏆 Highscore - Adjektive</h3>
+            <div id="highscoreList">Lade Highscores...</div>
+        </div>
+        
         <div class="start-screen" id="startScreen">
             <h2>🌈 Adjektive-Labor</h2>
             <p>⏰ 5 Sekunden pro Aufgabe!</p>
@@ -80,6 +86,9 @@
     </div>
 
     <script>
+        // Firebase Database URL
+        const firebaseUrl = 'https://wortartenspiele-default-rtdb.europe-west1.firebasedatabase.app';
+        
         // Alle 58 Experimente in kompakter Form: [emoji, name, [korrekte_adjektive], [falsche_adjektive], [nicht_adjektive]]
         const data = {
             basic: [
@@ -318,22 +327,76 @@
             let name = document.getElementById('playerName').value.trim();
             if (!name) { alert('Bitte Name eingeben!'); return; }
             
-            fetch('https://wortartenspiele-default-rtdb.europe-west1.firebasedatabase.app/highscores.json', {
+            fetch(firebaseUrl + '/highscores.json', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     name: name,
                     score: game.score,
                     game: 'adjektive',
+                    timestamp: Date.now(),
                     date: new Date().toLocaleDateString('de-DE')
                 })
             }).then(() => {
                 alert('Gespeichert!');
+                loadHighscores();
                 document.getElementById('playerName').value = '';
             }).catch(() => alert('Fehler beim Speichern'));
         }
         
+        // Highscores laden
+        async function loadHighscores() {
+            try {
+                const response = await fetch(`${firebaseUrl}/highscores.json`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data) {
+                    document.getElementById('highscoreList').innerHTML = 'Noch keine Highscores vorhanden.';
+                    return;
+                }
+                
+                // Nur Adjektive-Highscores filtern und sortieren
+                const adjektiveHighscores = Object.values(data)
+                    .filter(entry => entry.game === 'adjektive')
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 10); // Top 10
+                
+                if (adjektiveHighscores.length === 0) {
+                    document.getElementById('highscoreList').innerHTML = 'Noch keine Adjektive-Highscores vorhanden.';
+                    return;
+                }
+                
+                let html = '<ol>';
+                adjektiveHighscores.forEach(entry => {
+                    html += `<li><strong>${entry.name}</strong>: ${entry.score} Punkte (${entry.date})</li>`;
+                });
+                html += '</ol>';
+                
+                document.getElementById('highscoreList').innerHTML = html;
+            } catch (error) {
+                console.error('Fehler beim Laden der Highscores:', error);
+                document.getElementById('highscoreList').innerHTML = 
+                    'Highscores werden geladen... <br><small>(Stelle sicher, dass deine Internetverbindung aktiv ist)</small>';
+                
+                setTimeout(() => {
+                    loadHighscores();
+                }, 3000);
+            }
+        }
+        
         updateDisplay();
+        loadHighscores();
     </script>
 </body>
 </html>
