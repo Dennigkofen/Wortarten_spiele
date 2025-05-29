@@ -439,64 +439,88 @@
         }
 
         function startGame() {
-            const name = document.getElementById('playerName').value.trim();
-            if (!name) {
-                alert('Bitte gib deinen Namen ein!');
-                return;
+    const name = document.getElementById('playerName').value.trim();
+    if (!name) {
+        alert('Bitte gib deinen Namen ein!');
+        return;
+    }
+    
+    currentGame.playerName = name;
+    currentGame.isPlaying = true;
+    currentGame.timeLeft = 10; // Nur hier initialisieren!
+    
+    document.querySelector('.name-input').style.display = 'none';
+    document.getElementById('challengeArea').style.display = 'block';
+    document.getElementById('submitBtn').style.display = 'inline-block';
+    document.getElementById('answerInput').disabled = false;
+    document.getElementById('answerInput').focus();
+    
+    nextChallenge();
+    startTimer(); // Timer einmalig beim Starten starten!
+}
+
+function nextChallenge() {
+    if (!currentGame.isPlaying) return;
+    
+    currentGame.currentChallenge = getRandomChallenge();
+    
+    const personText = personMapping[currentGame.currentChallenge.person];
+    document.getElementById('taskInfo').textContent = `${personText} / ${currentGame.currentChallenge.tense}`;
+    document.getElementById('verbInfo').textContent = `Verb: ${currentGame.currentChallenge.verb}`;
+    document.getElementById('answerInput').value = '';
+    document.getElementById('feedback').innerHTML = '';
+    
+    updateDisplay();
+}
+
+function startTimer() {
+    clearInterval(currentGame.timer);
+    currentGame.timer = setInterval(() => {
+        currentGame.timeLeft--;
+        updateDisplay();
+        
+        if (currentGame.timeLeft <= 3) {
+            document.getElementById('timer').classList.add('pulse');
+        } else {
+            document.getElementById('timer').classList.remove('pulse');
+        }
+        
+        if (currentGame.timeLeft <= 0) {
+            timeUp();
+        }
+    }, 1000);
+}
+
+function submitAnswer() {
+    if (!currentGame.isPlaying) return;
+    
+    const userAnswer = document.getElementById('answerInput').value.trim().toLowerCase();
+    const correctAnswer = currentGame.currentChallenge.correctAnswer.toLowerCase();
+    let isCorrect = false;
+
+    if (currentGame.currentChallenge.person === 'Er/Sie/Es') {
+        const answers = ['er', 'sie', 'es'].map(p => correctAnswer.replace('er/sie/es', p));
+        isCorrect = answers.includes(userAnswer);
+    } else {
+        isCorrect = userAnswer === correctAnswer;
+    }
+
+    if (isCorrect) {
+        currentGame.correct++;
+        currentGame.streak++;
+        currentGame.timeLeft += 8; // Fügt 8 Sekunden hinzu
+        showFeedback(true, currentGame.currentChallenge.correctAnswer);
+        setTimeout(() => {
+            if (currentGame.isPlaying) {
+                nextChallenge();
             }
-            
-            currentGame.playerName = name;
-            currentGame.isPlaying = true;
-            
-            document.querySelector('.name-input').style.display = 'none';
-            document.getElementById('challengeArea').style.display = 'block';
-            document.getElementById('submitBtn').style.display = 'inline-block';
-            document.getElementById('answerInput').disabled = false;
-            document.getElementById('answerInput').focus();
-            
-            nextChallenge();
-        }
-
-        function nextChallenge() {
-            if (!currentGame.isPlaying) return;
-            
-            currentGame.currentChallenge = getRandomChallenge();
-            currentGame.timeLeft = 10;
-            
-            const personText = personMapping[currentGame.currentChallenge.person];
-            document.getElementById('taskInfo').textContent = `${personText} / ${currentGame.currentChallenge.tense}`;
-            document.getElementById('verbInfo').textContent = `Verb: ${currentGame.currentChallenge.verb}`;
-            document.getElementById('answerInput').value = '';
-            document.getElementById('feedback').innerHTML = '';
-            
-            updateDisplay();
-            startTimer();
-        }
-
-        function startTimer() {
-            clearInterval(currentGame.timer);
-            currentGame.timer = setInterval(() => {
-                currentGame.timeLeft--;
-                updateDisplay();
-                
-                if (currentGame.timeLeft <= 3) {
-                    document.getElementById('timer').classList.add('pulse');
-                } else {
-                    document.getElementById('timer').classList.remove('pulse');
-                }
-                
-                if (currentGame.timeLeft <= 0) {
-                    timeUp();
-                }
-            }, 1000);
-        }
-
-        function timeUp() {
-            clearInterval(currentGame.timer);
-            currentGame.streak = 0;
-            showFeedback(false, currentGame.currentChallenge.correctAnswer);
-            setTimeout(endGame, 2000);
-        }
+        }, 1500);
+    } else {
+        currentGame.streak = 0;
+        showFeedback(false, currentGame.currentChallenge.correctAnswer);
+        setTimeout(endGame, 2000);
+    }
+}
 
         function submitAnswer() {
             if (!currentGame.isPlaying) return;
