@@ -80,202 +80,75 @@
     </div>
 
     <script>
-        // Minimale Datenstruktur
-                const basicExperiments = [
-            // Größe
-            {object: "🐘", label: "Der Elefant", correctAdjectives: ["groß", "schwer"], wrongAdjectives: ["klein", "leicht"], relatedNonAdjectives: ["Tier", "Rüssel"]},
-            {object: "🐭", label: "Die Maus", correctAdjectives: ["klein", "leicht"], wrongAdjectives: ["groß", "schwer"], relatedNonAdjectives: ["Tier", "Käse"]},
-            {object: "🏠", label: "Das Haus", correctAdjectives: ["groß", "hoch"], wrongAdjectives: ["klein", "niedrig"], relatedNonAdjectives: ["Gebäude", "Wohnung"]},
-            {object: "🐶", label: "Der Hund", correctAdjectives: ["klein", "schnell"], wrongAdjectives: ["groß", "langsam"], relatedNonAdjectives: ["Tier", "Haustier"]},
-            
-            // Temperatur
-            {object: "🔥", label: "Das Feuer", correctAdjectives: ["heiß", "warm"], wrongAdjectives: ["kalt", "kühl"], relatedNonAdjectives: ["Flamme", "Wärme"]},
-            {object: "❄️", label: "Der Schnee", correctAdjectives: ["kalt", "weiß"], wrongAdjectives: ["heiß", "schwarz"], relatedNonAdjectives: ["Winter", "Eis"]},
-            {object: "🌞", label: "Die Sonne", correctAdjectives: ["warm", "hell"], wrongAdjectives: ["kalt", "dunkel"], relatedNonAdjectives: ["Tag", "Licht"]},
-            {object: "🧊", label: "Das Eis", correctAdjectives: ["kalt", "hart"], wrongAdjectives: ["heiß", "weich"], relatedNonAdjectives: ["Würfel", "Wasser"]},
-            
-            // Geschwindigkeit
-            {object: "🏃‍♂️", label: "Der Läufer", correctAdjectives: ["schnell", "fit"], wrongAdjectives: ["langsam", "müde"], relatedNonAdjectives: ["Sport", "Mensch"]},
-            {object: "🐢", label: "Die Schildkröte", correctAdjectives: ["langsam", "alt"], wrongAdjectives: ["schnell", "jung"], relatedNonAdjectives: ["Tier", "Panzer"]},
-            {object: "🚗", label: "Das Auto", correctAdjectives: ["schnell", "laut"], wrongAdjectives: ["langsam", "leise"], relatedNonAdjectives: ["Fahrzeug", "Motor"]},
-            {object: "🚂", label: "Der Zug", correctAdjectives: ["schnell", "lang"], wrongAdjectives: ["langsam", "kurz"], relatedNonAdjectives: ["Fahrzeug", "Bahn"]},
-            
-            // Farben/Licht
-            {object: "🌙", label: "Der Mond", correctAdjectives: ["hell", "rund"], wrongAdjectives: ["dunkel", "eckig"], relatedNonAdjectives: ["Nacht", "Himmel"]},
-            {object: "⭐", label: "Der Stern", correctAdjectives: ["hell", "klein"], wrongAdjectives: ["dunkel", "groß"], relatedNonAdjectives: ["Himmel", "Licht"]},
-            {object: "🍎", label: "Der Apfel", correctAdjectives: ["rot", "rund"], wrongAdjectives: ["blau", "eckig"], relatedNonAdjectives: ["Obst", "Baum"]},
-            {object: "🍌", label: "Die Banane", correctAdjectives: ["gelb", "süß"], wrongAdjectives: ["blau", "sauer"], relatedNonAdjectives: ["Obst", "Frucht"]},
-            
-            // Eigenschaften
-            {object: "🪨", label: "Der Stein", correctAdjectives: ["hart", "schwer"], wrongAdjectives: ["weich", "leicht"], relatedNonAdjectives: ["Material", "Boden"]},
-            {object: "🧸", label: "Der Teddy", correctAdjectives: ["weich", "süß"], wrongAdjectives: ["hart", "hässlich"], relatedNonAdjectives: ["Spielzeug", "Kind"]},
-            {object: "🎈", label: "Der Ballon", correctAdjectives: ["leicht", "bunt"], wrongAdjectives: ["schwer", "grau"], relatedNonAdjectives: ["Luft", "Party"]},
-            {object: "🏔️", label: "Der Berg", correctAdjectives: ["hoch", "groß"], wrongAdjectives: ["niedrig", "klein"], relatedNonAdjectives: ["Natur", "Gipfel"]}
-        ];
-        
-        const easyExperiments = [
-            // Erweiterte Größen
-            {object: "🦣", label: "Der Mammut", correctAdjectives: ["riesig", "ausgestorben"], wrongAdjectives: ["winzig", "lebendig"], relatedNonAdjectives: ["Urzeit", "Säugetier"]},
-            {object: "🐜", label: "Die Ameise", correctAdjectives: ["winzig", "fleißig"], wrongAdjectives: ["riesig", "faul"], relatedNonAdjectives: ["Insekt", "Kolonie"]},
-            {object: "🏰", label: "Das Schloss", correctAdjectives: ["majestätisch", "alt"], wrongAdjectives: ["bescheiden", "neu"], relatedNonAdjectives: ["Bauwerk", "Geschichte"]},
-            {object: "🏕️", label: "Das Zelt", correctAdjectives: ["tragbar", "einfach"], wrongAdjectives: ["fest", "kompliziert"], relatedNonAdjectives: ["Camping", "Stoff"]},
-            
-            // Erweiterte Temperaturen
-            {object: "🌋", label: "Der Vulkan", correctAdjectives: ["glühend", "gefährlich"], wrongAdjectives: ["eisig", "harmlos"], relatedNonAdjectives: ["Berg", "Lava"]},
-            {object: "🏔️", label: "Der Gletscher", correctAdjectives: ["eisig", "gewaltig"], wrongAdjectives: ["heiß", "winzig"], relatedNonAdjectives: ["Eis", "Klima"]},
-            {object: "☀️", label: "Die Hitze", correctAdjectives: ["brennend", "trocken"], wrongAdjectives: ["kühl", "feucht"], relatedNonAdjectives: ["Sommer", "Temperatur"]},
-            {object: "🌨️", label: "Der Schneesturm", correctAdjectives: ["klirrend", "heftig"], wrongAdjectives: ["mild", "sanft"], relatedNonAdjectives: ["Wetter", "Winter"]},
-            
-            // Tiere mit Eigenschaften
-            {object: "🦅", label: "Der Adler", correctAdjectives: ["stolz", "majestätisch"], wrongAdjectives: ["demütig", "gewöhnlich"], relatedNonAdjectives: ["Vogel", "Raubtier"]},
-            {object: "🐺", label: "Der Wolf", correctAdjectives: ["wild", "gefährlich"], wrongAdjectives: ["zahm", "harmlos"], relatedNonAdjectives: ["Rudel", "Raubtier"]},
-            {object: "🦋", label: "Der Schmetterling", correctAdjectives: ["zart", "farbenfroh"], wrongAdjectives: ["robust", "farblos"], relatedNonAdjectives: ["Insekt", "Metamorphose"]},
-            {object: "🐙", label: "Der Oktopus", correctAdjectives: ["glitschig", "intelligent"], wrongAdjectives: ["trocken", "dumm"], relatedNonAdjectives: ["Meer", "Tentakel"]},
-            
-            // Natur
-            {object: "🌊", label: "Das Meer", correctAdjectives: ["endlos", "salzhaltig"], wrongAdjectives: ["begrenzt", "süß"], relatedNonAdjectives: ["Wasser", "Ozean"]},
-            {object: "🌲", label: "Der Wald", correctAdjectives: ["dicht", "geheimnisvoll"], wrongAdjectives: ["licht", "durchschaubar"], relatedNonAdjectives: ["Natur", "Bäume"]},
-            {object: "⚡", label: "Der Blitz", correctAdjectives: ["blendend", "schnell"], wrongAdjectives: ["schwach", "langsam"], relatedNonAdjectives: ["Gewitter", "Elektrizität"]},
-            {object: "🌪️", label: "Der Tornado", correctAdjectives: ["wirbelnde", "zerstörerisch"], wrongAdjectives: ["still", "aufbauend"], relatedNonAdjectives: ["Sturm", "Wind"]}
-        ];
-        
-        const mediumExperiments = [
-            // Abstraktere Konzepte
-            {object: "🎭", label: "Das Theater", correctAdjectives: ["dramaturgisch", "bühnenwirksam"], wrongAdjectives: ["langweilig", "stumm"], relatedNonAdjectives: ["Schauspielhaus", "Aufführung"]},
-            {object: "🏛️", label: "Der Dom", correctAdjectives: ["ehrfurchtgebietend", "erhaben"], wrongAdjectives: ["unbedeutend", "niedrig"], relatedNonAdjectives: ["Bauwerk", "Gotteshaus"]},
-            {object: "🌹", label: "Die Rose", correctAdjectives: ["duftend", "dornig"], wrongAdjectives: ["geruchlos", "glatt"], relatedNonAdjectives: ["Blüte", "Liebe"]},
-            {object: "💎", label: "Der Diamant", correctAdjectives: ["kristallin", "wertvoll"], wrongAdjectives: ["trüb", "wertlos"], relatedNonAdjectives: ["Edelstein", "Schmuck"]},
-            {object: "🎨", label: "Die Kunst", correctAdjectives: ["ausdrucksstark", "kreativ"], wrongAdjectives: ["ausdruckslos", "einfallslos"], relatedNonAdjectives: ["Schöpfung", "Kultur"]},
-            {object: "🏔️", label: "Der Gipfel", correctAdjectives: ["schwindelerregend", "unzugänglich"], wrongAdjectives: ["bodenständig", "erreichbar"], relatedNonAdjectives: ["Bergspitze", "Höhepunkt"]},
-            {object: "🌙", label: "Die Nacht", correctAdjectives: ["geheimnisvoll", "romantisch"], wrongAdjectives: ["durchschaubar", "nüchtern"], relatedNonAdjectives: ["Dunkelheit", "Stille"]},
-            {object: "⚡", label: "Die Energie", correctAdjectives: ["dynamisch", "kraftvoll"], wrongAdjectives: ["träge", "schwach"], relatedNonAdjectives: ["Kraft", "Power"]},
-            {object: "🏺", label: "Die Antike", correctAdjectives: ["geschichtsträchtig", "ehrwürdig"], wrongAdjectives: ["geschichtslos", "profan"], relatedNonAdjectives: ["Vergangenheit", "Kultur"]},
-            {object: "🔮", label: "Das Mysterium", correctAdjectives: ["rätselhaft", "undurchdringlich"], wrongAdjectives: ["durchschaubar", "offensichtlich"], relatedNonAdjectives: ["Geheimnis", "Rätsel"]}
-        ];
-        
-        const hardExperiments = [
-            // Philosophische Konzepte
-            {object: "🎵", label: "Die Symphonie", correctAdjectives: ["harmonisch", "vielschichtig"], wrongAdjectives: ["dissonant", "eintönig"], relatedNonAdjectives: ["Komposition", "Orchesterwerk"]},
-            {object: "📚", label: "Die Weisheit", correctAdjectives: ["tiefgreifend", "erleuchtet"], wrongAdjectives: ["oberflächlich", "unwissend"], relatedNonAdjectives: ["Erkenntnis", "Philosophie"]},
-            {object: "🌸", label: "Die Hoffnung", correctAdjectives: ["zerbrechlich", "kostbar"], wrongAdjectives: ["unzerstörbar", "wertlos"], relatedNonAdjectives: ["Gefühl", "Zuversicht"]},
-            {object: "⚖️", label: "Die Gerechtigkeit", correctAdjectives: ["unparteiisch", "ausgewogen"], wrongAdjectives: ["voreingenommen", "einseitig"], relatedNonAdjectives: ["Prinzip", "Ethik"]},
-            {object: "🕊️", label: "Der Frieden", correctAdjectives: ["kostbar", "zerbrechlich"], wrongAdjectives: ["wertlos", "unzerstörbar"], relatedNonAdjectives: ["Harmonie", "Einigkeit"]},
-            {object: "💭", label: "Der Gedanke", correctAdjectives: ["flüchtig", "abstrakt"], wrongAdjectives: ["beständig", "konkret"], relatedNonAdjectives: ["Idee", "Bewusstsein"]},
-            {object: "⏳", label: "Die Zeit", correctAdjectives: ["vergänglich", "unaufhaltsam"], wrongAdjectives: ["ewig", "aufhaltbar"], relatedNonAdjectives: ["Dimension", "Vergänglichkeit"]},
-            {object: "🌀", label: "Das Chaos", correctAdjectives: ["unberechenbar", "verwirrend"], wrongAdjectives: ["vorhersagbar", "ordentlich"], relatedNonAdjectives: ["Unordnung", "Komplexität"]},
-            {object: "💎", label: "Die Perfektion", correctAdjectives: ["makellos", "unerreichbar"], wrongAdjectives: ["fehlerhaft", "erreichbar"], relatedNonAdjectives: ["Vollkommenheit", "Ideal"]},
-            {object: "🌌", label: "Das Universum", correctAdjectives: ["unendlich", "majestätisch"], wrongAdjectives: ["begrenzt", "unbedeutend"], relatedNonAdjectives: ["Kosmos", "Unendlichkeit"]},
-            {object: "🔥", label: "Die Leidenschaft", correctAdjectives: ["brennend", "verzehrend"], wrongAdjectives: ["lauwarm", "gleichgültig"], relatedNonAdjectives: ["Emotion", "Intensität"]},
-            {object: "🌊", label: "Die Seele", correctAdjectives: ["tiefgreifend", "unsterblich"], wrongAdjectives: ["oberflächlich", "vergänglich"], relatedNonAdjectives: ["Geist", "Essenz"]}
-        ];
-        
-        const mediumExperiments = [
-            {
-                object: "🎭", label: "Das Theater",
-                correctAdjectives: ["dramaturgisch", "bühnenwirksam"],
-                wrongAdjectives: ["langweilig", "stumm"],
-                relatedNonAdjectives: ["Schauspielhaus", "Aufführung"]
-            },
-            {
-                object: "🏛️", label: "Der Dom",
-                correctAdjectives: ["majestätisch", "erhaben"],
-                wrongAdjectives: ["bescheiden", "niedrig"],
-                relatedNonAdjectives: ["Bauwerk", "Gotteshaus"]
-            },
-            {
-                object: "🌹", label: "Die Rose",
-                correctAdjectives: ["duftend", "dornig"],
-                wrongAdjectives: ["geruchlos", "glatt"],
-                relatedNonAdjectives: ["Blüte", "Gewächs"]
-            },
-            {
-                object: "🎨", label: "Die Kunst",
-                correctAdjectives: ["kreativ", "ausdrucksvoll"],
-                wrongAdjectives: ["einfallslos", "stumm"],
-                relatedNonAdjectives: ["Schöpfung", "Werk"]
-            },
-            {
-                object: "🏔️", label: "Der Gipfel",
-                correctAdjectives: ["schwindelerregend", "unzugänglich"],
-                wrongAdjectives: ["erreichbar", "flach"],
-                relatedNonAdjectives: ["Bergspitze", "Höhepunkt"]
-            },
-            {
-                object: "🌙", label: "Der Mond",
-                correctAdjectives: ["geheimnisvoll", "silbrig"],
-                wrongAdjectives: ["durchschaubar", "golden"],
-                relatedNonAdjectives: ["Himmelskörper", "Trabant"]
-            },
-            {
-                object: "⚡", label: "Der Blitz",
-                correctAdjectives: ["blendend", "gefährlich"],
-                wrongAdjectives: ["schwach", "harmlos"],
-                relatedNonAdjectives: ["Entladung", "Phänomen"]
-            }
-        ];
-        
-        const hardExperiments = [
-            {
-                object: "🎵", label: "Die Symphonie",
-                correctAdjectives: ["harmonisch", "vielschichtig"],
-                wrongAdjectives: ["dissonant", "eintönig"],
-                relatedNonAdjectives: ["Komposition", "Orchesterwerk"]
-            },
-            {
-                object: "📚", label: "Die Literatur",
-                correctAdjectives: ["bedeutsam", "tiefgreifend"],
-                wrongAdjectives: ["oberflächlich", "unbedeutend"],
-                relatedNonAdjectives: ["Schrifttum", "Dichtung"]
-            },
-            {
-                object: "🌸", label: "Die Hoffnung",
-                correctAdjectives: ["zerbrechlich", "kostbar"],
-                wrongAdjectives: ["robust", "wertlos"],
-                relatedNonAdjectives: ["Gefühl", "Zuversicht"]
-            },
-            {
-                object: "⚖️", label: "Die Gerechtigkeit",
-                correctAdjectives: ["unparteiisch", "ausgewogen"],
-                wrongAdjectives: ["voreingenommen", "einseitig"],
-                relatedNonAdjectives: ["Prinzip", "Ideal"]
-            },
-            {
-                object: "🕊️", label: "Der Frieden",
-                correctAdjectives: ["kostbar", "zerbrechlich"],
-                wrongAdjectives: ["wertlos", "unzerstörbar"],
-                relatedNonAdjectives: ["Zustand", "Ideal"]
-            },
-            {
-                object: "💭", label: "Der Gedanke",
-                correctAdjectives: ["flüchtig", "abstrakt"],
-                wrongAdjectives: ["beständig", "greifbar"],
-                relatedNonAdjectives: ["Idee", "Einfall"]
-            },
-            {
-                object: "⏳", label: "Die Zeit",
-                correctAdjectives: ["vergänglich", "unaufhaltsam"],
-                wrongAdjectives: ["beständig", "aufhaltbar"],
-                relatedNonAdjectives: ["Dimension", "Kontinuum"]
-            },
-            {
-                object: "🌀", label: "Das Chaos",
-                correctAdjectives: ["unberechenbar", "verwirrend"],
-                wrongAdjectives: ["vorhersagbar", "geordnet"],
-                relatedNonAdjectives: ["Unordnung", "Durcheinander"]
-            },
-            {
-                object: "💎", label: "Die Perfektion",
-                correctAdjectives: ["makellos", "unerreichbar"],
-                wrongAdjectives: ["fehlerhaft", "erreichbar"],
-                relatedNonAdjectives: ["Vollkommenheit", "Ideal"]
-            },
-            {
-                object: "🌌", label: "Das Universum",
-                correctAdjectives: ["unendlich", "rätselhaft"],
-                wrongAdjectives: ["begrenzt", "durchschaubar"],
-                relatedNonAdjectives: ["Kosmos", "Weltall"]
-            }
-        ];
+        // Alle 58 Experimente in kompakter Form: [emoji, name, [korrekte_adjektive], [falsche_adjektive], [nicht_adjektive]]
+        const data = {
+            basic: [
+                ["🐘", "Der Elefant", ["groß", "schwer"], ["klein", "leicht"], ["Tier", "Rüssel"]],
+                ["🐭", "Die Maus", ["klein", "leicht"], ["groß", "schwer"], ["Tier", "Käse"]],
+                ["🏠", "Das Haus", ["groß", "hoch"], ["klein", "niedrig"], ["Gebäude", "Wohnung"]],
+                ["🐶", "Der Hund", ["klein", "schnell"], ["groß", "langsam"], ["Tier", "Haustier"]],
+                ["🔥", "Das Feuer", ["heiß", "warm"], ["kalt", "kühl"], ["Flamme", "Wärme"]],
+                ["❄️", "Der Schnee", ["kalt", "weiß"], ["heiß", "schwarz"], ["Winter", "Eis"]],
+                ["🌞", "Die Sonne", ["warm", "hell"], ["kalt", "dunkel"], ["Tag", "Licht"]],
+                ["🧊", "Das Eis", ["kalt", "hart"], ["heiß", "weich"], ["Würfel", "Wasser"]],
+                ["🏃‍♂️", "Der Läufer", ["schnell", "fit"], ["langsam", "müde"], ["Sport", "Mensch"]],
+                ["🐢", "Die Schildkröte", ["langsam", "alt"], ["schnell", "jung"], ["Tier", "Panzer"]],
+                ["🚗", "Das Auto", ["schnell", "laut"], ["langsam", "leise"], ["Fahrzeug", "Motor"]],
+                ["🚂", "Der Zug", ["schnell", "lang"], ["langsam", "kurz"], ["Fahrzeug", "Bahn"]],
+                ["🌙", "Der Mond", ["hell", "rund"], ["dunkel", "eckig"], ["Nacht", "Himmel"]],
+                ["⭐", "Der Stern", ["hell", "klein"], ["dunkel", "groß"], ["Himmel", "Licht"]],
+                ["🍎", "Der Apfel", ["rot", "rund"], ["blau", "eckig"], ["Obst", "Baum"]],
+                ["🍌", "Die Banane", ["gelb", "süß"], ["blau", "sauer"], ["Obst", "Frucht"]],
+                ["🪨", "Der Stein", ["hart", "schwer"], ["weich", "leicht"], ["Material", "Boden"]],
+                ["🧸", "Der Teddy", ["weich", "süß"], ["hart", "hässlich"], ["Spielzeug", "Kind"]],
+                ["🎈", "Der Ballon", ["leicht", "bunt"], ["schwer", "grau"], ["Luft", "Party"]],
+                ["🏔️", "Der Berg", ["hoch", "groß"], ["niedrig", "klein"], ["Natur", "Gipfel"]]
+            ],
+            easy: [
+                ["🦣", "Der Mammut", ["riesig", "ausgestorben"], ["winzig", "lebendig"], ["Urzeit", "Säugetier"]],
+                ["🐜", "Die Ameise", ["winzig", "fleißig"], ["riesig", "faul"], ["Insekt", "Kolonie"]],
+                ["🏰", "Das Schloss", ["majestätisch", "alt"], ["bescheiden", "neu"], ["Bauwerk", "Geschichte"]],
+                ["🏕️", "Das Zelt", ["tragbar", "einfach"], ["fest", "kompliziert"], ["Camping", "Stoff"]],
+                ["🌋", "Der Vulkan", ["glühend", "gefährlich"], ["eisig", "harmlos"], ["Berg", "Lava"]],
+                ["🏔️", "Der Gletscher", ["eisig", "gewaltig"], ["heiß", "winzig"], ["Eis", "Klima"]],
+                ["☀️", "Die Hitze", ["brennend", "trocken"], ["kühl", "feucht"], ["Sommer", "Temperatur"]],
+                ["🌨️", "Der Schneesturm", ["klirrend", "heftig"], ["mild", "sanft"], ["Wetter", "Winter"]],
+                ["🦅", "Der Adler", ["stolz", "majestätisch"], ["demütig", "gewöhnlich"], ["Vogel", "Raubtier"]],
+                ["🐺", "Der Wolf", ["wild", "gefährlich"], ["zahm", "harmlos"], ["Rudel", "Raubtier"]],
+                ["🦋", "Der Schmetterling", ["zart", "farbenfroh"], ["robust", "farblos"], ["Insekt", "Metamorphose"]],
+                ["🐙", "Der Oktopus", ["glitschig", "intelligent"], ["trocken", "dumm"], ["Meer", "Tentakel"]],
+                ["🌊", "Das Meer", ["endlos", "salzhaltig"], ["begrenzt", "süß"], ["Wasser", "Ozean"]],
+                ["🌲", "Der Wald", ["dicht", "geheimnisvoll"], ["licht", "durchschaubar"], ["Natur", "Bäume"]],
+                ["⚡", "Der Blitz", ["blendend", "schnell"], ["schwach", "langsam"], ["Gewitter", "Elektrizität"]],
+                ["🌪️", "Der Tornado", ["wirbelnd", "zerstörerisch"], ["still", "aufbauend"], ["Sturm", "Wind"]]
+            ],
+            medium: [
+                ["🎭", "Das Theater", ["dramaturgisch", "bühnenwirksam"], ["langweilig", "stumm"], ["Schauspielhaus", "Aufführung"]],
+                ["🏛️", "Der Dom", ["ehrfurchtgebietend", "erhaben"], ["unbedeutend", "niedrig"], ["Bauwerk", "Gotteshaus"]],
+                ["🌹", "Die Rose", ["duftend", "dornig"], ["geruchlos", "glatt"], ["Blüte", "Liebe"]],
+                ["💎", "Der Diamant", ["kristallin", "wertvoll"], ["trüb", "wertlos"], ["Edelstein", "Schmuck"]],
+                ["🎨", "Die Kunst", ["ausdrucksstark", "kreativ"], ["ausdruckslos", "einfallslos"], ["Schöpfung", "Kultur"]],
+                ["🏔️", "Der Gipfel", ["schwindelerregend", "unzugänglich"], ["bodenständig", "erreichbar"], ["Bergspitze", "Höhepunkt"]],
+                ["🌙", "Die Nacht", ["geheimnisvoll", "romantisch"], ["durchschaubar", "nüchtern"], ["Dunkelheit", "Stille"]],
+                ["⚡", "Die Energie", ["dynamisch", "kraftvoll"], ["träge", "schwach"], ["Kraft", "Power"]],
+                ["🏺", "Die Antike", ["geschichtsträchtig", "ehrwürdig"], ["geschichtslos", "profan"], ["Vergangenheit", "Kultur"]],
+                ["🔮", "Das Mysterium", ["rätselhaft", "undurchdringlich"], ["durchschaubar", "offensichtlich"], ["Geheimnis", "Rätsel"]]
+            ],
+            hard: [
+                ["🎵", "Die Symphonie", ["harmonisch", "vielschichtig"], ["dissonant", "eintönig"], ["Komposition", "Orchesterwerk"]],
+                ["📚", "Die Weisheit", ["tiefgreifend", "erleuchtet"], ["oberflächlich", "unwissend"], ["Erkenntnis", "Philosophie"]],
+                ["🌸", "Die Hoffnung", ["zerbrechlich", "kostbar"], ["unzerstörbar", "wertlos"], ["Gefühl", "Zuversicht"]],
+                ["⚖️", "Die Gerechtigkeit", ["unparteiisch", "ausgewogen"], ["voreingenommen", "einseitig"], ["Prinzip", "Ethik"]],
+                ["🕊️", "Der Frieden", ["kostbar", "zerbrechlich"], ["wertlos", "unzerstörbar"], ["Harmonie", "Einigkeit"]],
+                ["💭", "Der Gedanke", ["flüchtig", "abstrakt"], ["beständig", "konkret"], ["Idee", "Bewusstsein"]],
+                ["⏳", "Die Zeit", ["vergänglich", "unaufhaltsam"], ["ewig", "aufhaltbar"], ["Dimension", "Vergänglichkeit"]],
+                ["🌀", "Das Chaos", ["unberechenbar", "verwirrend"], ["vorhersagbar", "ordentlich"], ["Unordnung", "Komplexität"]],
+                ["💎", "Die Perfektion", ["makellos", "unerreichbar"], ["fehlerhaft", "erreichbar"], ["Vollkommenheit", "Ideal"]],
+                ["🌌", "Das Universum", ["unendlich", "majestätisch"], ["begrenzt", "unbedeutend"], ["Kosmos", "Unendlichkeit"]],
+                ["🔥", "Die Leidenschaft", ["brennend", "verzehrend"], ["lauwarm", "gleichgültig"], ["Emotion", "Intensität"]],
+                ["🌊", "Die Seele", ["tiefgreifend", "unsterblich"], ["oberflächlich", "vergänglich"], ["Geist", "Essenz"]]
+            ]
+        };
         
         let game = {
             running: false,
@@ -297,11 +170,21 @@
         function loadNext() {
             if (!game.running) return;
             
-            // Level bestimmen
+            // Level bestimmen basierend auf korrekten Antworten
             game.level = Math.floor(game.correct / 5) + 1;
-            let pool = game.level <= 2 ? data.basic : game.level <= 4 ? data.medium : data.hard;
+            let pool;
             
-            // Zufälliges Experiment
+            if (game.level <= 4) {
+                pool = data.basic; // 20 Experimente
+            } else if (game.level <= 8) {
+                pool = data.easy; // 16 Experimente  
+            } else if (game.level <= 12) {
+                pool = data.medium; // 10 Experimente
+            } else {
+                pool = data.hard; // 12 Experimente
+            }
+            
+            // Zufälliges Experiment aus dem aktuellen Pool
             let exp = pool[Math.floor(Math.random() * pool.length)];
             game.current = {
                 obj: exp[0], name: exp[1], 
@@ -314,7 +197,7 @@
             document.getElementById('taskText').textContent = game.current.name + " ist...";
             document.getElementById('level').textContent = game.level;
             
-            // Buttons erstellen
+            // Buttons erstellen - alle 6 Wörter mischen
             let words = [...game.current.correct, ...game.current.wrong, ...game.current.other];
             words = words.sort(() => Math.random() - 0.5);
             
