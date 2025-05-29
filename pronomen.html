@@ -304,18 +304,12 @@
             margin: 10px;
         }
         
-        @keyframes spotlight {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
         @keyframes applause {
             0%, 100% { transform: scale(1) rotate(0deg); }
             25% { transform: scale(1.1) rotate(-5deg); }
             75% { transform: scale(1.1) rotate(5deg); }
         }
         
-        .spotlight { animation: spotlight 1s ease-in-out; }
         .applause { animation: applause 0.8s ease-in-out; }
         
         @media (max-width: 768px) {
@@ -416,6 +410,7 @@
         // Firebase Database URL
         const firebaseUrl = 'https://wortartenspiele-default-rtdb.europe-west1.firebasedatabase.app';
         
+        // Spielvariablen
         let gameRunning = false;
         let gameStarted = false;
         let score = 0;
@@ -425,49 +420,35 @@
         let buttonsDisabled = false;
         let timeRemaining = 5;
         let timer = null;
+        let currentDialog = null;
         
-        // Dialog-Datenbank nach Schwierigkeitsgrad - HIER EINFÜGEN
+        // Dialog-Datenbank - START MIT WENIGEN BEISPIELEN
         const dialogData = {
-            // Akt 1: Personalpronomen (ich, du, er, sie, es, wir, ihr, sie)
             level1: [
-                { character: "Anna", dialog: "Hallo! ___ bin Anna und freue mich auf das Theaterstück!", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["Haus", "schön"] }
-                // HIER WEITERE LEVEL 1 DIALOGE EINFÜGEN
+                { character: "Anna", dialog: "Hallo! ___ bin Anna und freue mich auf das Theaterstück!", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["Haus", "schön"] },
+                { character: "Ben", dialog: "___ bist heute sehr elegant gekleidet, Anna!", correct: ["Du"], wrong: ["Ich", "Er", "Sie", "Wir"], other: ["heute", "sehr"] },
+                { character: "Carl", dialog: "Wo ist Max? ___ sollte schon längst hier sein.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Wo", "hier"] },
+                { character: "Diana", dialog: "___ hat ihr Kostüm vergessen und ist sehr traurig.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Kostüm", "traurig"] },
+                { character: "Ensemble", dialog: "___ proben schon seit drei Stunden für die Aufführung.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["seit", "Stunden"] }
             ],
-            
-            // Akt 2: + Reflexivpronomen (mich, dich, sich, uns, euch)
             level2: [
-                { character: "Anna", dialog: "Ich freue ___ schon sehr auf meine große Szene heute Abend!", correct: ["mich"], wrong: ["dich", "sich", "uns", "euch"], other: ["große", "Szene"] }
-                // HIER WEITERE LEVEL 2 DIALOGE EINFÜGEN
+                { character: "Anna", dialog: "Ich freue ___ schon sehr auf meine große Szene!", correct: ["mich"], wrong: ["dich", "sich", "uns", "euch"], other: ["große", "Szene"] },
+                { character: "Ben", dialog: "Du solltest ___ mehr auf den Text konzentrieren.", correct: ["dich"], wrong: ["mich", "sich", "uns", "ihr"], other: ["solltest", "Text"] }
             ],
-            
-            // Akt 3: + Possessivpronomen (mein, dein, sein, ihr, unser, euer)
             level3: [
-                { character: "Anna", dialog: "___ Kostüm ist das schönste von allen hier im Theater!", correct: ["Mein"], wrong: ["Dein", "Sein", "Unser", "Euer"], other: ["Kostüm", "Theater"] }
-                // HIER WEITERE LEVEL 3 DIALOGE EINFÜGEN
+                { character: "Anna", dialog: "___ Kostüm ist das schönste von allen!", correct: ["Mein"], wrong: ["Dein", "Sein", "Unser", "Euer"], other: ["Kostüm", "schönste"] }
             ],
-            
-            // Akt 4: + Demonstrativpronomen (dieser, diese, dieses, jener, jene)
             level4: [
-                { character: "Anna", dialog: "___ Schauspieler dort drüben spielt den König großartig!", correct: ["Dieser"], wrong: ["Diese", "Dieses", "Jener", "Mein"], other: ["Schauspieler", "König"] }
-                // HIER WEITERE LEVEL 4 DIALOGE EINFÜGEN
+                { character: "Anna", dialog: "___ Schauspieler dort drüben spielt großartig!", correct: ["Dieser"], wrong: ["Diese", "Jener", "Mein", "Dein"], other: ["Schauspieler", "großartig"] }
             ],
-            
-            // Akt 5: + Relativpronomen (der, die, das, welcher, welche)
             level5: [
                 { character: "Anna", dialog: "Der Schauspieler, ___ dort steht, ist mein bester Freund.", correct: ["der"], wrong: ["die", "das", "welcher", "dieser"], other: ["Schauspieler", "Freund"] }
-                // HIER WEITERE LEVEL 5 DIALOGE EINFÜGEN
             ],
-            
-            // Akt 6: + Interrogativpronomen (wer, was, welcher, welche, welches)
             level6: [
                 { character: "Anna", dialog: "___ hat mein Kostüm gesehen? Es ist verschwunden!", correct: ["Wer"], wrong: ["Was", "Welcher", "Welche", "Der"], other: ["Kostüm", "verschwunden"] }
-                // HIER WEITERE LEVEL 6 DIALOGE EINFÜGEN
             ],
-            
-            // Akt 7: Gemischt mit verschiedenen Fällen (Nominativ, Akkusativ, Dativ)
             level7: [
                 { character: "Anna", dialog: "Kannst du ___ bitte dabei helfen, mein Kostüm zu finden?", correct: ["mir"], wrong: ["mich", "ich", "mein", "du"], other: ["dabei", "finden"] }
-                // HIER WEITERE LEVEL 7 DIALOGE EINFÜGEN
             ]
         };
         
@@ -484,11 +465,15 @@
         const characters = ["🎭", "🎪", "🎨", "🎯", "🎺", "🎸"];
         
         function startGame() {
+            console.log("startGame() aufgerufen");
             document.getElementById('startScreen').style.display = 'none';
             gameStarted = true;
             gameRunning = true;
             correctAnswers = 0;
             currentLevel = 1;
+            score = 0;
+            lives = 3;
+            updateDisplay();
             loadDialog();
         }
         
@@ -525,11 +510,6 @@
             const feedbackElement = document.getElementById('feedback');
             feedbackElement.textContent = `Zeit abgelaufen! ⏰ Richtig wäre gewesen: ${currentDialog.correct.join(", ")}`;
             feedbackElement.className = 'feedback wrong';
-            
-            // Charaktere schütteln
-            document.querySelectorAll('.character').forEach(char => {
-                char.style.animation = 'shake 0.5s ease-in-out';
-            });
             
             if (lives <= 0) {
                 setTimeout(() => {
@@ -569,7 +549,7 @@
             
             // Charaktere auf der Bühne zufällig setzen
             const characterElements = document.querySelectorAll('.character');
-            characterElements.forEach((char, index) => {
+            characterElements.forEach((char) => {
                 char.textContent = characters[Math.floor(Math.random() * characters.length)];
                 char.style.animation = '';
             });
@@ -584,10 +564,8 @@
             // Grid-Layout anpassen je nach Anzahl der Optionen
             if (shuffledOptions.length <= 6) {
                 buttonContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
-            } else if (shuffledOptions.length <= 8) {
-                buttonContainer.style.gridTemplateColumns = 'repeat(4, 1fr)';
             } else {
-                buttonContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+                buttonContainer.style.gridTemplateColumns = 'repeat(4, 1fr)';
             }
             
             shuffledOptions.forEach(option => {
@@ -602,8 +580,6 @@
             buttonsDisabled = false;
             startTimer();
         }
-        
-        let currentDialog = null;
         
         function selectPronomen(selectedPronomen) {
             if (buttonsDisabled || !gameRunning) return;
@@ -688,9 +664,7 @@
             gameRunning = false;
             
             let message = 'Vorhang zu!';
-            if (correctAnswers >= 100) {
-                message = 'Shakespeares Erbe! 🎭👑';
-            } else if (correctAnswers >= 50) {
+            if (correctAnswers >= 50) {
                 message = 'Meisterlicher Auftritt! 🎭🥇';
             } else if (correctAnswers >= 25) {
                 message = 'Talentierter Darsteller! 🎭🥈';
@@ -719,7 +693,7 @@
             document.getElementById('startScreen').style.display = 'flex';
             
             // Charaktere zurücksetzen
-            document.querySelectorAll('.character').forEach((char, index) => {
+            document.querySelectorAll('.character').forEach((char) => {
                 char.textContent = '🎭';
                 char.className = 'character';
                 char.style.animation = '';
@@ -817,8 +791,12 @@
             }
         }
         
+        // Spiel initialisieren
         updateDisplay();
         loadHighscores();
+        
+        // Debug-Log
+        console.log("Spiel geladen, startGame Funktion verfügbar");
     </script>
 </body>
 </html>
