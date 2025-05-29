@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronomen-Theater</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #8B0000, #DC143C, #FF6347, #FFD700);
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            user-select: none;
+        }
+        
+        .theater-container {
+            text-align: center;
+            background: rgba(139, 0, 0, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            color: #FFD700;
+            border: 3px solid #FFD700;
+        }
+        
+        .theater-header {
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            color: #FFD700;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            color: #FFD700;
+            margin: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .level-info {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #FFD700;
+            text-align: center;
+        }
+        
+        .timer-bar {
+            background: rgba(139, 0, 0, 0.5);
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            height: 20px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timer-fill {
+            background: linear-gradient(90deg, #32CD32, #FFD700, #DC143C);
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+            transition: width 0.1s linear;
+        }
+        
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: #FFD700;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .stage {
+            background: linear-gradient(to bottom, #2F1B14, #8B4513);
+            border: 3px solid #8B4513;
+            border-radius: 15px;
+            height: 300px;
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .curtains {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: #8B0000;
+            border-bottom: 3px solid #FFD700;
+        }
+        
+        .curtains::before {
+            content: '🎭 THEATER 🎭';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .dialog-area {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            color: #000;
+            font-size: 18px;
+            line-height: 1.4;
+            text-align: left;
+            min-height: 120px;
+        }
+        
+        .character-name {
+            font-weight: bold;
+            color: #8B0000;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .dialog-text {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .missing-word {
+            background: #FFD700;
+            color: #8B0000;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        
+        .characters {
+            position: absolute;
+            bottom: 160px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            font-size: 60px;
+        }
+        
+        .character {
+            transition: all 0.5s ease;
+        }
+        
+        .pronomen-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+        
+        .pronomen-button {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #8B0000;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .pronomen-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        .pronomen-button:disabled {
+            background: #666;
+            color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .feedback {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+            min-height: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .correct { color: #32CD32; }
+        .wrong { color: #FF4444; }
+        
+        .highscore-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+        }
+        
+        .start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(139, 0, 0, 0.98);
+            color: #FFD700;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            z-index: 1000;
+        }
+        
+        .start-screen h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .start-screen p {
+            font-size: 1.1rem;
+            margin: 8px 0;
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            color: #8B0000;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #8B0000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        }
+        
+        input {
+            padding: 10px;
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        
+        @keyframes spotlight {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes applause {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        .spotlight { animation: spotlight 1s ease-in-out; }
+        .applause { animation: applause 0.8s ease-in-out; }
+        
+        @media (max-width: 768px) {
+            .theater-container {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            .pronomen-buttons {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .pronomen-button {
+                font-size: 14px;
+                padding: 10px 8px;
+                min-height: 45px;
+            }
+            
+            .stage {
+                height: 250px;
+            }
+            
+            .dialog-area {
+                font-size: 16px;
+                min-height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theater-container">
+        <div class="theater-header">
+            🎭 Pronomen-Theater 🎭
+        </div>
+        
+        <div class="game-info">
+            <div class="stat">Punkte: <span id="score">0</span></div>
+            <div class="stat">Leben: <span id="lives">❤️❤️❤️</span></div>
+            <div class="stat">Korrekt: <span id="correctCount">0</span></div>
+        </div>
+        
+        <div class="level-info">
+            <strong>Akt <span id="currentLevel">1</span></strong> - <span id="levelDescription">Personalpronomen</span>
+        </div>
+        
+        <div class="timer-bar">
+            <div class="timer-fill" id="timerFill"></div>
+            <div class="timer-text" id="timerText">5s</div>
+        </div>
+        
+        <div class="stage">
+            <div class="curtains"></div>
+            <div class="characters" id="characters">
+                <span class="character">🎭</span>
+                <span class="character">🎪</span>
+                <span class="character">🎨</span>
+            </div>
+            <div class="dialog-area">
+                <div class="character-name" id="characterName">Schauspielerin Anna:</div>
+                <div class="dialog-text" id="dialogText">Bereit für deine erste Szene?</div>
+            </div>
+        </div>
+        
+        <div class="pronomen-buttons" id="pronomenButtons">
+            <!-- Pronomen-Buttons werden dynamisch erstellt -->
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <div class="highscore-section">
+            <h3>🏆 Hall of Fame - Pronomen</h3>
+            <div id="highscoreList">Lade Bestenliste...</div>
+        </div>
+        
+        <div class="start-screen" id="startScreen">
+            <h2>🎭 Pronomen-Theater</h2>
+            <p>🎪 Willkommen im großartigen Pronomen-Theater!</p>
+            <p>⏰ Du hast 5 Sekunden pro Dialog!</p>
+            <p>🎯 Wähle das passende Pronomen für jeden Satz!</p>
+            <p>📈 7 Akte mit steigender Schwierigkeit!</p>
+            <p>🎭 Von einfachen Personalpronomen bis zu komplexen Fällen!</p>
+            <p>❤️ Du hast 3 Leben - die Show muss weitergehen!</p>
+            <button onclick="startGame()">Vorhang auf! 🎭</button>
+        </div>
+        
+        <div class="game-over" id="gameOver">
+            <h2>Vorhang zu! 🎭</h2>
+            <p>Deine Punkte: <span id="finalScore">0</span></p>
+            <input type="text" id="playerName" placeholder="Dein Künstlername" maxlength="20">
+            <br>
+            <button onclick="saveHighscore()">In Hall of Fame eintragen</button>
+            <button onclick="restartGame()">Neue Vorstellung</button>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Database URL
+        const firebaseUrl = 'https://wortartenspiele-default-rtdb.europe-west1.firebasedatabase.app';
+        
+        let gameRunning = false;
+        let gameStarted = false;
+        let score = 0;
+        let lives = 3;
+        let correctAnswers = 0;
+        let currentLevel = 1;
+        let buttonsDisabled = false;
+        let timeRemaining = 5;
+        let timer = null;
+        
+        // Dialog-Datenbank nach Schwierigkeitsgrad - HIER EINFÜGEN
+        const dialogData = {
+            // Akt 1: Personalpronomen (ich, du, er, sie, es, wir, ihr, sie)
+            level1: [
+                { character: "Anna", dialog: "Hallo! ___ bin Anna und freue mich auf das Theaterstück!", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["Haus", "schön"] }
+                { character: "Ben", dialog: "___ spiele heute den Hauptcharakter in unserem Stück.", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["heute", "Stück"] },
+{ character: "Carl", dialog: "___ habe meinen Text perfekt gelernt und bin bereit!", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["Text", "bereit"] },
+{ character: "Diana", dialog: "___ liebe es, auf der Bühne zu stehen und zu schauspielern.", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["Bühne", "schauspielern"] },
+{ character: "Max", dialog: "___ bin seit zehn Jahren Schauspieler und sehr erfahren.", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["Jahren", "erfahren"] },
+
+// DU - Direkte Ansprache
+{ character: "Anna", dialog: "Ben, ___ bist heute sehr elegant gekleidet!", correct: ["du"], wrong: ["ich", "er", "sie", "wir"], other: ["heute", "elegant"] },
+{ character: "Regisseur", dialog: "Diana, ___ hast eine wundervolle Stimme für diese Rolle.", correct: ["du"], wrong: ["ich", "er", "sie", "wir"], other: ["Stimme", "Rolle"] },
+{ character: "Ben", dialog: "Max, ___ kennst dich mit den Kostümen sehr gut aus.", correct: ["du"], wrong: ["ich", "er", "sie", "wir"], other: ["kennst", "Kostümen"] },
+{ character: "Carl", dialog: "Anna, ___ warst gestern fantastisch in der Probe!", correct: ["du"], wrong: ["ich", "er", "sie", "wir"], other: ["gestern", "Probe"] },
+{ character: "Diana", dialog: "Ben, ___ spielst den König heute Abend perfekt.", correct: ["du"], wrong: ["ich", "er", "sie", "wir"], other: ["König", "perfekt"] },
+
+// ER - Über männliche Person
+{ character: "Anna", dialog: "Wo ist Ben? ___ sollte schon längst hier sein.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Ben", "hier"] },
+{ character: "Diana", dialog: "Carl ist sehr talentiert. ___ spielt die Hauptrolle großartig.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["talentiert", "Hauptrolle"] },
+{ character: "Regisseur", dialog: "Max übt noch seinen Text. ___ will perfekt vorbereitet sein.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["übt", "vorbereitet"] },
+{ character: "Ben", dialog: "Der König im Stück ist mächtig. ___ regiert das ganze Land.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["mächtig", "regiert"] },
+{ character: "Carl", dialog: "Ben hat großes Talent. ___ wird ein berühmter Schauspieler.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Talent", "berühmter"] },
+
+// SIE - Über weibliche Person
+{ character: "Ben", dialog: "Anna hat ihr Kostüm vergessen. ___ ist sehr traurig darüber.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Kostüm", "traurig"] },
+{ character: "Carl", dialog: "Diana singt wunderschön. ___ hat eine Engelsstimme.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["singt", "Engelsstimme"] },
+{ character: "Max", dialog: "Die Königin ist sehr stolz. ___ trägt eine goldene Krone.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Königin", "Krone"] },
+{ character: "Anna", dialog: "Emma arbeitet hart an ihrem Text. ___ will alles perfekt können.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["arbeitet", "perfekt"] },
+{ character: "Diana", dialog: "Die Prinzessin ist sehr schön. ___ trägt ein blaues Kleid.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Prinzessin", "Kleid"] },
+
+// WIR - Gemeinsame Aktivitäten
+{ character: "Anna", dialog: "Ben und ich proben zusammen. ___ spielen ein Liebespaar.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["proben", "Liebespaar"] },
+{ character: "Ben", dialog: "Carl und ich sind beste Freunde. ___ kennen uns seit der Kindheit.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["Freunde", "Kindheit"] },
+{ character: "Ensemble", dialog: "Alle Schauspieler arbeiten hart. ___ wollen eine perfekte Show.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["arbeiten", "Show"] },
+{ character: "Carl", dialog: "Diana und ich singen ein Duett. ___ harmonieren sehr gut zusammen.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["Duett", "harmonieren"] },
+{ character: "Max", dialog: "Anna und ich spielen Geschwister. ___ sehen uns sogar ähnlich.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["Geschwister", "ähnlich"] },
+
+// IHR - Ansprache an Gruppe
+{ character: "Regisseur", dialog: "Anna, Ben und Carl! ___ seid die besten Schauspieler!", correct: ["Ihr"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["besten", "Schauspieler"] },
+{ character: "Diana", dialog: "Ben und Max, ___ habt eure Kostüme vergessen!", correct: ["ihr"], wrong: ["ich", "du", "er", "wir"], other: ["Kostüme", "vergessen"] },
+{ character: "Anna", dialog: "Carl und Diana, ___ singt so schön zusammen!", correct: ["ihr"], wrong: ["ich", "du", "er", "wir"], other: ["singt", "zusammen"] },
+{ character: "Max", dialog: "Ben und Anna, ___ spielt das Liebespaar perfekt!", correct: ["ihr"], wrong: ["ich", "du", "er", "wir"], other: ["Liebespaar", "perfekt"] },
+{ character: "Carl", dialog: "Max und Diana, ___ habt die schwierigsten Rollen bekommen.", correct: ["ihr"], wrong: ["ich", "du", "er", "wir"], other: ["schwierigsten", "Rollen"] },
+
+// SIE (Plural) - Über mehrere Personen
+{ character: "Regisseur", dialog: "Die Zuschauerkinder sind begeistert. ___ applaudieren nach jeder Szene.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Zuschauerkinder", "Szene"] },
+{ character: "Anna", dialog: "Ben und Carl sind Brüder im Stück. ___ streiten sich ständig.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Brüder", "streiten"] },
+{ character: "Diana", dialog: "Die beiden Prinzessinnen sind schön. ___ tragen weiße Kleider.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Prinzessinnen", "Kleider"] },
+{ character: "Ben", dialog: "Max und Anna sind Geschwister. ___ helfen sich immer gegenseitig.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Geschwister", "gegenseitig"] },
+{ character: "Max", dialog: "Die Musiker spielen wunderschön. ___ machen das Stück noch schöner.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Musiker", "schöner"] },
+
+// ES - Über Sachen/Dinge
+{ character: "Ben", dialog: "Das Theater ist sehr alt. ___ wurde vor 200 Jahren gebaut.", correct: ["Es"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Theater", "gebaut"] },
+{ character: "Carl", dialog: "Das Kostüm ist zu groß. ___ passt mir gar nicht.", correct: ["Es"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Kostüm", "passt"] },
+{ character: "Diana", dialog: "Das Lied ist sehr schön. ___ macht mich immer glücklich.", correct: ["Es"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Lied", "glücklich"] },
+{ character: "Max", dialog: "Das Stück beginnt um 8 Uhr. ___ dauert zwei Stunden.", correct: ["Es"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["beginnt", "Stunden"] },// HIER WEITERE LEVEL 1 DIALOGE EINFÜGEN
+            ],
+            
+            // Akt 2: + Reflexivpronomen (mich, dich, sich, uns, euch)
+            level2: [
+                { character: "Anna", dialog: "Ich freue ___ schon sehr auf meine große Szene heute Abend!", correct: ["mich"], wrong: ["dich", "sich", "uns", "euch"], other: ["große", "Szene"] }
+                // HIER WEITERE LEVEL 2 DIALOGE EINFÜGEN
+            ],
+            
+            // Akt 3: + Possessivpronomen (mein, dein, sein, ihr, unser, euer)
+            level3: [
+                { character: "Anna", dialog: "___ Kostüm ist das schönste von allen hier im Theater!", correct: ["Mein"], wrong: ["Dein", "Sein", "Unser", "Euer"], other: ["Kostüm", "Theater"] }
+                // HIER WEITERE LEVEL 3 DIALOGE EINFÜGEN
+            ],
+            
+            // Akt 4: + Demonstrativpronomen (dieser, diese, dieses, jener, jene)
+            level4: [
+                { character: "Anna", dialog: "___ Schauspieler dort drüben spielt den König großartig!", correct: ["Dieser"], wrong: ["Diese", "Dieses", "Jener", "Mein"], other: ["Schauspieler", "König"] }
+                // HIER WEITERE LEVEL 4 DIALOGE EINFÜGEN
+            ],
+            
+            // Akt 5: + Relativpronomen (der, die, das, welcher, welche)
+            level5: [
+                { character: "Anna", dialog: "Der Schauspieler, ___ dort steht, ist mein bester Freund.", correct: ["der"], wrong: ["die", "das", "welcher", "dieser"], other: ["Schauspieler", "Freund"] }
+                // HIER WEITERE LEVEL 5 DIALOGE EINFÜGEN
+            ],
+            
+            // Akt 6: + Interrogativpronomen (wer, was, welcher, welche, welches)
+            level6: [
+                { character: "Anna", dialog: "___ hat mein Kostüm gesehen? Es ist verschwunden!", correct: ["Wer"], wrong: ["Was", "Welcher", "Welche", "Der"], other: ["Kostüm", "verschwunden"] }
+                // HIER WEITERE LEVEL 6 DIALOGE EINFÜGEN
+            ],
+            
+            // Akt 7: Gemischt mit verschiedenen Fällen (Nominativ, Akkusativ, Dativ)
+            level7: [
+                { character: "Anna", dialog: "Kannst du ___ bitte dabei helfen, mein Kostüm zu finden?", correct: ["mir"], wrong: ["mich", "ich", "mein", "du"], other: ["dabei", "finden"] }
+                // HIER WEITERE LEVEL 7 DIALOGE EINFÜGEN
+            ]
+        };
+        
+        const levelDescriptions = {
+            1: "Personalpronomen (ich, du, er, sie...)",
+            2: "Personalpronomen + Reflexivpronomen",
+            3: "Possessivpronomen (mein, dein, sein...)",
+            4: "Demonstrativpronomen (dieser, diese...)",
+            5: "Relativpronomen (der, die, das...)",
+            6: "Interrogativpronomen (wer, was, welcher...)",
+            7: "Alle Pronomen in verschiedenen Fällen"
+        };
+        
+        const characters = ["🎭", "🎪", "🎨", "🎯", "🎺", "🎸"];
+        
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            gameStarted = true;
+            gameRunning = true;
+            correctAnswers = 0;
+            currentLevel = 1;
+            loadDialog();
+        }
+        
+        function startTimer() {
+            timeRemaining = 5;
+            updateTimerDisplay();
+            
+            timer = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    timeUp();
+                }
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const timerFill = document.getElementById('timerFill');
+            const timerText = document.getElementById('timerText');
+            
+            const percentage = (timeRemaining / 5) * 100;
+            timerFill.style.width = percentage + '%';
+            timerText.textContent = timeRemaining + 's';
+        }
+        
+        function timeUp() {
+            if (!gameRunning || buttonsDisabled) return;
+            
+            buttonsDisabled = true;
+            lives--;
+            
+            const feedbackElement = document.getElementById('feedback');
+            feedbackElement.textContent = `Zeit abgelaufen! ⏰ Richtig wäre gewesen: ${currentDialog.correct.join(", ")}`;
+            feedbackElement.className = 'feedback wrong';
+            
+            // Charaktere schütteln
+            document.querySelectorAll('.character').forEach(char => {
+                char.style.animation = 'shake 0.5s ease-in-out';
+            });
+            
+            if (lives <= 0) {
+                setTimeout(() => {
+                    gameOver();
+                }, 2000);
+            } else {
+                setTimeout(() => {
+                    nextDialog();
+                }, 2000);
+            }
+            
+            updateDisplay();
+        }
+        
+        function loadDialog() {
+            if (!gameRunning) return;
+            
+            // Level basierend auf korrekten Antworten
+            currentLevel = Math.min(Math.floor(correctAnswers / 8) + 1, 7);
+            
+            // Dialog aus dem aktuellen Level
+            const levelKey = `level${currentLevel}`;
+            const dialogPool = dialogData[levelKey];
+            
+            if (!dialogPool || dialogPool.length === 0) {
+                gameOver();
+                return;
+            }
+            
+            currentDialog = dialogPool[Math.floor(Math.random() * dialogPool.length)];
+            
+            // UI aktualisieren
+            document.getElementById('currentLevel').textContent = currentLevel;
+            document.getElementById('levelDescription').textContent = levelDescriptions[currentLevel];
+            document.getElementById('characterName').textContent = currentDialog.character + ':';
+            document.getElementById('dialogText').innerHTML = currentDialog.dialog.replace('___', '<span class="missing-word">?</span>');
+            
+            // Charaktere auf der Bühne zufällig setzen
+            const characterElements = document.querySelectorAll('.character');
+            characterElements.forEach((char, index) => {
+                char.textContent = characters[Math.floor(Math.random() * characters.length)];
+                char.style.animation = '';
+            });
+            
+            // Buttons erstellen - alle Optionen mischen
+            const allOptions = [...currentDialog.correct, ...currentDialog.wrong, ...currentDialog.other];
+            const shuffledOptions = allOptions.sort(() => Math.random() - 0.5);
+            
+            const buttonContainer = document.getElementById('pronomenButtons');
+            buttonContainer.innerHTML = '';
+            
+            // Grid-Layout anpassen je nach Anzahl der Optionen
+            if (shuffledOptions.length <= 6) {
+                buttonContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            } else if (shuffledOptions.length <= 8) {
+                buttonContainer.style.gridTemplateColumns = 'repeat(4, 1fr)';
+            } else {
+                buttonContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            }
+            
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'pronomen-button';
+                button.textContent = option;
+                button.onclick = () => selectPronomen(option);
+                buttonContainer.appendChild(button);
+            });
+            
+            document.getElementById('feedback').textContent = '';
+            buttonsDisabled = false;
+            startTimer();
+        }
+        
+        let currentDialog = null;
+        
+        function selectPronomen(selectedPronomen) {
+            if (buttonsDisabled || !gameRunning) return;
+            
+            clearInterval(timer);
+            buttonsDisabled = true;
+            const feedbackElement = document.getElementById('feedback');
+            
+            document.querySelectorAll('.pronomen-button').forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            if (currentDialog.correct.includes(selectedPronomen)) {
+                correctAnswers++;
+                const timeBonus = timeRemaining * 3;
+                score += 30 + timeBonus;
+                
+                feedbackElement.textContent = `Bravo! "${selectedPronomen}" ist korrekt! 🎭 (+${30 + timeBonus} Punkte)`;
+                feedbackElement.className = 'feedback correct';
+                
+                // Charaktere jubeln
+                document.querySelectorAll('.character').forEach(char => {
+                    char.className = 'character applause';
+                });
+                
+                setTimeout(() => {
+                    nextDialog();
+                }, 1500);
+                
+            } else {
+                lives--;
+                const correctOptions = currentDialog.correct.join(", ");
+                feedbackElement.textContent = `Leider falsch! "${selectedPronomen}" passt nicht. Richtig: ${correctOptions}`;
+                feedbackElement.className = 'feedback wrong';
+                
+                // Charaktere sind enttäuscht
+                document.querySelectorAll('.character').forEach(char => {
+                    char.textContent = '😢';
+                });
+                
+                if (lives <= 0) {
+                    setTimeout(() => {
+                        gameOver();
+                    }, 2000);
+                } else {
+                    setTimeout(() => {
+                        nextDialog();
+                    }, 2000);
+                }
+            }
+            
+            updateDisplay();
+        }
+        
+        function nextDialog() {
+            // Charaktere zurücksetzen
+            document.querySelectorAll('.character').forEach(char => {
+                char.className = 'character';
+                char.style.animation = '';
+            });
+            
+            setTimeout(() => {
+                loadDialog();
+            }, 500);
+        }
+        
+        function updateDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('correctCount').textContent = correctAnswers;
+            
+            let heartsDisplay = '';
+            for (let i = 0; i < lives; i++) {
+                heartsDisplay += '❤️';
+            }
+            for (let i = lives; i < 3; i++) {
+                heartsDisplay += '🖤';
+            }
+            document.getElementById('lives').textContent = heartsDisplay;
+        }
+        
+        function gameOver() {
+            gameRunning = false;
+            
+            let message = 'Vorhang zu!';
+            if (correctAnswers >= 100) {
+                message = 'Shakespeares Erbe! 🎭👑';
+            } else if (correctAnswers >= 50) {
+                message = 'Meisterlicher Auftritt! 🎭🥇';
+            } else if (correctAnswers >= 25) {
+                message = 'Talentierter Darsteller! 🎭🥈';
+            } else if (correctAnswers >= 10) {
+                message = 'Vielversprechende Premiere! 🎭🥉';
+            }
+            
+            document.getElementById('gameOver').querySelector('h2').textContent = message;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('gameOver').style.display = 'block';
+        }
+        
+        function restartGame() {
+            clearInterval(timer);
+            gameRunning = false;
+            gameStarted = false;
+            score = 0;
+            lives = 3;
+            correctAnswers = 0;
+            currentLevel = 1;
+            buttonsDisabled = false;
+            timeRemaining = 5;
+            currentDialog = null;
+            
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'flex';
+            
+            // Charaktere zurücksetzen
+            document.querySelectorAll('.character').forEach((char, index) => {
+                char.textContent = '🎭';
+                char.className = 'character';
+                char.style.animation = '';
+            });
+            
+            updateDisplay();
+        }
+        
+        async function saveHighscore() {
+            const playerName = document.getElementById('playerName').value.trim();
+            if (!playerName) {
+                alert('Bitte gib deinen Künstlernamen ein!');
+                return;
+            }
+            
+            try {
+                const highscoreData = {
+                    name: playerName,
+                    score: score,
+                    game: 'pronomen',
+                    timestamp: Date.now(),
+                    date: new Date().toLocaleDateString('de-DE')
+                };
+                
+                const response = await fetch(`${firebaseUrl}/highscores.json`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(highscoreData)
+                });
+                
+                if (response.ok) {
+                    alert('Eintrag in die Hall of Fame erfolgreich!');
+                    loadHighscores();
+                    document.getElementById('playerName').value = '';
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Fehler beim Speichern des Highscores:', error);
+                alert('Fehler beim Speichern. Überprüfe deine Internetverbindung und versuche es nochmal.');
+            }
+        }
+        
+        // Highscores laden
+        async function loadHighscores() {
+            try {
+                const response = await fetch(`${firebaseUrl}/highscores.json`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data) {
+                    document.getElementById('highscoreList').innerHTML = 'Noch keine Einträge in der Hall of Fame.';
+                    return;
+                }
+                
+                // Nur Pronomen-Highscores filtern und sortieren
+                const pronomenHighscores = Object.values(data)
+                    .filter(entry => entry.game === 'pronomen')
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 10); // Top 10
+                
+                if (pronomenHighscores.length === 0) {
+                    document.getElementById('highscoreList').innerHTML = 'Noch keine Pronomen-Künstler in der Hall of Fame.';
+                    return;
+                }
+                
+                let html = '<ol>';
+                pronomenHighscores.forEach(entry => {
+                    html += `<li><strong>${entry.name}</strong>: ${entry.score} Punkte (${entry.date})</li>`;
+                });
+                html += '</ol>';
+                
+                document.getElementById('highscoreList').innerHTML = html;
+            } catch (error) {
+                console.error('Fehler beim Laden der Highscores:', error);
+                document.getElementById('highscoreList').innerHTML = 
+                    'Hall of Fame wird geladen... <br><small>(Stelle sicher, dass deine Internetverbindung aktiv ist)</small>';
+                
+                setTimeout(() => {
+                    loadHighscores();
+                }, 3000);
+            }
+        }
+        
+        updateDisplay();
+        loadHighscores();
+    </script>
+</body>
+</html>
