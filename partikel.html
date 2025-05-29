@@ -723,14 +723,16 @@
         };
         
         function startGame() {
-            document.getElementById('startScreen').style.display = 'none';
-            gameStarted = true;
-            currentPlanet = 1;
-            planetProgress = 0;
-            score = 0;
-            lives = 3;
-            updateDisplay();
-            showLevelIntro();
+            console.log("startGame() wurde aufgerufen");
+             document.getElementById('startScreen').style.display = 'none';
+    gameStarted = true;
+    currentPlanet = 1;
+    planetProgress = 0;
+    score = 0;
+    lives = 3;
+    updateDisplay();
+    showLevelIntro();
+}
         }
         
         function showLevelIntro() {
