@@ -1,107 +1,34 @@
-function applyTransformation(adjective, objectEl) {
-            // Verschiedene Transformationen basierend auf Adjektiven
-            switch(adjective) {
-                case "groß":
-                case "hoch":
-                    objectEl.className = 'main-object grow';
-                    break;
-                case "klein":
-                case "niedrig":
-                    objectEl.className = 'main-object shrink';
-                    break;
-                case "bunt":
-                case "schön":
-                case "hell":
-                case "elegant":
-                case "schick":
-                case "glänzend":
-                    objectEl.className = 'main-object colorful';
-                    createSparkles();
-                    break;
-                case "heiß":
-                case "warm":
-                    objectEl.style.filter = 'hue-rotate(20deg) brightness(1.3)';
-                    createFireParticles();
-                    break;
-                case "kalt":
-                    objectEl.style.filter = 'hue-rotate(200deg) brightness(1.1)';
-                    createSnowParticles();
-                    break;
-                case "schnell":
-                    objectEl.style.transform = 'translateX(50px)';
-                    setTimeout(() => {
-                        objectEl.style.transform = 'translateX(-50px)';
-                        setTimeout(() => {
-                            objectEl.style.transform = 'translateX(0)';
-                        }, 200);
-                    }, 200);
-                    break;
-                case "langsam":
-                    objectEl.style.transition = 'all 3s ease';
-                    objectEl.style.transform = 'translateX(30px)';
-                    setTimeout(() => {
-                        objectEl.style.transform = 'translateX(0)';
-                    }, 1000);
-                    break;
-                case "friedlich":
-                case "harmonisch":
-                case "still":
-                case "ruhig":
-                    objectEl.style.filter = 'brightness(1.2) saturate(0.8)';
-                    createPeaceParticles();
-                    break;
-                case "dramatisch":
-                case "künstlerisch":
-                case "tiefgreifend":
-                    objectEl.className = 'main-object colorful';
-                    objectEl.style.filter = 'contrast(1.3) saturate(1.5)';
-                    createArtParticles();
-                    break;
-                case "wertvoll":
-                case "kostbar":
-                case "edel":
-                case "heilig":
-                case "ehrwürdig":
-                    objectEl.style.filter = 'brightness(1.4) saturate(1.3) drop-shadow(0 0 20px gold)';
-                    createGoldSparkles();
-                    break;
-                default:
-                    objectEl.className = 'main-object grow';
-                    createSparkles();
-            }
-        }
-        
-        function createPeaceParticles() {
-            const particlesContainer = document.getElementById('particles');
-            
-            for (let i = 0; i < 6; i++) {
-                const peace = document.createElement('div');
-                peace.textContent = '🕊️';
-                peace.style.position = 'absolute';
-                peace.style.left = Math.random() * 80 + 10 + '%';
-                peace.style.top = Math.random() * 80 + 10 + '%';
-                peace.style.fontSize = Math.random() * 15 + 12 + 'px';
-                peace.style.animation = `sparkle ${Math.random() * 2 + 2}s ease-in-out`;
-                peace.style.pointerEvents = 'none';
-                particlesContainer.appendChild(peace);
+art.style.animation = `sparkle ${Math.random() * 2 + 1.5}s ease-in-out`;
+                art.style.pointerEvents = 'none';
+                particlesContainer.appendChild(art);
                 
                 setTimeout(() => {
-                    peace.remove();
-                }, 4000);
+                    art.remove();
+                }, 3500);
             }
         }
         
-        function createArtParticles() {
+        function createGoldSparkles() {
             const particlesContainer = document.getElementById('particles');
-            const artSymbols = ['🎨', '🖌️', '✨', '🌟'];
+            const goldSymbols = ['💎', '✨', '⭐', '🌟'];
             
-            for (let i = 0; i < 8; i++) {
-                const art = document.createElement('div');
-                art.textContent = artSymbols[Math.floor(Math.random() * artSymbols.length)];
-                art.style.position = 'absolute';
-                art.style.left = Math.random() * 80 + 10 + '%';
-                art.style.top = Math.random() * 80 + 10 + '%';
-                art.style.fontSize = Math.random() * 18 + 12 + 'px';<!DOCTYPE html>
+            for (let i = 0; i < 12; i++) {
+                const gold = document.createElement('div');
+                gold.textContent = goldSymbols[Math.floor(Math.random() * goldSymbols.length)];
+                gold.style.position = 'absolute';
+                gold.style.left = Math.random() * 80 + 10 + '%';
+                gold.style.top = Math.random() * 80 + 10 + '%';
+                gold.style.fontSize = Math.random() * 20 + 15 + 'px';
+                gold.style.animation = `sparkle ${Math.random() * 2 + 1}s ease-in-out`;
+                gold.style.pointerEvents = 'none';
+                gold.style.color = 'gold';
+                particlesContainer.appendChild(gold);
+                
+                setTimeout(() => {
+                    gold.remove();
+                }, 3000);
+            }
+        }<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -504,8 +431,10 @@ function applyTransformation(adjective, objectEl) {
         
         <div class="start-screen" id="startScreen">
             <h2>🌈 Eigenschafts-Labor</h2>
+            <p>⏰ Du hast nur 3 Sekunden pro Aufgabe!</p>
             <p>🔬 Experimentiere mit Adjektiven!</p>
             <p>🎯 Wähle das passende Adjektiv für das Objekt!</p>
+            <p>📈 Level steigt alle 5 richtigen Antworten!</p>
             <p>✨ Beobachte wie sich Objekte verwandeln!</p>
             <p>🧠 2 richtige Adjektive (Gegenteile) sind versteckt!</p>
             <p>❤️ Du hast 3 Leben - experimentiere klug!</p>
@@ -1009,13 +938,16 @@ function applyTransformation(adjective, objectEl) {
         }
         
         function restartGame() {
+            clearInterval(timer);
             gameRunning = false;
             gameStarted = false;
             score = 0;
             lives = 3;
             currentTask = 0;
             taskCount = 0;
+            currentLevel = 1;
             buttonsDisabled = false;
+            timeRemaining = 3;
             document.getElementById('gameOver').style.display = 'none';
             document.getElementById('startScreen').style.display = 'flex';
             document.getElementById('mainObject').textContent = '🎯';
