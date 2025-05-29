@@ -478,19 +478,19 @@ function startTimer() {
     currentGame.timer = setInterval(() => {
         currentGame.timeLeft--;
         updateDisplay();
-        
+
         if (currentGame.timeLeft <= 3) {
             document.getElementById('timer').classList.add('pulse');
         } else {
             document.getElementById('timer').classList.remove('pulse');
         }
-        
+
         if (currentGame.timeLeft <= 0) {
             timeUp();
         }
     }, 1000);
 }
-
+        
 function submitAnswer() {
     if (!currentGame.isPlaying) return;
 
@@ -507,45 +507,66 @@ function submitAnswer() {
 
     clearInterval(currentGame.timer);  // Timer kurz stoppen, um Neustart zu vermeiden
 
-    if (isCorrect) {
+     if (isCorrect) {
         currentGame.correct++;
         currentGame.streak++;
-        currentGame.timeLeft += 8;  // Bonuszeit nur bei korrekter Antwort
+        currentGame.timeLeft += 8;  
         showFeedback(true, currentGame.currentChallenge.correctAnswer);
     } else {
         currentGame.streak = 0;
         showFeedback(false, currentGame.currentChallenge.correctAnswer);
     }
 
-    // Nach kurzer Pause nächste Frage laden
     setTimeout(() => {
         if (currentGame.isPlaying) {
             nextChallenge();
-            startTimer(); // Timer neu starten
+            startTimer();
         }
     }, 1500);
 }
 
-        function showFeedback(isCorrect, correctAnswer) {
-            const feedback = document.getElementById('feedback');
-            const container = document.querySelector('.game-container');
-            
-            if (isCorrect) {
-                feedback.innerHTML = `<div class="feedback correct">✅ Richtig! Weiter so!</div>`;
-            } else {
-                feedback.innerHTML = `<div class="feedback incorrect">❌ Falsch! Richtig wäre: <strong>${correctAnswer}</strong></div>`;
-                container.classList.add('shake');
-                setTimeout(() => container.classList.remove('shake'), 500);
-            }
-            
-            updateDisplay();
-        }
+       function showFeedback(isCorrect, correctAnswer) {
+    const feedback = document.getElementById('feedback');
+    const container = document.querySelector('.game-container');
+
+    if (isCorrect) {
+        feedback.innerHTML = `<div class="feedback correct">✅ Richtig! Weiter so!</div>`;
+    } else {
+        feedback.innerHTML = `<div class="feedback incorrect">❌ Falsch! Richtig wäre: <strong>${correctAnswer}</strong></div>`;
+        container.classList.add('shake');
+        setTimeout(() => container.classList.remove('shake'), 500);
+    }
+
+    updateDisplay();
+}
 
         function updateDisplay() {
             document.getElementById('correct').textContent = currentGame.correct;
             document.getElementById('streak').textContent = currentGame.streak;
             document.getElementById('timer').textContent = currentGame.timeLeft;
         }
+
+        function timeUp() {
+    currentGame.isPlaying = false;
+    clearInterval(currentGame.timer);
+
+    document.getElementById('gameArea').innerHTML = `
+        <div class="game-over">
+            <h2>⏰ Zeit abgelaufen!</h2>
+            <p><strong>Endergebnis für ${currentGame.playerName}:</strong></p>
+            <p>Richtige Antworten: ${currentGame.correct}</p>
+            <p>Längste Serie: ${currentGame.streak}</p>
+            <button class="btn btn-start" onclick="resetGame()">Nochmal spielen</button>
+        </div>
+    `;
+
+    saveScore();
+}
+
+function resetGame() {
+    location.reload();
+}
+        
 
         async function saveScore() {
             try {
