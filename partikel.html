@@ -394,7 +394,7 @@
             <p>🎯 Sammle die richtigen Partikel auf jedem Planeten!</p>
             <p>🚀 Von Adverbien bis Artikeln - rette das Sprachuniversum!</p>
             <p>❤️ Du hast 3 Leben für die gesamte Odyssee!</p>
-            <button onclick="startGame()">Mission starten! 🚀</button>
+            <button onclick="startGameClick()">Mission starten! 🚀</button>
         </div>
         
         <div class="level-intro" id="levelIntro" style="display: none;">
@@ -403,7 +403,7 @@
             <p id="introPlanetDescription">Sammle Wörter, die beschreiben WIE, WANN oder WO etwas passiert!</p>
             <p><strong>Beispiele:</strong> <span id="introPlanetExamples">schnell, heute, dort, sehr, immer</span></p>
             <p id="introPlanetMission">Deine Mission: Sammle 10 korrekte Antworten um zum nächsten Planeten zu reisen!</p>
-            <button onclick="startLevel()">Planet betreten! 🚀</button>
+            <button onclick="startLevelClick()">Planet betreten! 🚀</button>
         </div>
         
         <div class="game-over" id="gameOver">
@@ -427,7 +427,7 @@
         let lives = 3;
         let currentPlanet = 1;
         let planetProgress = 0;
-        let planetCorrectAnswers = 0; // Neue Variable für korrekte Antworten pro Planet
+        let planetCorrectAnswers = 0;
         let buttonsDisabled = false;
         let timeRemaining = 7;
         let timer = null;
