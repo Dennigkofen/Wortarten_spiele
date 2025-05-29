@@ -217,7 +217,7 @@
 
         <div class="stats">
             <div class="stat-card">
-                <span class="stat-number">2</span>
+                <span class="stat-number">3</span>
                 <span class="stat-label">Verfügbare Spiele</span>
             </div>
             <div class="stat-card">
@@ -225,7 +225,7 @@
                 <span class="stat-label">Wortarten</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number">65+</span>
+                <span class="stat-number">100+</span>
                 <span class="stat-label">Übungswörter</span>
             </div>
             <div class="stat-card">
@@ -252,6 +252,23 @@
                 <a href="#" class="play-button" onclick="openNomenSpiel()">Jetzt Spielen</a>
             </div>
 
+            <!-- Verben Spiel -->
+            <div class="game-card">
+                <span class="game-icon">🏃‍♂️</span>
+                <h2 class="game-title">Verben</h2>
+                <p class="game-description">
+                    <strong>Verben-Aufträge:</strong> Erfülle spannende Aufträge und wähle das richtige Verb! 
+                    Dein Charakter führt die Aktionen aus - aber du hast nur 5 Sekunden Zeit!
+                </p>
+                <ul class="game-features">
+                    <li>⏰ 5-Sekunden Challenge</li>
+                    <li>🎭 Charakter führt Aktionen aus</li>
+                    <li>📈 Progressive Schwierigkeit</li>
+                    <li>🧠 Multiple korrekte Antworten</li>
+                </ul>
+                <a href="#" class="play-button" onclick="openVerbenSpiel()">Jetzt Spielen</a>
+            </div>
+
             <!-- Wortartenjagd Spiel -->
             <div class="game-card">
                 <span class="game-icon">🐦</span>
@@ -270,22 +287,6 @@
             </div>
 
             <!-- Platzhalter für zukünftige Spiele -->
-            <div class="game-card coming-soon">
-                <span class="game-icon">🏃‍♂️</span>
-                <h2 class="game-title">Verben - Action Runner</h2>
-                <p class="game-description">
-                    Renne durch die Action-Welt und sammle nur Verben! Ein Endlos-Läufer 
-                    bei dem dein Charakter die gesammelten Aktionen ausführt.
-                </p>
-                <ul class="game-features">
-                    <li>🏃‍♂️ Endlos-Läufer Gameplay</li>
-                    <li>⚡ Charakter führt Aktionen aus</li>
-                    <li>🎮 Springen und Ducken</li>
-                    <li>🏅 Action-Combo-System</li>
-                </ul>
-                <button class="play-button" disabled>Bald verfügbar</button>
-            </div>
-
             <div class="game-card coming-soon">
                 <span class="game-icon">🌈</span>
                 <h2 class="game-title">Adjektive - Farben-Mixer</h2>
@@ -345,6 +346,11 @@
         function openNomenSpiel() {
             // Direkt zum Nomen-Spiel navigieren
             window.location.href = 'hausdessammelns.html';
+        }
+        
+        function openVerbenSpiel() {
+            // Direkt zum Verben-Spiel navigieren
+            window.location.href = 'verben.html';
         }
         
         function openWortartenjagd() {
