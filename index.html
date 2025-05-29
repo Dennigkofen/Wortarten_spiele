@@ -217,7 +217,7 @@
 
         <div class="stats">
             <div class="stat-card">
-                <span class="stat-number">3</span>
+                <span class="stat-number">4</span>
                 <span class="stat-label">Verfügbare Spiele</span>
             </div>
             <div class="stat-card">
@@ -269,6 +269,23 @@
                 <a href="#" class="play-button" onclick="openVerbenSpiel()">Jetzt Spielen</a>
             </div>
 
+            <!-- Adjektive Spiel -->
+            <div class="game-card">
+                <span class="game-icon">🌈</span>
+                <h2 class="game-title">Adjektive</h2>
+                <p class="game-description">
+                    <strong>Eigenschaften-Finder:</strong> Finde das richtige Adjektiv zu verschiedenen Gegenständen! 
+                    Beschreibe die Welt um dich herum mit den passenden Eigenschaften.
+                </p>
+                <ul class="game-features">
+                    <li>🎯 Passende Eigenschaften finden</li>
+                    <li>🖼️ Vielfältige Gegenstände</li>
+                    <li>🧠 Wortschatz erweitern</li>
+                    <li>⭐ Bewertungssystem</li>
+                </ul>
+                <a href="#" class="play-button" onclick="openAdjektiveSpiel()">Jetzt Spielen</a>
+            </div>
+
             <!-- Wortartenjagd Spiel -->
             <div class="game-card">
                 <span class="game-icon">🐦</span>
@@ -287,22 +304,6 @@
             </div>
 
             <!-- Platzhalter für zukünftige Spiele -->
-            <div class="game-card coming-soon">
-                <span class="game-icon">🌈</span>
-                <h2 class="game-title">Adjektive - Farben-Mixer</h2>
-                <p class="game-description">
-                    Verbinde Eigenschaften mit passenden Objekten! Ein buntes Puzzle-Spiel 
-                    bei dem sich Objekte visuell verändern.
-                </p>
-                <ul class="game-features">
-                    <li>🧩 Puzzle-Matching Mechanik</li>
-                    <li>🎨 Visuelle Objektveränderungen</li>
-                    <li>🌈 Bunte Regenbogen-Optik</li>
-                    <li>⭐ Kombinationsbewertung</li>
-                </ul>
-                <button class="play-button" disabled>Bald verfügbar</button>
-            </div>
-
             <div class="game-card coming-soon">
                 <span class="game-icon">👤</span>
                 <h2 class="game-title">Pronomen - Wer ist Wer?</h2>
@@ -351,6 +352,11 @@
         function openVerbenSpiel() {
             // Direkt zum Verben-Spiel navigieren
             window.location.href = 'verben.html';
+        }
+        
+        function openAdjektiveSpiel() {
+            // Direkt zum Adjektive-Spiel navigieren  
+            window.location.href = 'adjektive.html';
         }
         
         function openWortartenjagd() {
