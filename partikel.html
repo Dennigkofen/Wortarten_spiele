@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partikel-Odyssee</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f0f23, #1a1a2e, #16213e, #0f3460);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            user-select: none;
+            color: white;
+        }
+        
+        .space-container {
+            text-align: center;
+            background: rgba(15, 15, 35, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            border: 3px solid #4ECDC4;
+        }
+        
+        .space-header {
+            background: linear-gradient(45deg, #0f3460, #16213e);
+            color: #4ECDC4;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            color: #4ECDC4;
+            margin: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .level-info {
+            background: rgba(78, 205, 196, 0.2);
+            border: 2px solid #4ECDC4;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #4ECDC4;
+            text-align: center;
+        }
+        
+        .timer-bar {
+            background: rgba(15, 15, 35, 0.5);
+            border: 2px solid #4ECDC4;
+            border-radius: 10px;
+            height: 20px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timer-fill {
+            background: linear-gradient(90deg, #32CD32, #4ECDC4, #FF6B6B);
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+            transition: width 0.1s linear;
+        }
+        
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: #4ECDC4;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .space-scene {
+            background: radial-gradient(circle, #16213e, #0f0f23);
+            border: 3px solid #16213e;
+            border-radius: 15px;
+            height: 350px;
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+        
+        .planet {
+            position: absolute;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 80px;
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+        
+        .timer-display {
+            position: absolute;
+            bottom: 120px;
+            left: 20px;
+            background: rgba(78, 205, 196, 0.9);
+            color: #0f0f23;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 20;
+        }
+        
+        .dialog-area {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(78, 205, 196, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            color: #0f0f23;
+            font-size: 18px;
+            line-height: 1.4;
+            text-align: left;
+            min-height: 80px;
+        }
+        
+        .mission-text {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .sentence-text {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .missing-word {
+            background: #FF6B6B;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        
+        .partikel-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+        
+        .partikel-button {
+            background: linear-gradient(45deg, #4ECDC4, #45B7D1);
+            color: #0f0f23;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .partikel-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        .partikel-button:disabled {
+            background: #666;
+            color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .feedback {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+            min-height: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .correct { color: #32CD32; }
+        .wrong { color: #FF6B6B; }
+        
+        .highscore-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(78, 205, 196, 0.1);
+            border: 2px solid #4ECDC4;
+            border-radius: 10px;
+        }
+        
+        .start-screen, .level-intro {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 15, 35, 0.98);
+            color: #4ECDC4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            z-index: 1000;
+        }
+        
+        .start-screen h2, .level-intro h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .start-screen p, .level-intro p {
+            font-size: 1.1rem;
+            margin: 8px 0;
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        .planet-icon {
+            font-size: 4rem;
+            margin: 20px 0;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            color: #0f0f23;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #4ECDC4, #45B7D1);
+            color: #0f0f23;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        }
+        
+        input {
+            padding: 10px;
+            border: 2px solid #4ECDC4;
+            border-radius: 10px;
+            font-size: 16px;
+            margin: 10px;
+            background: rgba(255,255,255,0.9);
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes planet-glow {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+        
+        .planet-glow { animation: planet-glow 2s ease-in-out infinite; }
+        
+        @media (max-width: 768px) {
+            .space-container {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            .partikel-buttons {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .partikel-button {
+                font-size: 14px;
+                padding: 10px 8px;
+                min-height: 45px;
+            }
+            
+            .space-scene {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="space-container">
+        <div class="space-header">
+            🚀 Partikel-Odyssee 🌌
+        </div>
+        
+        <div class="game-info">
+            <div class="stat">Punkte: <span id="score">0</span></div>
+            <div class="stat">Leben: <span id="lives">❤️❤️❤️</span></div>
+            <div class="stat">Planet: <span id="currentPlanet">1</span>/7</div>
+            <div class="stat">Fortschritt: <span id="planetProgress">0</span>/10</div>
+        </div>
+        
+        <div class="level-info">
+            <strong>Mission auf <span id="planetName">Adverb-Station</span></strong><br>
+            <span id="planetDescription">Sammle Wörter, die beschreiben WIE, WANN oder WO etwas passiert!</span>
+        </div>
+        
+        <div class="space-scene">
+            <div class="stars" id="stars"></div>
+            <div class="timer-display" id="timerDisplay">⏰ 7s</div>
+            <div class="planet" id="planet">🕒</div>
+            <div class="dialog-area">
+                <div class="mission-text" id="missionText">Bereit für deine erste Mission?</div>
+                <div class="sentence-text" id="sentenceText">Er läuft <span class="missing-word">?</span> zum Bahnhof.</div>
+            </div>
+        </div>
+        
+        <div class="partikel-buttons" id="partikelButtons">
+            <!-- Buttons werden dynamisch erstellt -->
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <div class="highscore-section">
+            <h3>🏆 Weltraum-Rangliste</h3>
+            <div id="highscoreList">Lade Bestenliste...</div>
+        </div>
+        
+        <div class="start-screen" id="startScreen">
+            <h2>🚀 Partikel-Odyssee</h2>
+            <p>🌌 Willkommen, Sprach-Astronaut!</p>
+            <p>🪐 Reise durch 7 verschiedene Planeten!</p>
+            <p>⏰ Du hast 7 Sekunden pro Mission!</p>
+            <p>🎯 Sammle die richtigen Partikel auf jedem Planeten!</p>
+            <p>🚀 Von Adverbien bis Artikeln - rette das Sprachuniversum!</p>
+            <p>❤️ Du hast 3 Leben für die gesamte Odyssee!</p>
+            <button onclick="startGame()">Mission starten! 🚀</button>
+        </div>
+        
+        <div class="level-intro" id="levelIntro" style="display: none;">
+            <div class="planet-icon" id="introPlanetIcon">🕒</div>
+            <h2 id="introPlanetName">Adverb-Station</h2>
+            <p id="introPlanetDescription">Sammle Wörter, die beschreiben WIE, WANN oder WO etwas passiert!</p>
+            <p><strong>Beispiele:</strong> <span id="introPlanetExamples">schnell, heute, dort, sehr, immer</span></p>
+            <p id="introPlanetMission">Deine Mission: Sammle 10 korrekte Antworten um zum nächsten Planeten zu reisen!</p>
+            <button onclick="startLevel()">Planet betreten! 🚀</button>
+        </div>
+        
+        <div class="game-over" id="gameOver">
+            <h2>Mission beendet! 🚀</h2>
+            <p>Deine Punkte: <span id="finalScore">0</span></p>
+            <input type="text" id="playerName" placeholder="Dein Astronauten-Name" maxlength="20">
+            <br>
+            <button onclick="saveHighscore()">In Rangliste eintragen</button>
+            <button onclick="restartGame()">Neue Mission</button>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Database URL
+        const firebaseUrl = 'https://wortartenspiele-default-rtdb.europe-west1.firebasedatabase.app';
+        
+        // Spielvariablen
+        let gameRunning = false;
+        let gameStarted = false;
+        let score = 0;
+        let lives = 3;
+        let currentPlanet = 1;
+        let planetProgress = 0;
+        let planetCorrectAnswers = 0; // Neue Variable für korrekte Antworten pro Planet
+        let buttonsDisabled = false;
+        let timeRemaining = 7;
+        let timer = null;
+        let currentMission = null;
+        
+        // Planeten-Datenbank (Anspruchsvolle Version)
+        const planetData = {
+            1: {
+                name: "Adverb-Station",
+                icon: "🕒",
+                description: "Sammle Wörter, die beschreiben WIE, WANN oder WO etwas passiert!",
+                examples: "schnell, heute, dort, sehr, immer",
+                mission: "Wähle das richtige Adverb für jeden Satz!",
+                tasks: [
+                    { sentence: "Der Zug fährt in 12 Minuten. Er läuft ___ zum Bahnhof.", correct: ["schnell"], wrong: ["spannend", "langsam", "gemütlich"], other: ["Bahnhof", "laufen", "heute"] },
+                    { sentence: "Es ist schon 18 Uhr. Wir treffen uns ___ im Park.", correct: ["bald"], wrong: ["gestern", "vorgestern", "heute"], other: ["Park", "treffen", "schnell"] },
+                    { sentence: "Das Publikum jubelt. Sie singt ___ schön.", correct: ["sehr"], wrong: ["kaum", "nicht", "überhaupt"], other: ["singen", "schön", "heute"] },
+                    { sentence: "Das Auto fährt ___ langsam. Da bin ich ja zu Fuss schneller", correct: ["extrem"], wrong: ["nicht", "manchmal", "gern"], other: ["Auto", "fahren", "dort"] },
+                    { sentence: "Siehst du das Hochhaus? Ich wohne ___ drüben in der Stadt.", correct: ["dort"], wrong: ["plötzlich", "hier", "irgendwo"], other: ["wohnen", "Stadt", "sehr"] },
+                    { sentence: "Er läuft ___ durch den Park. Er hat keinen Stress.", correct: ["langsam"], wrong: ["gestern", "draußen", "immer"], other: ["Park", "laufen", "Baum"] },
+                    { sentence: "Sie hat ___ den Brief geschrieben. Man kann alles sehr gut lesen.", correct: ["sorgfältig"], wrong: ["heute", "hier", "oft"], other: ["Brief", "schreiben", "Freund"] },
+                    { sentence: "Das ist ja eine Überraschung, dass wir uns ___ hier treffen...", correct: ["pünktlich"], wrong: ["sehr", "dort", "gestern"], other: ["Treffen", "Uhr", "Restaurant"] },
+                    { sentence: "Kein Geschrei! Das Baby schläft ___ in seinem Bett.", correct: ["ruhig"], wrong: ["manchmal", "hier", "draußen"], other: ["Bett", "Baby", "Zimmer"] },
+                    { sentence: "Ihr Hund bellt ___ den Briefträger an. So ein Krach.", correct: ["laut"], wrong: ["bald", "drinnen", "noch"], other: ["Hund", "Briefträger", "Tür"] },
+                    { sentence: "Bitte komm ___ in mein Büro, wir müssen reden!.", correct: ["sofort"], wrong: ["oft", "unten", "gestern"], other: ["Büro", "kommen", "Kollege"] },
+                    { sentence: "Er hat ___ versprochen, zu helfen.", correct: ["fest"], wrong: ["sehr", "etwas", "dort"], other: ["helfen", "Versprechen", "Aufgabe"] },
+                    { sentence: "Ich lese ___ Bücher am Wochenende.", correct: ["viele"], wrong: ["leise", "heute", "draußen"], other: ["Buch", "Wochenende", "Zeit"] },
+                    { sentence: "Das Konzert ist schön. Sie singt ___.", correct: ["wunderschön"], wrong: ["gestern", "vielleicht", "oft"], other: ["Chor", "singen", "Stimme"] },
+                    { sentence: "Bald sind Schulferien. Wir fahren ___ in den Urlaub.", correct: ["nächste Woche"], wrong: ["laut", "dort", "immer"], other: ["Urlaub", "Fahrt", "Koffer"] },
+                    { sentence: "Der Computer arbeitet ___ unter Volllast. Er ist schon ganz heiss.", correct: ["ständig"], wrong: ["draußen", "gestern", "gern"], other: ["Computer", "Arbeit", "Prozessor"] },
+                  { sentence: "Er hat ___ Zeit, uns zu besuchen.", correct: ["heute Abend"], wrong: ["laut", "dort", "immer"], other: ["Besuch", "Zeit", "Freunde"] },
+  { sentence: "Das Wasser kocht ___ auf dem Herd.", correct: ["schnell"], wrong: ["gestern", "draußen", "oft"], other: ["Wasser", "Herd", "Topf"] },
+  { sentence: "Das Essen ist lecker. Wir essen ___ im Restaurant.", correct: ["regelmäßig"], wrong: ["leise", "nie", "gestern"], other: ["Essen", "Restaurant", "Abend"] },
+  { sentence: "Sie kann unmöglich abgelenkt werden. Sie arbeitet ___ an ihrem Projekt.", correct: ["konzentriert"], wrong: ["sehr", "bald", "langweilig"], other: ["Projekt", "arbeiten", "Deadline"] },
+  { sentence: "Er reagierte ___ auf die Nachricht. Das hat er nicht kommen sehen.", correct: ["überrascht"], wrong: ["bald", "draußen", "immer"], other: ["Nachricht", "reagieren", "Handy"] },
+  { sentence: "Ich warte ___ am Bahnhof bis der Zug endlich kommt. Sich aufregen hilft ja nicht!", correct: ["geduldig"], wrong: ["laut", "hier", "vielleicht"], other: ["Bahnhof", "warten", "Zug"] },
+  { sentence: "Sie tanzt ___ zur Musik. Das sieht so aus, als machte sie es oft.", correct: ["elegant"], wrong: ["gestern", "dort", "oft"], other: ["Tanz", "Musik", "Abend"] },
+  { sentence: "Er hat ___ das Geld ausgegeben, nun bereut er es. Das war keine gute Entscheidung.", correct: ["unüberlegt"], wrong: ["heute", "hier", "manchmal"], other: ["Geld", "ausgeben", "Kauf"] },
+  { sentence: "Wir joggen ___ im Wald.", correct: ["regelmäßig"], wrong: ["laut", "drinnen", "gestern"], other: ["Wald", "joggen", "Sport"] },
+  { sentence: "Das Flugzeug startet ___ Morgen.", correct: ["früh"], wrong: ["sehr", "hier", "gestern"], other: ["Flugzeug", "starten", "Morgen"] },
+  { sentence: "Sie schreibt ___ an ihrem Roman. Nächste Woche muss er fertig sein.", correct: ["ständig"], wrong: ["bald", "dort", "leise"], other: ["Roman", "schreiben", "Autorin"] },
+  { sentence: "Er jubelte ___ beim Tor. Er ist ja immerhin grosser Fan des Teams.", correct: ["lautstark"], wrong: ["gestern", "hier", "nie"], other: ["Tor", "jubeln", "Stadion"] },
+  { sentence: "Ich esse ___ morgens Müsli.", correct: ["meistens"], wrong: ["bald", "draußen", "laut"], other: ["Müsli", "essen", "Morgen"] },
+  { sentence: "Sie beherrscht ___ die Klaviersprache.", correct: ["perfekt"], wrong: ["gestern", "hier", "oft"], other: ["Klavier", "beherrschen", "Musik"] },
+  { sentence: "Er kam ___ zum Termin.", correct: ["pünktlich"], wrong: ["vielleicht", "dort", "morgen"], other: ["Termin", "kommen", "Arzt"] },
+  { sentence: "Wir haben ___ das Spiel gewonnen. 2:1; das hätte auch anders ausgehen können.", correct: ["knapp"], wrong: ["bald", "hier", "klar"], other: ["Spiel", "gewinnen", "Mannschaft"] },
+  { sentence: "Sie tanzt ___ allein im Saal. Das wäre mir ja unfassbar peinlich!", correct: ["mutig"], wrong: ["laut", "dort", "gestern"], other: ["Saala", "tanzen", "Teilnehmer"] },
+  { sentence: "Er überprüfte ___ die Dokumente, dass kein Fehler drin ist.", correct: ["gründlich"], wrong: ["bald", "hier", "manchmal"], other: ["Dokumente", "prüfen", "Chef"] },
+  { sentence: "Ich schlafe ___ in meinem Bett. Nicht mal der Wecker kann mich aufwecken.", correct: ["tief"], wrong: ["gestern", "draußen", "leise"], other: ["Bett", "schlafen", "Zimmer"] },
+  { sentence: "Sie lief ___ zum Ausgang, als das Feuer ausgebrochen ist..", correct: ["eilig"], wrong: ["bald", "hier", "immer"], other: ["Ausgang", "laufen", "Gebäude"] },
+  { sentence: "Er studiert ___ für die Prüfungen, damit er die Prüfung besteht..", correct: ["fleißig"], wrong: ["gestern", "draußen", "laut"], other: ["Prüfung", "studieren", "Uni"] },
+  { sentence: "Ich war ___ in diesem Café. Aber morgen möchte ich erstmals hingehen.", correct: ["noch nie"], wrong: ["heute", "hier", "oft"], other: ["Café", "sein", "Besuch"] },
+  { sentence: "Sie kam ___ im letzten Moment.", correct: ["gerade noch"], wrong: ["bald", "dort", "laut"], other: ["Moment", "kommen", "Eingang"] },
+  { sentence: "Er spricht ___ über Politik. Er liebt das Thema!", correct: ["leidenschaftlich"], wrong: ["gestern", "hier", "immer"], other: ["Politik", "sprechen", "Debatte"] },
+  { sentence: "Wir haben ___ Fotos gemacht. Es ist eine wahre Sehenswürdigkeit!", correct: ["viele"], wrong: ["laut", "hier", "gestern"], other: ["Fotos", "machen", "Kamera"] },
+  { sentence: "Sie wohnt ___ in Berlin. Letztes Jahr wohnte sie noch in Bern.", correct: ["mittlerweile"], wrong: ["bald", "draußen", "gestern"], other: ["Berlin", "wohnen", "Umzug"] },
+  { sentence: "Er bietet ___ Hilfe an. Das hätte er nicht tun müssen.", correct: ["freiwillig"], wrong: ["hier", "gestern", "laut"], other: ["Hilfe", "anbieten", "Kollege"] },
+  { sentence: "Ich schreibe ___ an dich, aber du antwortest nie.", correct: ["regelmäßig"], wrong: ["laut", "hier", "gestern"], other: ["schreiben", "Brief", "Post"] },
+  { sentence: "Sie hat ___ das Fenster geputzt. Es war unfassbar dreckig.", correct: ["gründlich"], wrong: ["bald", "draußen", "laut"], other: ["Fenster", "putzen", "Haus"] },
+  { sentence: "Er fährt ___ mit dem Zug zur Arbeit. Er hat kein Auto.", correct: ["täglich"], wrong: ["heute", "hier", "gestern"], other: ["Zug", "fahren", "Arbeit"] },
+  { sentence: "Wir übten ___ die neue Melodie, damit wir bereit sind für das Konzert.", correct: ["intensiv"], wrong: ["morgen", "hier", "laut"], other: ["Melodie", "üben", "Musik"] },
+  { sentence: "Ich trinke ___ Kaffee am Morgen. Dann schlafe ich nicht ein.", correct: ["gern"], wrong: ["bald", "draußen", "gestern"], other: ["Kaffee", "trinken", "Morgen"] },
+  { sentence: "Sie reagierte ___ auf den Schreck. Aber sie hat sich bald wieder erholt.", correct: ["heftig"], wrong: ["leise", "hier", "gestern"], other: ["Schreck", "reagieren", "freund"] },
+  { sentence: "Er hat ___ die Aufgabe erledigt, aber es war alles falsch.", correct: ["schnell"], wrong: ["gründlich", "hier", "gestern"], other: ["Aufgabe", "erledigen", "Chef"] },
+  { sentence: "Wir aßen ___ zu Abend. Wir hatten ja auch endlos Zeit.", correct: ["gemütlich"], wrong: ["laut", "dort", "gestern"], other: ["Abendessen", "essen", "Familie"] },
+  { sentence: "Sie sprach ___ über das Thema, weil ich mich gut auskenne.", correct: ["ausführlich"], wrong: ["bald", "hier", "gestern"], other: ["Thema", "sprechen", "Meeting"] },
+  { sentence: "Er hat ___ seine Hausaufgaben gemacht. Darum war auch alles richtig.", correct: ["ordentlich"], wrong: ["laut", "dort", "früher"], other: ["Hausaufgaben", "machen", "Schule"] },
+  { sentence: "Ich habe ___ für dich gesorgt, keine Sorge.", correct: ["bereits"], wrong: ["heute", "hier", "laut"], other: ["sorgen", "für", "Freund"] },
+  { sentence: "Sie tanzt ___ auf der Bühne; dass sie sich das getraut...", correct: ["mutig"], wrong: ["laut", "dort", "gestern"], other: ["Bühne", "tanzen", "Zuschauer"] },
+  { sentence: "Er schrieb ___ eine E-Mail, dann ist er gegangen.", correct: ["kurz"], wrong: ["bald", "hier", "laut"], other: ["E-Mail", "schreiben", "Kollege"] },
+  { sentence: "Wir sahen ___ den Sonnenaufgang; das war sehr romantisch.", correct: ["gemeinsam"], wrong: ["am Nachmittag", "draußen", "laut"], other: ["Sonnenaufgang", "sehen", "Morgen"] },
+  { sentence: "Ich bin ___ nach Hause gefahren als es schon dunkel war.", correct: ["gestern Abend"], wrong: ["laut", "hier", "draußen"], other: ["nach Hause", "fahren", "Auto"] },
+  { sentence: "Sie hat ___ das Licht ausgemacht, damit das Baby nicht aufwacht.", correct: ["sorgfältig"], wrong: ["bald", "hier", "gestern"], other: ["Licht", "ausmachen", "Zimmer"] }
+                ]
+            },
+            2: {
+                name: "Präpositionen-Basis",
+                icon: "📍",
+                description: "Finde Wörter, die Orte und Richtungen beschreiben!",
+                examples: "in, auf, unter, mit, ohne, für",
+                mission: "Setze die richtige Präposition ein!",
+                tasks: [
+                    { sentence: "Die Katze sitzt ___ dem Sofa.", correct: ["auf"], wrong: ["über", "neben", "hinter"], other: ["Katze", "sitzen", "schnell"] },
+                    { sentence: "Ich gehe ___ meinen Freunden ins Kino.", correct: ["mit"], wrong: ["ohne", "für", "gegen"], other: ["gehen", "Freunde", "heute"] },
+                    { sentence: "Der Ball liegt ___ dem Tisch.", correct: ["unter"], wrong: ["auf", "über", "neben"], other: ["Ball", "liegen", "dort"] },
+                    { sentence: "Wir fahren ___ die Stadt.", correct: ["durch"], wrong: ["um", "über", "gegen"], other: ["fahren", "Stadt", "sehr"] }
+                    // HIER WEITERE PRÄPOSITION-AUFGABEN EINFÜGEN
+                ]
+            },
+            3: {
+                name: "Konjunktionen-Brücke",
+                icon: "🌉",
+                description: "Baue Brücken zwischen Sätzen und Wörtern!",
+                examples: "und, oder, aber, weil, dass, obwohl",
+                mission: "Verbinde die Sätze richtig!",
+                tasks: [
+                    { sentence: "Ich lerne Deutsch, ___ es schwer ist.", correct: ["obwohl"], wrong: ["weil", "damit", "falls"], other: ["lernen", "schwer", "schnell"] },
+                    { sentence: "Er kommt nicht, ___ er krank ist.", correct: ["weil"], wrong: ["obwohl", "damit", "falls"], other: ["kommen", "krank", "heute"] },
+                    { sentence: "Ich kaufe Brot ___ Milch.", correct: ["und"], wrong: ["oder", "aber", "doch"], other: ["kaufen", "Brot", "sehr"] },
+                    { sentence: "Sie ist müde, ___ arbeitet sie weiter.", correct: ["aber"], wrong: ["und", "oder", "denn"], other: ["müde", "arbeiten", "dort"] }
+                    // HIER WEITERE KONJUNKTION-AUFGABEN EINFÜGEN
+                ]
+            },
+            4: {
+                name: "Modal-Partikel-Labor",
+                icon: "⚗️",
+                description: "Experimentiere mit Wörtern, die Gefühle ausdrücken!",
+                examples: "doch, wohl, mal, ja, schon, eben",
+                mission: "Färbe die Sätze emotional!",
+                tasks: [
+                    { sentence: "Das ist ___ richtig!", correct: ["wohl"], wrong: ["doch", "schon", "eben"], other: ["richtig", "sein", "schnell"] },
+                    { sentence: "Komm ___ her!", correct: ["mal"], wrong: ["doch", "schon", "halt"], other: ["kommen", "hier", "heute"] },
+                    { sentence: "Du hast ___ recht.", correct: ["schon"], wrong: ["wohl", "mal", "halt"], other: ["haben", "recht", "sehr"] },
+                    { sentence: "Das ist ___ so!", correct: ["eben"], wrong: ["halt", "schon", "mal"], other: ["sein", "so", "dort"] }
+                    // HIER WEITERE MODAL-PARTIKEL-AUFGABEN EINFÜGEN
+                ]
+            },
+            5: {
+                name: "Interjektion-Arena",
+                icon: "🎭",
+                description: "Reagiere mit Ausrufen auf verschiedene Situationen!",
+                examples: "ach, oh, hurra, autsch, hm, tja",
+                mission: "Wähle den passenden Ausruf!",
+                tasks: [
+                    { sentence: "Jemand gewinnt einen Preis: '___!'", correct: ["Hurra"], wrong: ["Bravo", "Super", "Toll"], other: ["gewinnen", "Preis", "schnell"] },
+                    { sentence: "Du stößt dir den Zeh: '___!'", correct: ["Autsch"], wrong: ["Aua", "Oh", "Ach"], other: ["stoßen", "Zeh", "heute"] },
+                    { sentence: "Du überlegst: '___...'", correct: ["Hm"], wrong: ["Äh", "Öh", "Na"], other: ["überlegen", "denken", "sehr"] },
+                    { sentence: "Du bist enttäuscht: '___!'", correct: ["Ach"], wrong: ["Oh", "Hm", "Tja"], other: ["enttäuscht", "sein", "dort"] }
+                    // HIER WEITERE INTERJEKTION-AUFGABEN EINFÜGEN
+                ]
+            },
+            6: {
+                name: "Artikel-Akademie",
+                icon: "📖",
+                description: "Meistere die Begleiter der Nomen!",
+                examples: "der, die, das, ein, eine, einen",
+                mission: "Wähle den richtigen Artikel!",
+                tasks: [
+                    { sentence: "___ Haus ist sehr groß.", correct: ["Das"], wrong: ["Der", "Die", "Ein"], other: ["Haus", "groß", "schnell"] },
+                    { sentence: "Ich sehe ___ Mann.", correct: ["den"], wrong: ["der", "dem", "einen"], other: ["sehen", "Mann", "heute"] },
+                    { sentence: "___ Frau ist nett.", correct: ["Die"], wrong: ["Der", "Das", "Eine"], other: ["Frau", "nett", "sehr"] },
+                    { sentence: "Er kauft ___ Auto.", correct: ["ein"], wrong: ["eine", "einen", "das"], other: ["kaufen", "Auto", "dort"] }
+                    // HIER WEITERE ARTIKEL-AUFGABEN EINFÜGEN
+                ]
+            },
+            7: {
+                name: "Endlos-Odyssee",
+                icon: "🌌",
+                description: "Das ultimative Partikel-Chaos! Alle Wortarten gemischt!",
+                examples: "Alles ist möglich - sei bereit für jede Herausforderung!",
+                mission: "Überlebe so lange wie möglich!",
+                endless: true,
+                tasks: [
+                    // Schwere gemischte Aufgaben
+                    { sentence: "Er läuft ___ schnell.", correct: ["sehr"], wrong: ["ziemlich", "etwas", "total"], other: ["laufen", "schnell", "heute"] },
+                    { sentence: "Ich gehe ___ Schule.", correct: ["zur"], wrong: ["in", "nach", "bei"], other: ["gehen", "Schule", "dort"] },
+                    { sentence: "___ kommst du denn her?", correct: ["Woher"], wrong: ["Wo", "Wann", "Wie"], other: ["kommen", "her", "sehr"] },
+                    { sentence: "Das ist ___ mein Buch!", correct: ["doch"], wrong: ["wohl", "schon", "eben"], other: ["sein", "Buch", "schnell"] },
+                    { sentence: "___ schade!", correct: ["Wie"], wrong: ["Was", "So", "Ach"], other: ["schade", "sein", "heute"] },
+                    { sentence: "Ich sehe ___ Hund ___ Park.", correct: ["den"], wrong: ["der", "dem", "einen"], other: ["sehen", "Hund", "Park"] },
+                    { sentence: "Sie singt, ___ sie glücklich ist.", correct: ["weil"], wrong: ["obwohl", "damit", "dass"], other: ["singen", "glücklich", "sehr"] },
+                    { sentence: "Komm ___ schnell!", correct: ["mal"], wrong: ["doch", "schon", "halt"], other: ["kommen", "schnell", "dort"] },
+                    { sentence: "___ toll!", correct: ["Ach"], wrong: ["Oh", "Wow", "Super"], other: ["toll", "sein", "heute"] },
+                    { sentence: "Er wohnt ___ Berlin.", correct: ["in"], wrong: ["nach", "zu", "bei"], other: ["wohnen", "Berlin", "schnell"] },
+                    // Extrem schwere Kombinationen
+                    { sentence: "___ gehst du ___ heute?", correct: ["Wohin"], wrong: ["Wo", "Wann", "Warum"], other: ["gehen", "heute", "sehr"] },
+                    { sentence: "Das ist ___ ___ Beste!", correct: ["ja"], wrong: ["doch", "wohl", "schon"], other: ["sein", "Beste", "dort"] },
+                    { sentence: "___ denkst du ___?", correct: ["Woran"], wrong: ["Woran", "Womit", "Wodurch"], other: ["denken", "an", "heute"] },
+                    { sentence: "Ich freue mich ___ ___ Geschenk.", correct: ["über"], wrong: ["auf", "für", "mit"], other: ["freuen", "Geschenk", "sehr"] },
+                    { sentence: "___ ist ___ passiert?", correct: ["Was"], wrong: ["Wie", "Wann", "Wo"], other: ["sein", "passiert", "schnell"] }
+                    // HIER WEITERE ENDLOS-AUFGABEN EINFÜGEN
+                ]
+            }
+        };
+        
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            gameStarted = true;
+            currentPlanet = 1;
+            planetProgress = 0;
+            score = 0;
+            lives = 3;
+            updateDisplay();
+            showLevelIntro();
+        }
+        
+        function showLevelIntro() {
+            const planet = planetData[currentPlanet];
+            
+            document.getElementById('introPlanetIcon').textContent = planet.icon;
+            document.getElementById('introPlanetName').textContent = planet.name;
+            document.getElementById('introPlanetDescription').textContent = planet.description;
+            document.getElementById('introPlanetExamples').textContent = planet.examples;
+            document.getElementById('introPlanetMission').textContent = planet.mission;
+            
+            document.getElementById('levelIntro').style.display = 'flex';
+        }
+        
+        function startLevel() {
+            document.getElementById('levelIntro').style.display = 'none';
+            gameRunning = true;
+            planetProgress = 0;
+            planetCorrectAnswers = 0; // Reset für neuen Planeten
+            loadMission();
+        }
+        
+        function startTimer() {
+            timeRemaining = 7;
+            updateTimerDisplay();
+            
+            timer = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    timeUp();
+                }
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const timerDisplay = document.getElementById('timerDisplay');
+            
+            // Farbwechsel je nach verbleibender Zeit
+            let color = '#0f0f23';
+            let bgColor = 'rgba(78, 205, 196, 0.9)';
+            
+            if (timeRemaining <= 2) {
+                bgColor = 'rgba(255, 107, 107, 0.9)'; // Rot
+                color = 'white';
+            } else if (timeRemaining <= 4) {
+                bgColor = 'rgba(255, 193, 7, 0.9)'; // Gelb
+                color = '#0f0f23';
+            }
+            
+            timerDisplay.textContent = `⏰ ${timeRemaining}s`;
+            timerDisplay.style.backgroundColor = bgColor;
+            timerDisplay.style.color = color;
+        }
+        
+        function timeUp() {
+            if (!gameRunning || buttonsDisabled) return;
+            
+            buttonsDisabled = true;
+            lives--;
+            
+            const feedbackElement = document.getElementById('feedback');
+            feedbackElement.textContent = `Zeit abgelaufen! ⏰ Richtig wäre gewesen: ${currentMission.correct.join(", ")}`;
+            feedbackElement.className = 'feedback wrong';
+            
+            if (lives <= 0) {
+                setTimeout(() => {
+                    gameOver();
+                }, 2000);
+            } else {
+                setTimeout(() => {
+                    nextMission();
+                }, 2000);
+            }
+            
+            updateDisplay();
+        }
+        
+        function loadMission() {
+            if (!gameRunning) return;
+            
+            const planet = planetData[currentPlanet];
+            
+            if (!planet || !planet.tasks) {
+                gameOver();
+                return;
+            }
+            
+            // Prüfe ob Planet abgeschlossen (10 korrekte Antworten)
+            // Ausnahme: Endlos-Planet (Planet 7) hat keine Begrenzung
+            if (planetCorrectAnswers >= 10 && !planet.endless) {
+                if (currentPlanet < 7) {
+                    currentPlanet++;
+                    showLevelIntro();
+                } else {
+                    // Alle Planeten abgeschlossen
+                    gameWon();
+                }
+                return;
+            }
+            
+            // Wähle zufällige Aufgabe vom aktuellen Planeten
+            currentMission = planet.tasks[Math.floor(Math.random() * planet.tasks.length)];
+            
+            // UI aktualisieren
+            document.getElementById('planetName').textContent = planet.name;
+            document.getElementById('planetDescription').textContent = planet.description;
+            document.getElementById('planet').textContent = planet.icon;
+            
+            // Verschiedene Mission-Texte je nach Planet
+            if (planet.endless) {
+                document.getElementById('missionText').textContent = `Endlos-Mission: ${planet.mission} (${planetCorrectAnswers} geschafft)`;
+            } else {
+                document.getElementById('missionText').textContent = `Mission: ${planet.mission}`;
+            }
+            
+            document.getElementById('sentenceText').innerHTML = currentMission.sentence.replace('___', '<span class="missing-word">?</span>');
+            
+            // Sterne im Hintergrund erstellen
+            createStars();
+            
+            // Buttons erstellen - NUR aus korrekter Wortart + andere Wörter
+            const allOptions = [...currentMission.correct, ...currentMission.wrong, ...currentMission.other];
+            const shuffledOptions = allOptions.sort(() => Math.random() - 0.5);
+            
+            const buttonContainer = document.getElementById('partikelButtons');
+            buttonContainer.innerHTML = '';
+            
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'partikel-button';
+                button.textContent = option;
+                button.onclick = () => selectPartikel(option);
+                buttonContainer.appendChild(button);
+            });
+            
+            document.getElementById('feedback').textContent = '';
+            buttonsDisabled = false;
+            startTimer();
+        }
+        
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            starsContainer.innerHTML = '';
+            
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        function selectPartikel(selectedPartikel) {
+            if (buttonsDisabled || !gameRunning) return;
+            
+            clearInterval(timer);
+            buttonsDisabled = true;
+            const feedbackElement = document.getElementById('feedback');
+            
+            document.querySelectorAll('.partikel-button').forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            if (currentMission.correct.includes(selectedPartikel)) {
+                planetCorrectAnswers++; // Erhöhe korrekte Antworten für aktuellen Planeten
+                const timeBonus = timeRemaining * 5;
+                score += 25 + timeBonus;
+                
+                let progressText = `${planetCorrectAnswers}/10 auf diesem Planeten`;
+                if (planetCorrectAnswers >= 10) {
+                    progressText = "Planet abgeschlossen! 🎉";
+                }
+                
+                feedbackElement.textContent = `Perfekt! "${selectedPartikel}" ist korrekt! 🚀 (+${25 + timeBonus} Punkte) - ${progressText}`;
+                feedbackElement.className = 'feedback correct';
+                
+                // Planet glüht
+                document.getElementById('planet').className = 'planet planet-glow';
+                
+                setTimeout(() => {
+                    nextMission();
+                }, 1500);
+                
+            } else {
+                lives--;
+                const correctOptions = currentMission.correct.join(", ");
+                feedbackElement.textContent = `Mission fehlgeschlagen! "${selectedPartikel}" ist falsch. Richtig: ${correctOptions}`;
+                feedbackElement.className = 'feedback wrong';
+                
+                if (lives <= 0) {
+                    setTimeout(() => {
+                        gameOver();
+                    }, 2000);
+                } else {
+                    setTimeout(() => {
+                        nextMission();
+                    }, 2000);
+                }
+            }
+            
+            updateDisplay();
+        }
+        
+        function nextMission() {
+            document.getElementById('planet').className = 'planet';
+            
+            setTimeout(() => {
+                loadMission();
+            }, 500);
+        }
+        
+        function updateDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('currentPlanet').textContent = currentPlanet;
+            
+            // Für Endlos-Planet: Zeige unbegrenzte Anzeige
+            const planet = planetData[currentPlanet];
+            if (planet && planet.endless) {
+                document.getElementById('planetProgress').textContent = planetCorrectAnswers + '/∞';
+            } else {
+                document.getElementById('planetProgress').textContent = planetCorrectAnswers;
+            }
+            
+            let heartsDisplay = '';
+            for (let i = 0; i < lives; i++) {
+                heartsDisplay += '❤️';
+            }
+            for (let i = lives; i < 3; i++) {
+                heartsDisplay += '🖤';
+            }
+            document.getElementById('lives').textContent = heartsDisplay;
+        }
+        
+        function gameWon() {
+            gameRunning = false;
+            alert('🎉 Glückwunsch! Du hast alle Planeten erfolgreich bereist! 🚀');
+            gameOver();
+        }
+        
+        function gameOver() {
+            gameRunning = false;
+            
+            let message = 'Mission beendet!';
+            if (currentPlanet >= 6) {
+                message = 'Legende des Universums! 🚀👑';
+            } else if (currentPlanet >= 4) {
+                message = 'Galaktischer Held! 🚀🥇';
+            } else if (currentPlanet >= 2) {
+                message = 'Weltraum-Pionier! 🚀🥈';
+            }
+            
+            document.getElementById('gameOver').querySelector('h2').textContent = message;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('gameOver').style.display = 'block';
+        }
+        
+        function restartGame() {
+            clearInterval(timer);
+            gameRunning = false;
+            gameStarted = false;
+            score = 0;
+            lives = 3;
+            currentPlanet = 1;
+            planetProgress = 0;
+            planetCorrectAnswers = 0; // Reset auch hier
+            buttonsDisabled = false;
+            timeRemaining = 7;
+            currentMission = null;
+            
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'flex';
+            
+            updateDisplay();
+        }
+        
+        async function saveHighscore() {
+            const playerName = document.getElementById('playerName').value.trim();
+            if (!playerName) {
+                alert('Bitte gib deinen Astronauten-Namen ein!');
+                return;
+            }
+            
+            try {
+                const highscoreData = {
+                    name: playerName,
+                    score: score,
+                    game: 'partikel',
+                    timestamp: Date.now(),
+                    date: new Date().toLocaleDateString('de-DE')
+                };
+                
+                const response = await fetch(`${firebaseUrl}/highscores.json`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(highscoreData)
+                });
+                
+                if (response.ok) {
+                    alert('Eintrag in die Weltraum-Rangliste erfolgreich!');
+                    loadHighscores();
+                    document.getElementById('playerName').value = '';
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Fehler beim Speichern des Highscores:', error);
+                alert('Fehler beim Speichern. Überprüfe deine Internetverbindung und versuche es nochmal.');
+            }
+        }
+        
+        // Highscores laden
+        async function loadHighscores() {
+            try {
+                const response = await fetch(`${firebaseUrl}/highscores.json`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data) {
+                    document.getElementById('highscoreList').innerHTML = 'Noch keine Astronauten in der Rangliste.';
+                    return;
+                }
+                
+                // Nur Partikel-Highscores filtern und sortieren
+                const partikelHighscores = Object.values(data)
+                    .filter(entry => entry.game === 'partikel')
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 10); // Top 10
+                
+                if (partikelHighscores.length === 0) {
+                    document.getElementById('highscoreList').innerHTML = 'Noch keine Partikel-Astronauten in der Rangliste.';
+                    return;
+                }
+                
+                let html = '<ol>';
+                partikelHighscores.forEach(entry => {
+                    html += `<li><strong>${entry.name}</strong>: ${entry.score} Punkte (${entry.date})</li>`;
+                });
+                html += '</ol>';
+                
+                document.getElementById('highscoreList').innerHTML = html;
+            } catch (error) {
+                console.error('Fehler beim Laden der Highscores:', error);
+                document.getElementById('highscoreList').innerHTML = 
+                    'Weltraum-Rangliste wird geladen... <br><small>(Stelle sicher, dass deine Internetverbindung aktiv ist)</small>';
+                
+                setTimeout(() => {
+                    loadHighscores();
+                }, 3000);
+            }
+        }
+        
+        // Spiel initialisieren
+        updateDisplay();
+        loadHighscores();
+        createStars();
+        
+        console.log("Partikel-Odyssee geladen - Bereit für die Mission!");
+    </script>
+</body>
+</html>
