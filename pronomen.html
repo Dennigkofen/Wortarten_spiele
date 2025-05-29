@@ -481,23 +481,261 @@
 { character: "Max", dialog: "Das Stück beginnt um 8 Uhr. ___ dauert zwei Stunden.", correct: ["Es"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["beginnt", "Stunden"] },
             ],
             level2: [
-                { character: "Anna", dialog: "Ich freue ___ schon sehr auf meine große Szene!", correct: ["mich"], wrong: ["dich", "sich", "uns", "euch"], other: ["große", "Szene"] },
-                { character: "Ben", dialog: "Du solltest ___ mehr auf den Text konzentrieren.", correct: ["dich"], wrong: ["mich", "sich", "uns", "ihr"], other: ["solltest", "Text"] }
+               // LEVEL 2 - + Reflexivpronomen (30 Dialoge)
+// MICH - Selbstbezug
+{ character: "Ben", dialog: "Ich kann ___ nicht an meinen Text erinnern. Hilf mir bitte!", correct: ["mich"], wrong: ["dich", "sich", "uns", "euch"], other: ["Text", "erinnern"] },
+{ character: "Carl", dialog: "Ich ärgere ___ über meinen Fehler in der letzten Probe.", correct: ["mich"], wrong: ["dich", "sich", "uns", "euch"], other: ["Fehler", "Probe"] },
+{ character: "Diana", dialog: "Ich setze ___ auf den Stuhl und lerne meinen Text.", correct: ["mich"], wrong: ["dich", "sich", "uns", "euch"], other: ["Stuhl", "lerne"] },
+{ character: "Max", dialog: "Ich verstecke ___ hinter dem Vorhang für meinen Überraschungsauftritt.", correct: ["mich"], wrong: ["dich", "sich", "uns", "euch"], other: ["Vorhang", "Überraschungsauftritt"] },
+
+// DICH - Direkte Ansprache
+{ character: "Anna", dialog: "Ben, du solltest ___ mehr auf den Text konzentrieren!", correct: ["dich"], wrong: ["mich", "sich", "uns", "euch"], other: ["solltest", "konzentrieren"] },
+{ character: "Regisseur", dialog: "Diana, du musst ___ lauter sprechen, damit alle dich hören.", correct: ["dich"], wrong: ["mich", "sich", "uns", "euch"], other: ["lauter", "sprechen"] },
+{ character: "Ben", dialog: "Carl, du kannst ___ auf mich verlassen bei der schweren Szene.", correct: ["dich"], wrong: ["mich", "sich", "uns", "euch"], other: ["verlassen", "schweren"] },
+{ character: "Carl", dialog: "Max, du hast ___ sehr gut auf die Rolle vorbereitet!", correct: ["dich"], wrong: ["mich", "sich", "uns", "euch"], other: ["vorbereitet", "Rolle"] },
+{ character: "Diana", dialog: "Anna, du solltest ___ nicht so viele Sorgen machen.", correct: ["dir"], wrong: ["mir", "sich", "uns", "euch"], other: ["Sorgen", "machen"] },
+
+// SICH - Dritte Person
+{ character: "Anna", dialog: "Ben ärgert ___ über seinen vergessenen Dialog sehr.", correct: ["sich"], wrong: ["mich", "dich", "uns", "euch"], other: ["ärgert", "vergessenen"] },
+{ character: "Ben", dialog: "Diana kämmt ___ vor dem Spiegel die langen Haare.", correct: ["sich"], wrong: ["mich", "dich", "uns", "euch"], other: ["kämmt", "Spiegel"] },
+{ character: "Carl", dialog: "Max versteckt ___ hinter der Kulisse für seinen Auftritt.", correct: ["sich"], wrong: ["mich", "dich", "uns", "euch"], other: ["versteckt", "Kulisse"] },
+{ character: "Diana", dialog: "Anna freut ___ riesig auf ihre erste Hauptrolle.", correct: ["sich"], wrong: ["mich", "dich", "uns", "euch"], other: ["freut", "Hauptrolle"] },
+{ character: "Max", dialog: "Carl bereitet ___ intensiv auf die Premiere vor.", correct: ["sich"], wrong: ["mich", "dich", "uns", "euch"], other: ["bereitet", "Premiere"] },
+
+// UNS - Gemeinsame Reflexivhandlung
+{ character: "Anna", dialog: "Ben und ich treffen ___ jeden Tag um 18 Uhr zur Probe.", correct: ["uns"], wrong: ["mich", "sich", "euch", "dich"], other: ["treffen", "Probe"] },
+{ character: "Ben", dialog: "Carl und ich helfen ___ gegenseitig beim Textlernen.", correct: ["uns"], wrong: ["mich", "sich", "euch", "dich"], other: ["helfen", "Textlernen"] },
+{ character: "Carl", dialog: "Diana und ich verstehen ___ ohne Worte auf der Bühne.", correct: ["uns"], wrong: ["mich", "sich", "euch", "dich"], other: ["verstehen", "Bühne"] },
+{ character: "Diana", dialog: "Max und ich bereiten ___ gemeinsam auf das Duett vor.", correct: ["uns"], wrong: ["mich", "sich", "euch", "dich"], other: ["bereiten", "Duett"] },
+{ character: "Max", dialog: "Anna und ich kennen ___ schon seit der Schauspielschule.", correct: ["uns"], wrong: ["mich", "sich", "euch", "dich"], other: ["kennen", "Schauspielschule"] },
+
+// EUCH - Ansprache an Gruppe
+{ character: "Regisseur", dialog: "Ben und Carl, ihr müsst ___ besser auf eure Rollen konzentrieren!", correct: ["euch"], wrong: ["sich", "uns", "mich", "dich"], other: ["müsst", "konzentrieren"] },
+{ character: "Anna", dialog: "Diana und Max, ihr könnt ___ auf uns verlassen!", correct: ["euch"], wrong: ["sich", "uns", "mich", "dich"], other: ["könnt", "verlassen"] },
+{ character: "Ben", dialog: "Carl und Diana, ihr solltet ___ nicht so viele Gedanken machen.", correct: ["euch"], wrong: ["sich", "uns", "mich", "dich"], other: ["solltet", "Gedanken"] },
+{ character: "Carl", dialog: "Max und Anna, ihr habt ___ großartig auf diese Szene vorbereitet.", correct: ["euch"], wrong: ["sich", "uns", "mich", "dich"], other: ["großartig", "vorbereitet"] },
+{ character: "Diana", dialog: "Ben und Max, ihr könnt ___ entspannen, ihr macht das toll!", correct: ["euch"], wrong: ["sich", "uns", "mich", "dich"], other: ["entspannen", "toll"] },
+
+// Zusätzliche gemischte Sätze
+{ character: "Max", dialog: "Anna wäscht ___ die Hände vor dem Essen.", correct: ["sich"], wrong: ["mich", "dich", "uns", "euch"], other: ["wäscht", "Essen"] },
+{ character: "Anna", dialog: "Ich ziehe ___ das Kostüm für die nächste Szene an.", correct: ["mir"], wrong: ["dir", "sich", "uns", "euch"], other: ["ziehe", "Kostüm"] },
+{ character: "Ben", dialog: "Du kaufst ___ ein neues Theaterbuch, nicht wahr?", correct: ["dir"], wrong: ["mir", "sich", "uns", "euch"], other: ["kaufst", "Theaterbuch"] },
+{ character: "Carl", dialog: "Max macht ___ Sorgen um die schwierige Tanzszene.", correct: ["sich"], wrong: ["mich", "dich", "uns", "euch"], other: ["Sorgen", "Tanzszene"] },
+{ character: "Diana", dialog: "Wir gönnen ___ eine Pause nach der langen Probe.", correct: ["uns"], wrong: ["mich", "sich", "euch", "dich"], other: ["gönnen", "Pause"] }
             ],
             level3: [
-                { character: "Anna", dialog: "___ Kostüm ist das schönste von allen!", correct: ["Mein"], wrong: ["Dein", "Sein", "Unser", "Euer"], other: ["Kostüm", "schönste"] }
+                // LEVEL 3 - + Possessivpronomen (30 Dialoge)
+// MEIN/MEINE - Eigentum des Sprechers
+{ character: "Ben", dialog: "___ Text ist sehr lang, aber ich habe ihn komplett gelernt.", correct: ["Mein"], wrong: ["Dein", "Sein", "Ihr", "Unser"], other: ["Text", "gelernt"] },
+{ character: "Carl", dialog: "___ Rolle als König ist sehr anspruchsvoll und schwierig.", correct: ["Meine"], wrong: ["Deine", "Seine", "Ihre", "Unsere"], other: ["Rolle", "anspruchsvoll"] },
+{ character: "Diana", dialog: "___ Stimme ist heute besonders klar und melodisch.", correct: ["Meine"], wrong: ["Deine", "Seine", "Ihre", "Unsere"], other: ["Stimme", "melodisch"] },
+{ character: "Max", dialog: "___ Maske ist verschwunden! Habt ihr sie gesehen?", correct: ["Meine"], wrong: ["Deine", "Seine", "Ihre", "Unsere"], other: ["Maske", "verschwunden"] },
+
+// DEIN/DEINE - Eigentum des Angesprochenen
+{ character: "Anna", dialog: "Ben, ___ Auftritt gestern war wirklich fantastisch!", correct: ["dein"], wrong: ["mein", "sein", "unser", "euer"], other: ["Auftritt", "fantastisch"] },
+{ character: "Ben", dialog: "Carl, ___ Kostüm steht dir ausgezeichnet gut!", correct: ["dein"], wrong: ["mein", "sein", "ihr", "unser"], other: ["Kostüm", "ausgezeichnet"] },
+{ character: "Carl", dialog: "Diana, ___ Gesang berührt alle Zuschauer tief im Herzen.", correct: ["dein"], wrong: ["mein", "sein", "ihr", "unser"], other: ["Gesang", "Zuschauer"] },
+{ character: "Diana", dialog: "Max, ___ Schauspielkunst wird von Jahr zu Jahr besser.", correct: ["deine"], wrong: ["meine", "seine", "ihre", "unsere"], other: ["Schauspielkunst", "besser"] },
+{ character: "Max", dialog: "Anna, ___ Leidenschaft für das Theater ist bewundernswert.", correct: ["deine"], wrong: ["meine", "seine", "ihre", "unsere"], other: ["Leidenschaft", "bewundernswert"] },
+
+// SEIN/SEINE - Eigentum einer männlichen dritten Person
+{ character: "Anna", dialog: "Ben hat ___ Text vergessen und steht ratlos da.", correct: ["seinen"], wrong: ["meinen", "deinen", "unseren", "euren"], other: ["Text", "ratlos"] },
+{ character: "Ben", dialog: "Carl übt noch ___ schwierige Tanzszene für heute Abend.", correct: ["seine"], wrong: ["meine", "deine", "unsere", "eure"], other: ["Tanzszene", "Abend"] },
+{ character: "Carl", dialog: "Max liebt ___ Rolle als tapferer Prinz über alles.", correct: ["seine"], wrong: ["meine", "deine", "unsere", "eure"], other: ["Rolle", "Prinz"] },
+{ character: "Diana", dialog: "Ben hat ___ Kostüm zu Hause vergessen, das ist ärgerlich.", correct: ["sein"], wrong: ["mein", "dein", "unser", "euer"], other: ["Kostüm", "ärgerlich"] },
+{ character: "Max", dialog: "Carl probt ___ Monolog schon seit zwei Stunden intensiv.", correct: ["seinen"], wrong: ["meinen", "deinen", "unseren", "euren"], other: ["Monolog", "intensiv"] },
+
+// IHR/IHRE - Eigentum einer weiblichen dritten Person
+{ character: "Anna", dialog: "Diana hat ___ wunderschöne Stimme heute perfekt eingesetzt.", correct: ["ihre"], wrong: ["meine", "deine", "seine", "unsere"], other: ["Stimme", "eingesetzt"] },
+{ character: "Ben", dialog: "Anna vergisst nie ___ Texte, sie ist sehr zuverlässig.", correct: ["ihre"], wrong: ["meine", "deine", "seine", "unsere"], other: ["Texte", "zuverlässig"] },
+{ character: "Carl", dialog: "Diana trägt ___ neues Ballkleid für die Tanzszene.", correct: ["ihr"], wrong: ["mein", "dein", "sein", "unser"], other: ["Ballkleid", "Tanzszene"] },
+{ character: "Diana", dialog: "Anna hat ___ erste Hauptrolle bekommen, wir sind stolz!", correct: ["ihre"], wrong: ["meine", "deine", "seine", "unsere"], other: ["Hauptrolle", "stolz"] },
+{ character: "Max", dialog: "Emma übt ___ Gesangspart für das große Finale.", correct: ["ihren"], wrong: ["meinen", "deinen", "seinen", "unseren"], other: ["Gesangspart", "Finale"] },
+
+// UNSER/UNSERE - Gemeinsames Eigentum
+{ character: "Anna", dialog: "___ Theatergruppe ist die beste in der ganzen Stadt!", correct: ["Unsere"], wrong: ["Meine", "Deine", "Seine", "Ihre"], other: ["Theatergruppe", "Stadt"] },
+{ character: "Ben", dialog: "___ Proben werden von Woche zu Woche professioneller.", correct: ["Unsere"], wrong: ["Meine", "Deine", "Seine", "Ihre"], other: ["Proben", "professioneller"] },
+{ character: "Carl", dialog: "___ gemeinsames Ziel ist eine perfekte Aufführung.", correct: ["Unser"], wrong: ["Mein", "Dein", "Sein", "Ihr"], other: ["Ziel", "Aufführung"] },
+{ character: "Diana", dialog: "___ Kostüme wurden alle von der berühmten Schneiderin genäht.", correct: ["Unsere"], wrong: ["Meine", "Deine", "Seine", "Ihre"], other: ["Kostüme", "Schneiderin"] },
+{ character: "Max", dialog: "___ Theater hat eine 150-jährige traditionsreiche Geschichte.", correct: ["Unser"], wrong: ["Mein", "Dein", "Sein", "Ihr"], other: ["Theater", "Geschichte"] },
+
+// EUER/EURE - Eigentum der angesprochenen Gruppe
+{ character: "Regisseur", dialog: "Ben und Carl, ___ Leistung heute war außergewöhnlich gut!", correct: ["eure"], wrong: ["meine", "seine", "ihre", "unsere"], other: ["Leistung", "außergewöhnlich"] },
+{ character: "Anna", dialog: "Diana und Max, ___ Duett war das Highlight des Abends!", correct: ["euer"], wrong: ["mein", "sein", "ihr", "unser"], other: ["Duett", "Highlight"] },
+{ character: "Ben", dialog: "Carl und Diana, ___ Kostüme sind heute besonders prächtig!", correct: ["eure"], wrong: ["meine", "seine", "ihre", "unsere"], other: ["Kostüme", "prächtig"] },
+{ character: "Carl", dialog: "Max und Anna, ___ Chemie auf der Bühne ist unglaublich!", correct: ["eure"], wrong: ["meine", "seine", "ihre", "unsere"], other: ["Chemie", "unglaublich"] },
+{ character: "Diana", dialog: "Ben und Max, ___ Freundschaft sieht man in jeder Szene!", correct: ["eure"], wrong: ["meine", "seine", "ihre", "unsere"], other: ["Freundschaft", "Szene"] },
             ],
             level4: [
-                { character: "Anna", dialog: "___ Schauspieler dort drüben spielt großartig!", correct: ["Dieser"], wrong: ["Diese", "Jener", "Mein", "Dein"], other: ["Schauspieler", "großartig"] }
+                // LEVEL 4 - + Demonstrativpronomen (25 Dialoge)
+// DIESER - männlich, Nominativ
+{ character: "Ben", dialog: "___ Regisseur hier ist sehr erfahren und hilfsbereit.", correct: ["Dieser"], wrong: ["Diese", "Dieses", "Jene", "Dein"], other: ["Regisseur", "hilfsbereit"] },
+{ character: "Carl", dialog: "___ Vorhang da vorne ist aus echter roter Seide gemacht.", correct: ["Dieser"], wrong: ["Diese", "Dieses", "Jener", "Sein"], other: ["Vorhang", "Seide"] },
+{ character: "Diana", dialog: "___ Pianist spielt die Melodien so wunderschön emotional.", correct: ["Dieser"], wrong: ["Diese", "Dieses", "Jene", "Ihr"], other: ["Pianist", "emotional"] },
+{ character: "Max", dialog: "___ Tänzer hier kann jeden Tanzstil perfekt beherrschen.", correct: ["Dieser"], wrong: ["Diese", "Dieses", "Jener", "Unser"], other: ["Tänzer", "Tanzstil"] },
+
+// DIESE - weiblich, Nominativ
+{ character: "Anna", dialog: "___ Szene hier gefällt mir besser als die gestrige.", correct: ["Diese"], wrong: ["Dieser", "Dieses", "Jene", "Meine"], other: ["Szene", "gestrige"] },
+{ character: "Ben", dialog: "___ Schauspielerin dort hat eine fantastische Bühnenpräsenz.", correct: ["Diese"], wrong: ["Dieser", "Dieses", "Jener", "Deine"], other: ["Schauspielerin", "Bühnenpräsenz"] },
+{ character: "Carl", dialog: "___ Musik heute Abend ist viel romantischer als sonst.", correct: ["Diese"], wrong: ["Dieser", "Dieses", "Jener", "Seine"], other: ["Musik", "romantischer"] },
+{ character: "Diana", dialog: "___ Beleuchtung hier schafft eine magische Atmosphäre.", correct: ["Diese"], wrong: ["Dieser", "Dieses", "Jene", "Ihre"], other: ["Beleuchtung", "Atmosphäre"] },
+{ character: "Max", dialog: "___ Premiere wird sicher ein unvergesslicher Erfolg!", correct: ["Diese"], wrong: ["Dieser", "Dieses", "Jener", "Unsere"], other: ["Premiere", "unvergesslicher"] },
+
+// DIESES - sächlich, Nominativ
+{ character: "Ben", dialog: "___ Theater hier hat eine wundervolle Akustik.", correct: ["Dieses"], wrong: ["Dieser", "Diese", "Jenes", "Dein"], other: ["Theater", "Akustik"] },
+{ character: "Carl", dialog: "___ Bühnenbild ist das schönste, das ich je gesehen habe.", correct: ["Dieses"], wrong: ["Dieser", "Diese", "Jenes", "Sein"], other: ["Bühnenbild", "gesehen"] },
+{ character: "Diana", dialog: "___ Lied passt perfekt zu der traurigen Szene.", correct: ["Dieses"], wrong: ["Dieser", "Diese", "Jenes", "Ihr"], other: ["Lied", "traurigen"] },
+{ character: "Max", dialog: "___ Mikrofon hier funktioniert viel besser als das alte.", correct: ["Dieses"], wrong: ["Dieser", "Diese", "Jenes", "Unser"], other: ["Mikrofon", "besser"] },
+
+// JENER/JENE/JENES - weiter entfernt
+{ character: "Anna", dialog: "___ Schauspieler dort hinten war in vielen berühmten Filmen.", correct: ["Jener"], wrong: ["Dieser", "Diese", "Dieses", "Mein"], other: ["Schauspieler", "Filmen"] },
+{ character: "Ben", dialog: "___ Aufführung letzte Woche war emotional bewegender.", correct: ["Jene"], wrong: ["Dieser", "Diese", "Dieses", "Deine"], other: ["Aufführung", "bewegender"] },
+{ character: "Carl", dialog: "___ Kostüm dort drüben gehört der Hauptdarstellerin.", correct: ["Jenes"], wrong: ["Dieser", "Diese", "Dieses", "Sein"], other: ["Kostüm", "Hauptdarstellerin"] },
+{ character: "Diana", dialog: "___ Musik von gestern war viel emotionaler und tiefer.", correct: ["Jene"], wrong: ["Dieser", "Diese", "Dieses", "Ihre"], other: ["Musik", "tiefer"] },
+{ character: "Max", dialog: "___ Tanz dort auf der anderen Bühne ist sehr elegant.", correct: ["Jener"], wrong: ["Dieser", "Diese", "Dieses", "Unser"], other: ["Tanz", "elegant"] },
+
+// Gemischte Akkusativ/Dativ Formen
+{ character: "Anna", dialog: "Ich mag ___ Schauspieler dort sehr, er ist sehr talentiert.", correct: ["diesen"], wrong: ["diese", "dieses", "jenen", "meinen"], other: ["Schauspieler", "talentiert"] },
+{ character: "Ben", dialog: "Wir arbeiten mit ___ Regisseurin schon seit drei Jahren zusammen.", correct: ["dieser"], wrong: ["diesem", "dieses", "jener", "deiner"], other: ["Regisseurin", "Jahren"] },
+{ character: "Carl", dialog: "In ___ Theater dort spielen nur die besten Künstler.", correct: ["jenem"], wrong: ["diesem", "diese", "jenes", "seinem"], other: ["Theater", "Künstler"] },
+{ character: "Diana", dialog: "Von ___ Bühne aus kann man das ganze Publikum sehen.", correct: ["dieser"], wrong: ["diesem", "dieses", "jener", "ihrer"], other: ["Bühne", "Publikum"] },
+{ character: "Max", dialog: "Mit ___ Kostüm hier fühle ich mich wie ein echter König.", correct: ["diesem"], wrong: ["dieser", "dieses", "jenem", "unserem"], other: ["Kostüm", "König"] },
             ],
             level5: [
-                { character: "Anna", dialog: "Der Schauspieler, ___ dort steht, ist mein bester Freund.", correct: ["der"], wrong: ["die", "das", "welcher", "dieser"], other: ["Schauspieler", "Freund"] }
+             // LEVEL 5 - + Relativpronomen (25 Dialoge)
+// DER - männlich als Relativpronomen
+{ character: "Ben", dialog: "Der Regisseur, ___ uns leitet, hat viel Erfahrung.", correct: ["der"], wrong: ["die", "das", "welche", "dieser"], other: ["Regisseur", "Erfahrung"] },
+{ character: "Carl", dialog: "Der König, ___ im Stück stirbt, ist sehr tragisch.", correct: ["der"], wrong: ["die", "das", "welcher", "dieser"], other: ["König", "tragisch"] },
+{ character: "Diana", dialog: "Der Pianist, ___ uns begleitet, spielt wunderschön.", correct: ["der"], wrong: ["die", "das", "welche", "dieser"], other: ["Pianist", "wunderschön"] },
+{ character: "Max", dialog: "Der Vorhang, ___ sich öffnet, ist aus roter Seide.", correct: ["der"], wrong: ["die", "das", "welcher", "dieser"], other: ["Vorhang", "Seide"] },
+
+// DIE - weiblich als Relativpronomen
+{ character: "Anna", dialog: "Die Schauspielerin, ___ so schön singt, kommt aus Wien.", correct: ["die"], wrong: ["der", "das", "welche", "diese"], other: ["Schauspielerin", "Wien"] },
+{ character: "Ben", dialog: "Die Musik, ___ heute spielt, ist sehr bewegend.", correct: ["die"], wrong: ["der", "das", "welcher", "diese"], other: ["Musik", "bewegend"] },
+{ character: "Carl", dialog: "Die Szene, ___ du spielst, ist sehr emotional und schwer.", correct: ["die"], wrong: ["der", "das", "welche", "diese"], other: ["Szene", "emotional"] },
+{ character: "Diana", dialog: "Die Kostüme, ___ wir tragen, sind handgenäht.", correct: ["die"], wrong: ["der", "das", "welcher", "diese"], other: ["Kostüme", "handgenäht"] },
+{ character: "Max", dialog: "Die Premiere, ___ morgen stattfindet, wird ausverkauft sein.", correct: ["die"], wrong: ["der", "das", "welche", "diese"], other: ["Premiere", "ausverkauft"] },
+
+// DAS - sächlich als Relativpronomen
+{ character: "Anna", dialog: "Das Stück, ___ wir spielen, ist sehr berühmt und alt.", correct: ["das"], wrong: ["der", "die", "welches", "dieses"], other: ["Stück", "berühmt"] },
+{ character: "Ben", dialog: "Das Theater, ___ 200 Jahre alt ist, hat viel Geschichte.", correct: ["das"], wrong: ["der", "die", "welches", "dieses"], other: ["Theater", "Geschichte"] },
+{ character: "Carl", dialog: "Das Kostüm, ___ ich trage, ist sehr schwer und warm.", correct: ["das"], wrong: ["der", "die", "welches", "dieses"], other: ["Kostüm", "schwer"] },
+{ character: "Diana", dialog: "Das Lied, ___ ich singe, erzählt von großer Liebe.", correct: ["das"], wrong: ["der", "die", "welches", "dieses"], other: ["Lied", "Liebe"] },
+{ character: "Max", dialog: "Das Bühnenbild, ___ gemalt wurde, ist kunstvolle Handarbeit.", correct: ["das"], wrong: ["der", "die", "welches", "dieses"], other: ["Bühnenbild", "Handarbeit"] },
+
+// Akkusativ-Formen
+{ character: "Anna", dialog: "Der Text, ___ ich gelernt habe, ist sehr lang.", correct: ["den"], wrong: ["die", "das", "welchen", "diesen"], other: ["Text", "lang"] },
+{ character: "Ben", dialog: "Die Rolle, ___ du spielst, passt perfekt zu dir.", correct: ["die"], wrong: ["den", "das", "welche", "diese"], other: ["Rolle", "perfekt"] },
+{ character: "Carl", dialog: "Das Instrument, ___ er spielt, klingt wundervoll.", correct: ["das"], wrong: ["den", "die", "welches", "dieses"], other: ["Instrument", "wundervoll"] },
+{ character: "Diana", dialog: "Den Schauspieler, ___ wir gesucht haben, haben wir gefunden.", correct: ["den"], wrong: ["der", "das", "welchen", "diesen"], other: ["Schauspieler", "gefunden"] },
+{ character: "Max", dialog: "Die Musik, ___ wir hören, stammt aus dem 18. Jahrhundert.", correct: ["die"], wrong: ["den", "das", "welche", "diese"], other: ["Musik", "Jahrhundert"] },
+
+// Dativ-Formen
+{ character: "Anna", dialog: "Das Theater, in ___ wir spielen, ist über 100 Jahre alt.", correct: ["dem"], wrong: ["der", "die", "welchem", "diesem"], other: ["Theater", "Jahre"] },
+{ character: "Ben", dialog: "Die Bühne, auf ___ wir stehen, ist aus edlem Holz.", correct: ["der"], wrong: ["dem", "die", "welcher", "dieser"], other: ["Bühne", "Holz"] },
+{ character: "Carl", dialog: "Der Regisseur, mit ___ wir arbeiten, ist sehr geduldig.", correct: ["dem"], wrong: ["der", "die", "welchem", "diesem"], other: ["Regisseur", "geduldig"] },
+{ character: "Diana", dialog: "Die Schauspielerin, von ___ wir lernen, ist sehr erfahren.", correct: ["der"], wrong: ["dem", "die", "welcher", "dieser"], other: ["Schauspielerin", "erfahren"] },
+{ character: "Max", dialog: "Das Kostüm, in ___ ich schlüpfe, verwandelt mich völlig.", correct: ["das"], wrong: ["dem", "die", "welches", "dieses"], other: ["Kostüm", "verwandelt"] },
+
+// WELCHER/WELCHE/WELCHES als Alternative
+{ character: "Anna", dialog: "Der Schauspieler, ___ den König spielt, ist sehr groß.", correct: ["welcher"], wrong: ["welche", "welches", "der", "dieser"], other: ["Schauspieler", "König"] },
+{ character: "Ben", dialog: "Die Szene, ___ am schönsten ist, kommt ganz am Ende.", correct: ["welche"], wrong: ["welcher", "welches", "die", "diese"], other: ["Szene", "Ende"] },
+{ character: "Carl", dialog: "Das Lied, ___ alle zum Weinen bringt, ist sehr traurig.", correct: ["welches"], wrong: ["welcher", "welche", "das", "dieses"], other: ["Lied", "traurig"] },
             ],
             level6: [
-                { character: "Anna", dialog: "___ hat mein Kostüm gesehen? Es ist verschwunden!", correct: ["Wer"], wrong: ["Was", "Welcher", "Welche", "Der"], other: ["Kostüm", "verschwunden"] }
+                // LEVEL 6 - + Interrogativpronomen (30 Dialoge)
+// WER - Frage nach Person (Nominativ)
+{ character: "Ben", dialog: "___ spielt denn heute Abend die Hauptrolle?", correct: ["Wer"], wrong: ["Was", "Welche", "Welches", "Die"], other: ["spielt", "Hauptrolle"] },
+{ character: "Carl", dialog: "___ von euch kann mir mit dem schweren Vorhang helfen?", correct: ["Wer"], wrong: ["Was", "Welcher", "Welche", "Der"], other: ["kann", "Vorhang"] },
+{ character: "Diana", dialog: "___ hat die Musik so laut gemacht? Das ist zu viel!", correct: ["Wer"], wrong: ["Was", "Welches", "Welche", "Das"], other: ["Musik", "laut"] },
+{ character: "Max", dialog: "___ kommt denn heute Abend zu unserer Premiere?", correct: ["Wer"], wrong: ["Was", "Welcher", "Welche", "Sie"], other: ["kommt", "Premiere"] },
+
+// WAS - Frage nach Sache/Handlung
+{ character: "Ben", dialog: "___ ist denn mit der Beleuchtung los? Sie flackert!", correct: ["Was"], wrong: ["Wer", "Welcher", "Welche", "Das"], other: ["Beleuchtung", "flackert"] },
+{ character: "Carl", dialog: "___ haben wir denn in der letzten Szene vergessen?", correct: ["Was"], wrong: ["Wer", "Welche", "Welches", "Sie"], other: ["letzten", "vergessen"] },
+{ character: "Diana", dialog: "___ passiert denn, wenn der Vorhang nicht aufgeht?", correct: ["Was"], wrong: ["Wer", "Welcher", "Welche", "Er"], other: ["passiert", "aufgeht"] },
+{ character: "Max", dialog: "___ können wir gegen das Lampenfieber tun?", correct: ["Was"], wrong: ["Wer", "Welches", "Welche", "Wir"], other: ["können", "Lampenfieber"] },
+
+// WELCHER - männlich
+{ character: "Ben", dialog: "___ Text ist schwerer zu lernen, deiner oder meiner?", correct: ["Welcher"], wrong: ["Wer", "Was", "Welche", "Dieser"], other: ["Text", "schwerer"] },
+{ character: "Carl", dialog: "___ Regisseur hat euch am besten geleitet?", correct: ["Welcher"], wrong: ["Wer", "Was", "Welche", "Dieser"], other: ["Regisseur", "geleitet"] },
+{ character: "Diana", dialog: "___ Vorhang soll denn für die Premiere verwendet werden?", correct: ["Welcher"], wrong: ["Wer", "Was", "Welche", "Dieser"], other: ["Vorhang", "Premiere"] },
+{ character: "Max", dialog: "___ Pianist spielt die Begleitung für unser Duett?", correct: ["Welcher"], wrong: ["Wer", "Was", "Welche", "Dieser"], other: ["Pianist", "Begleitung"] },
+
+// WELCHE - weiblich
+{ character: "Ben", dialog: "___ Szene wollt ihr zuerst heute Abend proben?", correct: ["Welche"], wrong: ["Wer", "Was", "Welcher", "Diese"], other: ["Szene", "proben"] },
+{ character: "Carl", dialog: "___ Musik passt am besten zu der romantischen Szene?", correct: ["Welche"], wrong: ["Wer", "Was", "Welcher", "Diese"], other: ["Musik", "romantischen"] },
+{ character: "Diana", dialog: "___ Schauspielerin hat die schwierigste Rolle bekommen?", correct: ["Welche"], wrong: ["Wer", "Was", "Welcher", "Diese"], other: ["Schauspielerin", "schwierigste"] },
+{ character: "Max", dialog: "___ Aufführung war euer Lieblingsstück dieses Jahr?", correct: ["Welche"], wrong: ["Wer", "Was", "Welcher", "Diese"], other: ["Aufführung", "Lieblingsstück"] },
+
+// WELCHES - sächlich
+{ character: "Ben", dialog: "___ Theater in der Stadt hat die beste Akustik?", correct: ["Welches"], wrong: ["Wer", "Was", "Welche", "Dieses"], other: ["Theater", "Akustik"] },
+{ character: "Carl", dialog: "___ Lied singen wir im großen Finale zusammen?", correct: ["Welches"], wrong: ["Wer", "Was", "Welche", "Dieses"], other: ["Lied", "Finale"] },
+{ character: "Diana", dialog: "___ Bühnenbild gefällt euch am besten?", correct: ["Welches"], wrong: ["Wer", "Was", "Welcher", "Dieses"], other: ["Bühnenbild", "besten"] },
+{ character: "Max", dialog: "___ Instrument möchtest du lernen für das Orchester?", correct: ["Welches"], wrong: ["Wer", "Was", "Welche", "Dieses"], other: ["Instrument", "Orchester"] },
+
+// Dativ-Formen (WEM, womit, etc.)
+{ character: "Ben", dialog: "___ gibst du denn dein Textbuch? Mir oder Carl?", correct: ["Wem"], wrong: ["Wer", "Wen", "Was", "Welchem"], other: ["gibst", "Textbuch"] },
+{ character: "Carl", dialog: "Mit ___ probst du denn die schwierige Tanzszene?", correct: ["wem"], wrong: ["wer", "wen", "was", "welchem"], other: ["probst", "Tanzszene"] },
+{ character: "Diana", dialog: "Von ___ hast du denn so gut schauspielern gelernt?", correct: ["wem"], wrong: ["wer", "wen", "was", "welchem"], other: ["schauspielern", "gelernt"] },
+{ character: "Max", dialog: "___ vertraust du denn deine wichtigste Rolle an?", correct: ["Wem"], wrong: ["Wer", "Wen", "Was", "Welchem"], other: ["vertraust", "Rolle"] },
+
+// Akkusativ-Formen (WEN, was, etc.)
+{ character: "Ben", dialog: "___ suchst du denn so verzweifelt backstage?", correct: ["Wen"], wrong: ["Wer", "Wem", "Was", "Welchen"], other: ["suchst", "backstage"] },
+{ character: "Carl", dialog: "___ rufst du denn so laut? Wir sind hier!", correct: ["Wen"], wrong: ["Wer", "Wem", "Was", "Welchen"], other: ["rufst", "laut"] },
+{ character: "Diana", dialog: "___ bewunderst du am meisten von allen Schauspielern?", correct: ["Wen"], wrong: ["Wer", "Wem", "Was", "Welchen"], other: ["bewunderst", "Schauspielern"] },
+{ character: "Max", dialog: "___ lädst du zur Premiere ein, deine Familie?", correct: ["Wen"], wrong: ["Wer", "Wem", "Was", "Welchen"], other: ["lädst", "Familie"] },
+{ character: "Anna", dialog: "___ triffst du nach der Vorstellung im Foyer?", correct: ["Wen"], wrong: ["Wer", "Wem", "Was", "Welchen"], other: ["triffst", "Foyer"] },
+{ character: "Ben", dialog: "___ holst du denn vom Kostümverleih ab?", correct: ["Was"], wrong: ["Wer", "Wen", "Welches", "Das"], other: ["holst", "Kostümverleih"] },
             ],
             level7: [
-                { character: "Anna", dialog: "Kannst du ___ bitte dabei helfen, mein Kostüm zu finden?", correct: ["mir"], wrong: ["mich", "ich", "mein", "du"], other: ["dabei", "finden"] }
+               // LEVEL 7 - Gemischt mit verschiedenen Fällen (30 Dialoge)
+// Dativ-Formen (MIR, DIR, IHM, IHR, UNS, EUCH, IHNEN)
+{ character: "Ben", dialog: "Der Regisseur gibt ___ neue Anweisungen für die schwere Szene.", correct: ["uns"], wrong: ["wir", "unser", "sie", "ich"], other: ["gibt", "Anweisungen"] },
+{ character: "Carl", dialog: "Ich gebe ___ mein Textbuch, du brauchst es dringender als ich.", correct: ["dir"], wrong: ["dich", "du", "dein", "du"], other: ["gebe", "brauchst"] },
+{ character: "Diana", dialog: "Die Kostümbildnerin zeigt ___ die neuen prächtigen Kleider.", correct: ["ihr"], wrong: ["sie", "ihre", "sich", "sie"], other: ["zeigt", "Kleider"] },
+{ character: "Max", dialog: "Mit ___ kann man wirklich gut arbeiten, ihr seid großartig!", correct: ["euch"], wrong: ["ihr", "euer", "sich", "wir"], other: ["arbeiten", "großartig"] },
+
+// Akkusativ-Formen (MICH, DICH, IHN, SIE, UNS, EUCH, SIE)
+{ character: "Anna", dialog: "Ich sehe ___ dort drüben bei den anderen Schauspielern stehen.", correct: ["ihn"], wrong: ["er", "ihm", "sein", "er"], other: ["sehe", "Schauspielern"] },
+{ character: "Ben", dialog: "Hörst du ___ auch so schön singen wie ich?", correct: ["mich"], wrong: ["mir", "ich", "mein", "du"], other: ["hörst", "singen"] },
+{ character: "Carl", dialog: "Wir besuchen ___ nach der Premiere in der Garderobe.", correct: ["sie"], wrong: ["ihr", "ihre", "sich", "wir"], other: ["besuchen", "Garderobe"] },
+{ character: "Diana", dialog: "Siehst du ___ dort hinten? Das ist unser neuer Regisseur.", correct: ["ihn"], wrong: ["er", "ihm", "sein", "der"], other: ["siehst", "Regisseur"] },
+{ character: "Max", dialog: "Ich rufe ___ heute Abend an und erzähle vom Erfolg.", correct: ["euch"], wrong: ["ihr", "euer", "sich", "wir"], other: ["rufe", "Erfolg"] },
+
+// Possessivpronomen in verschiedenen Fällen
+{ character: "Anna", dialog: "Ich danke ___ Eltern für die Unterstützung meiner Karriere.", correct: ["meinen"], wrong: ["meine", "mein", "mir", "ich"], other: ["danke", "Unterstützung"] },
+{ character: "Ben", dialog: "Du hilfst ___ Schwester beim Lernen ihrer schweren Rolle.", correct: ["deiner"], wrong: ["deine", "dein", "dir", "du"], other: ["hilfst", "Lernen"] },
+{ character: "Carl", dialog: "Er vertraut ___ Freunden alle seine Geheimnisse an.", correct: ["seinen"], wrong: ["seine", "sein", "ihm", "er"], other: ["vertraut", "Geheimnisse"] },
+{ character: "Diana", dialog: "Sie schenkt ___ Mutter Blumen nach der gelungenen Premiere.", correct: ["ihrer"], wrong: ["ihre", "ihr", "sie", "sich"], other: ["schenkt", "Premiere"] },
+{ character: "Max", dialog: "Wir erzählen ___ Familien von unserem großen Theatererfolg.", correct: ["unseren"], wrong: ["unsere", "unser", "uns", "wir"], other: ["erzählen", "Theatererfolg"] },
+
+// Komplexe Demonstrativpronomen mit Fällen
+{ character: "Anna", dialog: "Mit ___ Schauspieler dort arbeite ich sehr gerne zusammen.", correct: ["diesem"], wrong: ["dieser", "dieses", "ihm", "er"], other: ["Schauspieler", "zusammen"] },
+{ character: "Ben", dialog: "Von ___ Schauspielerin hier können wir viel lernen.", correct: ["dieser"], wrong: ["diesem", "dieses", "ihr", "sie"], other: ["Schauspielerin", "lernen"] },
+{ character: "Carl", dialog: "In ___ Theater dort haben wir unsere erste Rolle gespielt.", correct: ["jenem"], wrong: ["diesem", "dieses", "ihm", "es"], other: ["Theater", "gespielt"] },
+{ character: "Diana", dialog: "Durch ___ Tür hier kommen die Hauptdarsteller auf die Bühne.", correct: ["diese"], wrong: ["dieser", "diesem", "sie", "es"], other: ["Tür", "Hauptdarsteller"] },
+{ character: "Max", dialog: "Wegen ___ Kostüms da drüben können wir nicht anfangen.", correct: ["jenes"], wrong: ["dieses", "diesem", "es", "das"], other: ["Kostüms", "anfangen"] },
+
+// Reflexivpronomen in verschiedenen Kontexten
+{ character: "Anna", dialog: "Ich kaufe ___ ein neues Theaterbuch für die Vorbereitung.", correct: ["mir"], wrong: ["mich", "sich", "uns", "ich"], other: ["kaufe", "Vorbereitung"] },
+{ character: "Ben", dialog: "Du wäschst ___ die Hände vor dem wichtigen Auftritt.", correct: ["dir"], wrong: ["dich", "sich", "uns", "du"], other: ["wäschst", "Auftritt"] },
+{ character: "Carl", dialog: "Er macht ___ Sorgen um die schwierige Gesangspassage.", correct: ["sich"], wrong: ["ihm", "ihn", "sein", "er"], other: ["Sorgen", "Gesangspassage"] },
+{ character: "Diana", dialog: "Sie gönnt ___ eine Pause nach der anstrengenden Probe.", correct: ["sich"], wrong: ["ihr", "sie", "ihre", "sich"], other: ["gönnt", "anstrengenden"] },
+{ character: "Max", dialog: "Wir nehmen ___ Zeit für die perfekte Vorbereitung.", correct: ["uns"], wrong: ["sich", "euch", "unser", "wir"], other: ["nehmen", "Vorbereitung"] },
+
+// Interrogativpronomen mit Fällen
+{ character: "Ben", dialog: "___ vertraust du denn deine wichtigsten Geheimnisse an?", correct: ["Wem"], wrong: ["Wer", "Wen", "Was", "Welchem"], other: ["vertraust", "Geheimnisse"] },
+{ character: "Carl", dialog: "___ siehst du denn dort drüben in der ersten Reihe?", correct: ["Wen"], wrong: ["Wer", "Wem", "Was", "Welchen"], other: ["siehst", "Reihe"] },
+{ character: "Diana", dialog: "___ suchst du denn so verzweifelt in deiner Tasche?", correct: ["Was"], wrong: ["Wer", "Wen", "Welches", "Das"], other: ["suchst", "Tasche"] },
+{ character: "Max", dialog: "Mit ___ probst du denn die romantische Liebesszene?", correct: ["wem"], wrong: ["wer", "wen", "was", "welchem"], other: ["probst", "Liebesszene"] },
+
+// Relativpronomen in verschiedenen Fällen
+{ character: "Anna", dialog: "Der Schauspieler, ___ ich bewundere, spielt heute den Hamlet.", correct: ["den"], wrong: ["der", "dem", "welchen", "dieser"], other: ["bewundere", "Hamlet"] },
+{ character: "Ben", dialog: "Die Schauspielerin, mit ___ ich arbeite, ist sehr professionell.", correct: ["der"], wrong: ["die", "dem", "welcher", "dieser"], other: ["arbeite", "professionell"] },
+{ character: "Carl", dialog: "Das Theater, in ___ wir spielen, wurde restauriert.", correct: ["dem"], wrong: ["das", "der", "welchem", "diesem"], other: ["spielen", "restauriert"] },
+{ character: "Diana", dialog: "Die Rolle, ___ mir gegeben wurde, ist sehr herausfordernd.", correct: ["die"], wrong: ["der", "das", "welche", "diese"], other: ["gegeben", "herausfordernd"] },
+{ character: "Max", dialog: "Der Regisseur, von ___ wir lernen, ist weltberühmt.", correct: ["dem"], wrong: ["der", "den", "welchem", "diesem"], other: ["lernen", "weltberühmt"] }
             ]
         };
         
