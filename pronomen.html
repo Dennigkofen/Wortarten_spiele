@@ -431,58 +431,7 @@
             // Akt 1: Personalpronomen (ich, du, er, sie, es, wir, ihr, sie)
             level1: [
                 { character: "Anna", dialog: "Hallo! ___ bin Anna und freue mich auf das Theaterstück!", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["Haus", "schön"] }
-                { character: "Ben", dialog: "___ spiele heute den Hauptcharakter in unserem Stück.", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["heute", "Stück"] },
-{ character: "Carl", dialog: "___ habe meinen Text perfekt gelernt und bin bereit!", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["Text", "bereit"] },
-{ character: "Diana", dialog: "___ liebe es, auf der Bühne zu stehen und zu schauspielern.", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["Bühne", "schauspielern"] },
-{ character: "Max", dialog: "___ bin seit zehn Jahren Schauspieler und sehr erfahren.", correct: ["Ich"], wrong: ["Du", "Er", "Sie", "Wir"], other: ["Jahren", "erfahren"] },
-
-// DU - Direkte Ansprache
-{ character: "Anna", dialog: "Ben, ___ bist heute sehr elegant gekleidet!", correct: ["du"], wrong: ["ich", "er", "sie", "wir"], other: ["heute", "elegant"] },
-{ character: "Regisseur", dialog: "Diana, ___ hast eine wundervolle Stimme für diese Rolle.", correct: ["du"], wrong: ["ich", "er", "sie", "wir"], other: ["Stimme", "Rolle"] },
-{ character: "Ben", dialog: "Max, ___ kennst dich mit den Kostümen sehr gut aus.", correct: ["du"], wrong: ["ich", "er", "sie", "wir"], other: ["kennst", "Kostümen"] },
-{ character: "Carl", dialog: "Anna, ___ warst gestern fantastisch in der Probe!", correct: ["du"], wrong: ["ich", "er", "sie", "wir"], other: ["gestern", "Probe"] },
-{ character: "Diana", dialog: "Ben, ___ spielst den König heute Abend perfekt.", correct: ["du"], wrong: ["ich", "er", "sie", "wir"], other: ["König", "perfekt"] },
-
-// ER - Über männliche Person
-{ character: "Anna", dialog: "Wo ist Ben? ___ sollte schon längst hier sein.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Ben", "hier"] },
-{ character: "Diana", dialog: "Carl ist sehr talentiert. ___ spielt die Hauptrolle großartig.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["talentiert", "Hauptrolle"] },
-{ character: "Regisseur", dialog: "Max übt noch seinen Text. ___ will perfekt vorbereitet sein.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["übt", "vorbereitet"] },
-{ character: "Ben", dialog: "Der König im Stück ist mächtig. ___ regiert das ganze Land.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["mächtig", "regiert"] },
-{ character: "Carl", dialog: "Ben hat großes Talent. ___ wird ein berühmter Schauspieler.", correct: ["Er"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Talent", "berühmter"] },
-
-// SIE - Über weibliche Person
-{ character: "Ben", dialog: "Anna hat ihr Kostüm vergessen. ___ ist sehr traurig darüber.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Kostüm", "traurig"] },
-{ character: "Carl", dialog: "Diana singt wunderschön. ___ hat eine Engelsstimme.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["singt", "Engelsstimme"] },
-{ character: "Max", dialog: "Die Königin ist sehr stolz. ___ trägt eine goldene Krone.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Königin", "Krone"] },
-{ character: "Anna", dialog: "Emma arbeitet hart an ihrem Text. ___ will alles perfekt können.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["arbeitet", "perfekt"] },
-{ character: "Diana", dialog: "Die Prinzessin ist sehr schön. ___ trägt ein blaues Kleid.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Prinzessin", "Kleid"] },
-
-// WIR - Gemeinsame Aktivitäten
-{ character: "Anna", dialog: "Ben und ich proben zusammen. ___ spielen ein Liebespaar.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["proben", "Liebespaar"] },
-{ character: "Ben", dialog: "Carl und ich sind beste Freunde. ___ kennen uns seit der Kindheit.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["Freunde", "Kindheit"] },
-{ character: "Ensemble", dialog: "Alle Schauspieler arbeiten hart. ___ wollen eine perfekte Show.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["arbeiten", "Show"] },
-{ character: "Carl", dialog: "Diana und ich singen ein Duett. ___ harmonieren sehr gut zusammen.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["Duett", "harmonieren"] },
-{ character: "Max", dialog: "Anna und ich spielen Geschwister. ___ sehen uns sogar ähnlich.", correct: ["Wir"], wrong: ["Ich", "Du", "Er", "Sie"], other: ["Geschwister", "ähnlich"] },
-
-// IHR - Ansprache an Gruppe
-{ character: "Regisseur", dialog: "Anna, Ben und Carl! ___ seid die besten Schauspieler!", correct: ["Ihr"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["besten", "Schauspieler"] },
-{ character: "Diana", dialog: "Ben und Max, ___ habt eure Kostüme vergessen!", correct: ["ihr"], wrong: ["ich", "du", "er", "wir"], other: ["Kostüme", "vergessen"] },
-{ character: "Anna", dialog: "Carl und Diana, ___ singt so schön zusammen!", correct: ["ihr"], wrong: ["ich", "du", "er", "wir"], other: ["singt", "zusammen"] },
-{ character: "Max", dialog: "Ben und Anna, ___ spielt das Liebespaar perfekt!", correct: ["ihr"], wrong: ["ich", "du", "er", "wir"], other: ["Liebespaar", "perfekt"] },
-{ character: "Carl", dialog: "Max und Diana, ___ habt die schwierigsten Rollen bekommen.", correct: ["ihr"], wrong: ["ich", "du", "er", "wir"], other: ["schwierigsten", "Rollen"] },
-
-// SIE (Plural) - Über mehrere Personen
-{ character: "Regisseur", dialog: "Die Zuschauerkinder sind begeistert. ___ applaudieren nach jeder Szene.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Zuschauerkinder", "Szene"] },
-{ character: "Anna", dialog: "Ben und Carl sind Brüder im Stück. ___ streiten sich ständig.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Brüder", "streiten"] },
-{ character: "Diana", dialog: "Die beiden Prinzessinnen sind schön. ___ tragen weiße Kleider.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Prinzessinnen", "Kleider"] },
-{ character: "Ben", dialog: "Max und Anna sind Geschwister. ___ helfen sich immer gegenseitig.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Geschwister", "gegenseitig"] },
-{ character: "Max", dialog: "Die Musiker spielen wunderschön. ___ machen das Stück noch schöner.", correct: ["Sie"], wrong: ["Ich", "Du", "Er", "Wir"], other: ["Musiker", "schöner"] },
-
-// ES - Über Sachen/Dinge
-{ character: "Ben", dialog: "Das Theater ist sehr alt. ___ wurde vor 200 Jahren gebaut.", correct: ["Es"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Theater", "gebaut"] },
-{ character: "Carl", dialog: "Das Kostüm ist zu groß. ___ passt mir gar nicht.", correct: ["Es"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Kostüm", "passt"] },
-{ character: "Diana", dialog: "Das Lied ist sehr schön. ___ macht mich immer glücklich.", correct: ["Es"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["Lied", "glücklich"] },
-{ character: "Max", dialog: "Das Stück beginnt um 8 Uhr. ___ dauert zwei Stunden.", correct: ["Es"], wrong: ["Ich", "Du", "Sie", "Wir"], other: ["beginnt", "Stunden"] },// HIER WEITERE LEVEL 1 DIALOGE EINFÜGEN
+                // HIER WEITERE LEVEL 1 DIALOGE EINFÜGEN
             ],
             
             // Akt 2: + Reflexivpronomen (mich, dich, sich, uns, euch)
