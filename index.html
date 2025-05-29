@@ -217,7 +217,7 @@
 
         <div class="stats">
             <div class="stat-card">
-                <span class="stat-number">5</span>
+                <span class="stat-number">6</span>
                 <span class="stat-label">Verfügbare Spiele</span>
             </div>
             <div class="stat-card">
@@ -225,7 +225,7 @@
                 <span class="stat-label">Wortarten</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number">300+</span>
+                <span class="stat-number">500+</span>
                 <span class="stat-label">Übungswörter</span>
             </div>
             <div class="stat-card">
@@ -274,14 +274,14 @@
                 <span class="game-icon">🌈</span>
                 <h2 class="game-title">Adjektive</h2>
                 <p class="game-description">
-                    <strong>Eigenschaften-Finder:</strong> Finde das richtige Adjektiv zu verschiedenen Gegenständen! 
-                    Beschreibe die Welt um dich herum mit den passenden Eigenschaften.
+                    <strong>Adjektive-Labor:</strong> Experimentiere mit 58 verschiedenen Objekten und finde das passende Adjektiv! 
+                    Von einfachen bis zu hochkomplexen Eigenschaften - werde zum Beschreibungs-Experten!
                 </p>
                 <ul class="game-features">
-                    <li>🎯 Passende Eigenschaften finden</li>
-                    <li>🖼️ Vielfältige Gegenstände</li>
-                    <li>🧠 Wortschatz erweitern</li>
-                    <li>⭐ Bewertungssystem</li>
+                    <li>🎯 58 einzigartige Experimente</li>
+                    <li>⏰ 5-Sekunden Timer</li>
+                    <li>📈 4 Schwierigkeitsstufen</li>
+                    <li>🧠 Wortschatz-Aufbau</li>
                 </ul>
                 <a href="#" class="play-button" onclick="openAdjektiveSpiel()">Jetzt Spielen</a>
             </div>
@@ -303,44 +303,44 @@
                 <a href="#" class="play-button" onclick="openPronomenSpiel()">Jetzt Spielen</a>
             </div>
 
+            <!-- Partikel-Odyssee Spiel -->
+            <div class="game-card">
+                <span class="game-icon">🚀</span>
+                <h2 class="game-title">Partikel-Odyssee</h2>
+                <p class="game-description">
+                    <strong>Weltraum-Abenteuer:</strong> Reise durch 7 verschiedene Planeten und meistere alle Partikel-Arten! 
+                    Von Adverbien bis Artikeln - rette das Sprachuniversum als Sprach-Astronaut!
+                </p>
+                <ul class="game-features">
+                    <li>🌌 7 einzigartige Planeten</li>
+                    <li>⏰ 7-Sekunden pro Mission</li>
+                    <li>🪐 Endlos-Planet für Experten</li>
+                    <li>🚀 Weltraum-Atmosphäre mit Sternen</li>
+                </ul>
+                <a href="#" class="play-button" onclick="openPartikelSpiel()">Jetzt Spielen</a>
+            </div>
+
             <!-- Wortartenjagd Spiel -->
             <div class="game-card">
                 <span class="game-icon">🐦</span>
                 <h2 class="game-title">Wortartenjagd</h2>
                 <p class="game-description">
-                    Steuere einen Vogel durch die Lüfte und sammle Wörter der richtigen Wortart! 
+                    <strong>Flugspiel:</strong> Steuere einen Vogel durch die Lüfte und sammle Wörter der richtigen Wortart! 
                     Ein spannendes Flugspiel, das dein Wissen über alle Wortarten testet.
                 </p>
                 <ul class="game-features">
                     <li>🎯 5 verschiedene Wortarten</li>
+                    <li>🎮 WASD-Steuerung</li>
                     <li>❤️ 3-Leben-System</li>
                     <li>🏆 Highscore mit Firebase</li>
-                    <li>🎮 WASD-Steuerung</li>
                 </ul>
                 <a href="#" class="play-button" onclick="openWortartenjagd()">Jetzt Spielen</a>
-            </div>
-
-            <!-- Platzhalter für zukünftige Spiele -->
-            <div class="game-card coming-soon">
-                <span class="game-icon">⚡</span>
-                <h2 class="game-title">Partikel - Verstärker-Labor</h2>
-                <p class="game-description">
-                    Experimentiere im Wissenschaftslabor und verstärke Sätze mit den 
-                    richtigen Partikeln! Sätze ändern sich visuell.
-                </p>
-                <ul class="game-features">
-                    <li>🔬 Wissenschafts-Experiment</li>
-                    <li>📝 Satz-Lücken füllen</li>
-                    <li>💫 Visuelle Satz-Verstärkung</li>
-                    <li>🧪 Labor-Atmosphäre</li>
-                </ul>
-                <button class="play-button" disabled>Bald verfügbar</button>
             </div>
         </div>
 
         <div class="footer">
             <p>© 2025 Deutsch Lernspiele - Entwickelt für interaktives Lernen</p>
-            <p>Weitere Spiele folgen bald! 🚀</p>
+            <p>Alle Spiele verfügbar! Viel Spaß beim Lernen! 🚀</p>
         </div>
     </div>
 
@@ -363,6 +363,11 @@
         function openPronomenSpiel() {
             // Direkt zum Pronomen-Spiel navigieren
             window.location.href = 'pronomen.html';
+        }
+        
+        function openPartikelSpiel() {
+            // Direkt zum Partikel-Spiel navigieren
+            window.location.href = 'partikel.html';
         }
         
         function openWortartenjagd() {
