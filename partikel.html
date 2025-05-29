@@ -722,40 +722,62 @@
             }
         };
         
-        function startGame() {
-            console.log("startGame() wurde aufgerufen");
-             document.getElementById('startScreen').style.display = 'none';
-    gameStarted = true;
-    currentPlanet = 1;
-    planetProgress = 0;
-    score = 0;
-    lives = 3;
-    updateDisplay();
-    showLevelIntro();
-}
+       // Reparierte Start-Funktion
+        function startGameClick() {
+            console.log("Start Game geklickt!");
+            try {
+                document.getElementById('startScreen').style.display = 'none';
+                gameStarted = true;
+                currentPlanet = 1;
+                planetProgress = 0;
+                planetCorrectAnswers = 0;
+                score = 0;
+                lives = 3;
+                updateDisplay();
+                showLevelIntro();
+            } catch (error) {
+                console.error("Fehler beim Starten:", error);
+                alert("Fehler beim Starten des Spiels: " + error.message);
+            }
         }
         
         function showLevelIntro() {
-            const planet = planetData[currentPlanet];
-            
-            document.getElementById('introPlanetIcon').textContent = planet.icon;
-            document.getElementById('introPlanetName').textContent = planet.name;
-            document.getElementById('introPlanetDescription').textContent = planet.description;
-            document.getElementById('introPlanetExamples').textContent = planet.examples;
-            document.getElementById('introPlanetMission').textContent = planet.mission;
-            
-            document.getElementById('levelIntro').style.display = 'flex';
+            console.log("Level Intro wird gezeigt");
+            try {
+                const planet = planetData[currentPlanet];
+                if (!planet) {
+                    console.error("Planet nicht gefunden:", currentPlanet);
+                    return;
+                }
+                
+                document.getElementById('introPlanetIcon').textContent = planet.icon;
+                document.getElementById('introPlanetName').textContent = planet.name;
+                document.getElementById('introPlanetDescription').textContent = planet.description;
+                document.getElementById('introPlanetExamples').textContent = planet.examples;
+                document.getElementById('introPlanetMission').textContent = planet.mission;
+                
+                document.getElementById('levelIntro').style.display = 'flex';
+            } catch (error) {
+                console.error("Fehler bei Level Intro:", error);
+            }
         }
         
-        function startLevel() {
-            document.getElementById('levelIntro').style.display = 'none';
-            gameRunning = true;
-            planetProgress = 0;
-            planetCorrectAnswers = 0; // Reset für neuen Planeten
-            loadMission();
+        function startLevelClick() {
+            console.log("Start Level geklickt!");
+            try {
+                document.getElementById('levelIntro').style.display = 'none';
+                gameRunning = true;
+                planetProgress = 0;
+                planetCorrectAnswers = 0;
+                loadMission();
+            } catch (error) {
+                console.error("Fehler beim Level Start:", error);
+                alert("Fehler beim Level Start: " + error.message);
+            }
         }
         
         function startTimer() {
+            if (timer) clearInterval(timer);
             timeRemaining = 7;
             updateTimerDisplay();
             
@@ -771,23 +793,27 @@
         }
         
         function updateTimerDisplay() {
-            const timerDisplay = document.getElementById('timerDisplay');
-            
-            // Farbwechsel je nach verbleibender Zeit
-            let color = '#0f0f23';
-            let bgColor = 'rgba(78, 205, 196, 0.9)';
-            
-            if (timeRemaining <= 2) {
-                bgColor = 'rgba(255, 107, 107, 0.9)'; // Rot
-                color = 'white';
-            } else if (timeRemaining <= 4) {
-                bgColor = 'rgba(255, 193, 7, 0.9)'; // Gelb
-                color = '#0f0f23';
+            try {
+                const timerDisplay = document.getElementById('timerDisplay');
+                if (!timerDisplay) return;
+                
+                let color = '#0f0f23';
+                let bgColor = 'rgba(78, 205, 196, 0.9)';
+                
+                if (timeRemaining <= 2) {
+                    bgColor = 'rgba(255, 107, 107, 0.9)';
+                    color = 'white';
+                } else if (timeRemaining <= 4) {
+                    bgColor = 'rgba(255, 193, 7, 0.9)';
+                    color = '#0f0f23';
+                }
+                
+                timerDisplay.textContent = `⏰ ${timeRemaining}s`;
+                timerDisplay.style.backgroundColor = bgColor;
+                timerDisplay.style.color = color;
+            } catch (error) {
+                console.error("Timer Display Fehler:", error);
             }
-            
-            timerDisplay.textContent = `⏰ ${timeRemaining}s`;
-            timerDisplay.style.backgroundColor = bgColor;
-            timerDisplay.style.color = color;
         }
         
         function timeUp() {
@@ -797,8 +823,10 @@
             lives--;
             
             const feedbackElement = document.getElementById('feedback');
-            feedbackElement.textContent = `Zeit abgelaufen! ⏰ Richtig wäre gewesen: ${currentMission.correct.join(", ")}`;
-            feedbackElement.className = 'feedback wrong';
+            if (feedbackElement && currentMission) {
+                feedbackElement.textContent = `Zeit abgelaufen! ⏰ Richtig wäre gewesen: ${currentMission.correct.join(", ")}`;
+                feedbackElement.className = 'feedback wrong';
+            }
             
             if (lives <= 0) {
                 setTimeout(() => {
@@ -814,163 +842,189 @@
         }
         
         function loadMission() {
+            console.log("Lade Mission für Planet:", currentPlanet);
             if (!gameRunning) return;
             
-            const planet = planetData[currentPlanet];
-            
-            if (!planet || !planet.tasks) {
-                gameOver();
-                return;
-            }
-            
-            // Prüfe ob Planet abgeschlossen (10 korrekte Antworten)
-            // Ausnahme: Endlos-Planet (Planet 7) hat keine Begrenzung
-            if (planetCorrectAnswers >= 10 && !planet.endless) {
-                if (currentPlanet < 7) {
-                    currentPlanet++;
-                    showLevelIntro();
-                } else {
-                    // Alle Planeten abgeschlossen
-                    gameWon();
+            try {
+                const planet = planetData[currentPlanet];
+                
+                if (!planet || !planet.tasks) {
+                    console.error("Planet oder Tasks nicht gefunden");
+                    gameOver();
+                    return;
                 }
-                return;
+                
+                // Prüfe ob Planet abgeschlossen (10 korrekte Antworten)
+                if (planetCorrectAnswers >= 10 && !planet.endless) {
+                    if (currentPlanet < 7) {
+                        currentPlanet++;
+                        showLevelIntro();
+                    } else {
+                        gameWon();
+                    }
+                    return;
+                }
+                
+                // Wähle zufällige Aufgabe
+                currentMission = planet.tasks[Math.floor(Math.random() * planet.tasks.length)];
+                
+                // UI aktualisieren
+                document.getElementById('planetName').textContent = planet.name;
+                document.getElementById('planetDescription').textContent = planet.description;
+                document.getElementById('planet').textContent = planet.icon;
+                
+                if (planet.endless) {
+                    document.getElementById('missionText').textContent = `Endlos-Mission: ${planet.mission} (${planetCorrectAnswers} geschafft)`;
+                } else {
+                    document.getElementById('missionText').textContent = `Mission: ${planet.mission}`;
+                }
+                
+                document.getElementById('sentenceText').innerHTML = currentMission.sentence.replace('___', '<span class="missing-word">?</span>');
+                
+                // Sterne im Hintergrund erstellen
+                createStars();
+                
+                // Buttons erstellen
+                const allOptions = [...currentMission.correct, ...currentMission.wrong, ...currentMission.other];
+                const shuffledOptions = allOptions.sort(() => Math.random() - 0.5);
+                
+                const buttonContainer = document.getElementById('partikelButtons');
+                buttonContainer.innerHTML = '';
+                
+                shuffledOptions.forEach(option => {
+                    const button = document.createElement('button');
+                    button.className = 'partikel-button';
+                    button.textContent = option;
+                    button.onclick = () => selectPartikel(option);
+                    buttonContainer.appendChild(button);
+                });
+                
+                document.getElementById('feedback').textContent = '';
+                buttonsDisabled = false;
+                startTimer();
+                
+            } catch (error) {
+                console.error("Fehler beim Laden der Mission:", error);
+                alert("Fehler beim Laden der Mission: " + error.message);
             }
-            
-            // Wähle zufällige Aufgabe vom aktuellen Planeten
-            currentMission = planet.tasks[Math.floor(Math.random() * planet.tasks.length)];
-            
-            // UI aktualisieren
-            document.getElementById('planetName').textContent = planet.name;
-            document.getElementById('planetDescription').textContent = planet.description;
-            document.getElementById('planet').textContent = planet.icon;
-            
-            // Verschiedene Mission-Texte je nach Planet
-            if (planet.endless) {
-                document.getElementById('missionText').textContent = `Endlos-Mission: ${planet.mission} (${planetCorrectAnswers} geschafft)`;
-            } else {
-                document.getElementById('missionText').textContent = `Mission: ${planet.mission}`;
-            }
-            
-            document.getElementById('sentenceText').innerHTML = currentMission.sentence.replace('___', '<span class="missing-word">?</span>');
-            
-            // Sterne im Hintergrund erstellen
-            createStars();
-            
-            // Buttons erstellen - NUR aus korrekter Wortart + andere Wörter
-            const allOptions = [...currentMission.correct, ...currentMission.wrong, ...currentMission.other];
-            const shuffledOptions = allOptions.sort(() => Math.random() - 0.5);
-            
-            const buttonContainer = document.getElementById('partikelButtons');
-            buttonContainer.innerHTML = '';
-            
-            shuffledOptions.forEach(option => {
-                const button = document.createElement('button');
-                button.className = 'partikel-button';
-                button.textContent = option;
-                button.onclick = () => selectPartikel(option);
-                buttonContainer.appendChild(button);
-            });
-            
-            document.getElementById('feedback').textContent = '';
-            buttonsDisabled = false;
-            startTimer();
         }
         
         function createStars() {
-            const starsContainer = document.getElementById('stars');
-            starsContainer.innerHTML = '';
-            
-            for (let i = 0; i < 20; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.width = Math.random() * 3 + 1 + 'px';
-                star.style.height = star.style.width;
-                star.style.animationDelay = Math.random() * 2 + 's';
-                starsContainer.appendChild(star);
+            try {
+                const starsContainer = document.getElementById('stars');
+                if (!starsContainer) return;
+                
+                starsContainer.innerHTML = '';
+                
+                for (let i = 0; i < 20; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.width = Math.random() * 3 + 1 + 'px';
+                    star.style.height = star.style.width;
+                    star.style.animationDelay = Math.random() * 2 + 's';
+                    starsContainer.appendChild(star);
+                }
+            } catch (error) {
+                console.error("Fehler beim Erstellen der Sterne:", error);
             }
         }
         
         function selectPartikel(selectedPartikel) {
             if (buttonsDisabled || !gameRunning) return;
             
-            clearInterval(timer);
-            buttonsDisabled = true;
-            const feedbackElement = document.getElementById('feedback');
+            console.log("Partikel ausgewählt:", selectedPartikel);
             
-            document.querySelectorAll('.partikel-button').forEach(btn => {
-                btn.disabled = true;
-            });
-            
-            if (currentMission.correct.includes(selectedPartikel)) {
-                planetCorrectAnswers++; // Erhöhe korrekte Antworten für aktuellen Planeten
-                const timeBonus = timeRemaining * 5;
-                score += 25 + timeBonus;
+            try {
+                clearInterval(timer);
+                buttonsDisabled = true;
+                const feedbackElement = document.getElementById('feedback');
                 
-                let progressText = `${planetCorrectAnswers}/10 auf diesem Planeten`;
-                if (planetCorrectAnswers >= 10) {
-                    progressText = "Planet abgeschlossen! 🎉";
-                }
+                document.querySelectorAll('.partikel-button').forEach(btn => {
+                    btn.disabled = true;
+                });
                 
-                feedbackElement.textContent = `Perfekt! "${selectedPartikel}" ist korrekt! 🚀 (+${25 + timeBonus} Punkte) - ${progressText}`;
-                feedbackElement.className = 'feedback correct';
-                
-                // Planet glüht
-                document.getElementById('planet').className = 'planet planet-glow';
-                
-                setTimeout(() => {
-                    nextMission();
-                }, 1500);
-                
-            } else {
-                lives--;
-                const correctOptions = currentMission.correct.join(", ");
-                feedbackElement.textContent = `Mission fehlgeschlagen! "${selectedPartikel}" ist falsch. Richtig: ${correctOptions}`;
-                feedbackElement.className = 'feedback wrong';
-                
-                if (lives <= 0) {
-                    setTimeout(() => {
-                        gameOver();
-                    }, 2000);
-                } else {
+                if (currentMission.correct.includes(selectedPartikel)) {
+                    planetCorrectAnswers++;
+                    const timeBonus = timeRemaining * 5;
+                    score += 25 + timeBonus;
+                    
+                    let progressText = `${planetCorrectAnswers}/10 auf diesem Planeten`;
+                    if (planetCorrectAnswers >= 10) {
+                        progressText = "Planet abgeschlossen! 🎉";
+                    }
+                    
+                    feedbackElement.textContent = `Perfekt! "${selectedPartikel}" ist korrekt! 🚀 (+${25 + timeBonus} Punkte) - ${progressText}`;
+                    feedbackElement.className = 'feedback correct';
+                    
+                    // Planet glüht
+                    document.getElementById('planet').className = 'planet planet-glow';
+                    
                     setTimeout(() => {
                         nextMission();
-                    }, 2000);
+                    }, 1500);
+                    
+                } else {
+                    lives--;
+                    const correctOptions = currentMission.correct.join(", ");
+                    feedbackElement.textContent = `Mission fehlgeschlagen! "${selectedPartikel}" ist falsch. Richtig: ${correctOptions}`;
+                    feedbackElement.className = 'feedback wrong';
+                    
+                    if (lives <= 0) {
+                        setTimeout(() => {
+                            gameOver();
+                        }, 2000);
+                    } else {
+                        setTimeout(() => {
+                            nextMission();
+                        }, 2000);
+                    }
                 }
+                
+                updateDisplay();
+                
+            } catch (error) {
+                console.error("Fehler bei Partikel-Auswahl:", error);
             }
-            
-            updateDisplay();
         }
         
         function nextMission() {
-            document.getElementById('planet').className = 'planet';
-            
-            setTimeout(() => {
-                loadMission();
-            }, 500);
+            try {
+                document.getElementById('planet').className = 'planet';
+                
+                setTimeout(() => {
+                    loadMission();
+                }, 500);
+            } catch (error) {
+                console.error("Fehler bei nächster Mission:", error);
+            }
         }
         
         function updateDisplay() {
-            document.getElementById('score').textContent = score;
-            document.getElementById('currentPlanet').textContent = currentPlanet;
-            
-            // Für Endlos-Planet: Zeige unbegrenzte Anzeige
-            const planet = planetData[currentPlanet];
-            if (planet && planet.endless) {
-                document.getElementById('planetProgress').textContent = planetCorrectAnswers + '/∞';
-            } else {
-                document.getElementById('planetProgress').textContent = planetCorrectAnswers;
+            try {
+                document.getElementById('score').textContent = score;
+                document.getElementById('currentPlanet').textContent = currentPlanet;
+                
+                // Für Endlos-Planet: Zeige unbegrenzte Anzeige
+                const planet = planetData[currentPlanet];
+                if (planet && planet.endless) {
+                    document.getElementById('planetProgress').textContent = planetCorrectAnswers + '/∞';
+                } else {
+                    document.getElementById('planetProgress').textContent = planetCorrectAnswers;
+                }
+                
+                let heartsDisplay = '';
+                for (let i = 0; i < lives; i++) {
+                    heartsDisplay += '❤️';
+                }
+                for (let i = lives; i < 3; i++) {
+                    heartsDisplay += '🖤';
+                }
+                document.getElementById('lives').textContent = heartsDisplay;
+            } catch (error) {
+                console.error("Fehler beim Display Update:", error);
             }
-            
-            let heartsDisplay = '';
-            for (let i = 0; i < lives; i++) {
-                heartsDisplay += '❤️';
-            }
-            for (let i = lives; i < 3; i++) {
-                heartsDisplay += '🖤';
-            }
-            document.getElementById('lives').textContent = heartsDisplay;
         }
         
         function gameWon() {
@@ -997,22 +1051,26 @@
         }
         
         function restartGame() {
-            clearInterval(timer);
-            gameRunning = false;
-            gameStarted = false;
-            score = 0;
-            lives = 3;
-            currentPlanet = 1;
-            planetProgress = 0;
-            planetCorrectAnswers = 0; // Reset auch hier
-            buttonsDisabled = false;
-            timeRemaining = 7;
-            currentMission = null;
-            
-            document.getElementById('gameOver').style.display = 'none';
-            document.getElementById('startScreen').style.display = 'flex';
-            
-            updateDisplay();
+            try {
+                clearInterval(timer);
+                gameRunning = false;
+                gameStarted = false;
+                score = 0;
+                lives = 3;
+                currentPlanet = 1;
+                planetProgress = 0;
+                planetCorrectAnswers = 0;
+                buttonsDisabled = false;
+                timeRemaining = 7;
+                currentMission = null;
+                
+                document.getElementById('gameOver').style.display = 'none';
+                document.getElementById('startScreen').style.display = 'flex';
+                
+                updateDisplay();
+            } catch (error) {
+                console.error("Fehler beim Restart:", error);
+            }
         }
         
         async function saveHighscore() {
@@ -1105,11 +1163,14 @@
         }
         
         // Spiel initialisieren
-        updateDisplay();
-        loadHighscores();
-        createStars();
-        
-        console.log("Partikel-Odyssee geladen - Bereit für die Mission!");
+        try {
+            updateDisplay();
+            loadHighscores();
+            createStars();
+            console.log("Partikel-Odyssee erfolgreich geladen!");
+        } catch (error) {
+            console.error("Fehler beim Initialisieren:", error);
+        }
     </script>
 </body>
 </html>
