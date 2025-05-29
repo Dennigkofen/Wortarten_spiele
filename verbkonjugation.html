@@ -493,7 +493,7 @@ function startTimer() {
 
 function submitAnswer() {
     if (!currentGame.isPlaying) return;
-    
+
     const userAnswer = document.getElementById('answerInput').value.trim().toLowerCase();
     const correctAnswer = currentGame.currentChallenge.correctAnswer.toLowerCase();
     let isCorrect = false;
@@ -505,50 +505,26 @@ function submitAnswer() {
         isCorrect = userAnswer === correctAnswer;
     }
 
+    clearInterval(currentGame.timer);  // Timer kurz stoppen, um Neustart zu vermeiden
+
     if (isCorrect) {
         currentGame.correct++;
         currentGame.streak++;
-        currentGame.timeLeft += 8; // Fügt 8 Sekunden hinzu
+        currentGame.timeLeft += 8;  // Bonuszeit nur bei korrekter Antwort
         showFeedback(true, currentGame.currentChallenge.correctAnswer);
-        setTimeout(() => {
-            if (currentGame.isPlaying) {
-                nextChallenge();
-            }
-        }, 1500);
     } else {
         currentGame.streak = 0;
         showFeedback(false, currentGame.currentChallenge.correctAnswer);
-        setTimeout(endGame, 2000);
     }
-}
 
-        function submitAnswer() {
-            if (!currentGame.isPlaying) return;
-            
-            const userAnswer = document.getElementById('answerInput').value.trim().toLowerCase();
-            const correctAnswer = currentGame.currentChallenge.correctAnswer.toLowerCase();
-            let isCorrect = false;
-if (currentGame.currentChallenge.person === 'Er/Sie/Es') {
-    const answers = ['er', 'sie', 'es'].map(p => correctAnswer.toLowerCase().replace('er/sie/es', p));
-    isCorrect = answers.includes(userAnswer);
-} else {
-    isCorrect = userAnswer === correctAnswer;
-}
-            
-            clearInterval(currentGame.timer);
-            
-       if (isCorrect) {
-    currentGame.correct++;
-    currentGame.streak++;
-    currentGame.timeLeft += 8; // Fügt 8 Sekunden hinzu
-    showFeedback(true, currentGame.currentChallenge.correctAnswer);
+    // Nach kurzer Pause nächste Frage laden
     setTimeout(() => {
         if (currentGame.isPlaying) {
             nextChallenge();
-                    }
-                }, 1500);
-            }
+            startTimer(); // Timer neu starten
         }
+    }, 1500);
+}
 
         function showFeedback(isCorrect, correctAnswer) {
             const feedback = document.getElementById('feedback');
