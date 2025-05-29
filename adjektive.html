@@ -1,1051 +1,456 @@
-art.style.animation = `sparkle ${Math.random() * 2 + 1.5}s ease-in-out`;
-                art.style.pointerEvents = 'none';
-                particlesContainer.appendChild(art);
-                
-                setTimeout(() => {
-                    art.remove();
-                }, 3500);
-            }
-        }
-        
-        function createGoldSparkles() {
-            const particlesContainer = document.getElementById('particles');
-            const goldSymbols = ['💎', '✨', '⭐', '🌟'];
-            
-            for (let i = 0; i < 12; i++) {
-                const gold = document.createElement('div');
-                gold.textContent = goldSymbols[Math.floor(Math.random() * goldSymbols.length)];
-                gold.style.position = 'absolute';
-                gold.style.left = Math.random() * 80 + 10 + '%';
-                gold.style.top = Math.random() * 80 + 10 + '%';
-                gold.style.fontSize = Math.random() * 20 + 15 + 'px';
-                gold.style.animation = `sparkle ${Math.random() * 2 + 1}s ease-in-out`;
-                gold.style.pointerEvents = 'none';
-                gold.style.color = 'gold';
-                particlesContainer.appendChild(gold);
-                
-                setTimeout(() => {
-                    gold.remove();
-                }, 3000);
-            }
-        }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adjektive - Eigenschafts-Labor</title>
+    <title>Adjektive-Labor</title>
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #E91E63, #9C27B0, #3F51B5, #2196F3, #00BCD4, #4CAF50, #8BC34A, #CDDC39, #FFEB3B, #FF9800, #FF5722);
-            background-size: 400% 400%;
-            animation: rainbowBackground 10s ease infinite;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            user-select: none;
-        }
-        
-        @keyframes rainbowBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .game-container {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-        }
-        
-        .game-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            flex-wrap: wrap;
-        }
-        
-        .score {
-            color: #E91E63;
-            margin: 5px;
-        }
-        
-        .timer-bar {
-            background: #FFE0E6;
-            border: 2px solid #E91E63;
-            border-radius: 10px;
-            height: 20px;
-            margin: 15px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .timer-fill {
-            background: linear-gradient(90deg, #4CAF50, #FFC107, #F44336);
-            height: 100%;
-            width: 100%;
-            border-radius: 8px;
-            transition: width 0.1s linear;
-        }
-        
-        .timer-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-            color: #333;
-            font-size: 14px;
-        }
-        
-        .difficulty-info {
-            background: linear-gradient(45deg, #E3F2FD, #F3E5F5);
-            border: 2px solid #9C27B0;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #6A1B9A;
-        }
-        
-        .task-area {
-            background: linear-gradient(45deg, #FFE0E6, #F3E5F5);
-            border: 3px solid #E91E63;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .task-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: #AD1457;
-            text-align: center;
-        }
-        
-        .experiment-area {
-            background: linear-gradient(to bottom, #E8F5E8, #F0F4FF);
-            border: 3px solid #4CAF50;
-            border-radius: 15px;
-            height: 300px;
-            position: relative;
-            margin-bottom: 20px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .object-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        
-        .main-object {
-            font-size: 120px;
-            transition: all 0.8s ease;
-            transform-origin: center;
-            position: relative;
-            z-index: 5;
-        }
-        
-        .object-label {
-            font-size: 18px;
-            font-weight: bold;
-            color: #2E7D32;
-            margin-top: 10px;
-            padding: 5px 15px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-        }
-        
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        .word-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-            max-width: 100%;
-        }
-        
-        .word-button {
-            background: linear-gradient(45deg, #9C27B0, #E91E63);
-            color: white;
-            border: none;
-            padding: 15px 20px;
-            border-radius: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .word-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-        
-        .word-button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .feedback {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 0;
-            min-height: 40px;
-        }
-        
+        body { margin: 0; padding: 20px; background: linear-gradient(135deg, #E91E63, #9C27B0, #2196F3, #4CAF50, #FF9800); font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 20px; max-width: 800px; text-align: center; }
+        .info { display: flex; justify-content: space-between; margin: 15px 0; font-weight: bold; }
+        .timer { background: #FFE0E6; border: 2px solid #E91E63; border-radius: 10px; height: 20px; margin: 15px 0; position: relative; }
+        .timer-fill { background: linear-gradient(90deg, #4CAF50, #FFC107, #F44336); height: 100%; transition: width 0.1s; border-radius: 8px; }
+        .timer-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; }
+        .task { background: #FFE0E6; border: 3px solid #E91E63; border-radius: 15px; padding: 20px; margin: 20px 0; font-size: 24px; font-weight: bold; color: #AD1457; }
+        .object-area { background: linear-gradient(to bottom, #E8F5E8, #F0F4FF); border: 3px solid #4CAF50; border-radius: 15px; height: 250px; margin: 20px 0; display: flex; align-items: center; justify-content: center; flex-direction: column; position: relative; }
+        .object { font-size: 100px; transition: all 0.8s ease; }
+        .label { font-size: 18px; font-weight: bold; color: #2E7D32; margin-top: 10px; background: rgba(255,255,255,0.8); padding: 5px 15px; border-radius: 15px; }
+        .buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
+        .btn { background: linear-gradient(45deg, #9C27B0, #E91E63); color: white; border: none; padding: 15px; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .btn:hover { transform: scale(1.05); }
+        .btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        .feedback { font-size: 18px; font-weight: bold; margin: 15px 0; min-height: 30px; }
         .correct { color: #4CAF50; }
         .wrong { color: #F44336; }
-        
-        .start-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(233, 30, 99, 0.95);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-radius: 20px;
-            z-index: 1000;
-        }
-        
-        .start-screen h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .start-screen p {
-            font-size: 1.2rem;
-            margin: 10px 0;
-            text-align: center;
-        }
-        
-        .game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.98);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
-            display: none;
-            z-index: 1000;
-        }
-        
-        .highscore-section {
-            margin-top: 20px;
-            padding: 15px;
-            background: linear-gradient(45deg, #FCE4EC, #F3E5F5);
-            border-radius: 10px;
-            border: 2px solid #E91E63;
-        }
-        
-        .highscore-section h3 {
-            color: #AD1457;
-            margin-top: 0;
-        }
-        
-        .highscore-section ol {
-            text-align: left;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        .highscore-section li {
-            padding: 5px 0;
-            border-bottom: 1px solid #F8BBD9;
-        }
-        
-        button {
-            background: #E91E63;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 10px;
-            transition: all 0.3s;
-        }
-        
-        button:hover {
-            background: #C2185B;
-            transform: translateY(-2px);
-        }
-        
-        input {
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            margin: 10px;
-        }
-        
-        @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
-        }
-        
-        @keyframes grow {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes shrink {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.7); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes colorShift {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-        
-        .grow { animation: grow 1s ease-in-out !important; }
-        .shrink { animation: shrink 1s ease-in-out !important; }
-        .colorful { animation: colorShift 2s ease-in-out !important; }
-        .shake-effect { animation: shake 0.5s ease-in-out !important; }
-        
-        @media (max-width: 768px) {
-            .game-container {
-                width: 95%;
-                padding: 15px;
-            }
-            
-            .word-buttons {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            
-            .word-button {
-                font-size: 14px;
-                padding: 12px 16px;
-                min-height: 55px;
-            }
-            
-            .task-text {
-                font-size: 20px;
-            }
-            
-            .main-object {
-                font-size: 80px;
-            }
-            
-            .experiment-area {
-                height: 250px;
-            }
-        }
+        .start-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(233,30,99,0.95); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 20px; }
+        .start-screen h2 { font-size: 2rem; margin-bottom: 20px; }
+        .start-screen p { margin: 5px 0; }
+        .game-over { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.98); padding: 30px; border-radius: 20px; text-align: center; display: none; }
+        input { padding: 10px; border: 2px solid #ddd; border-radius: 10px; margin: 10px; }
+        button { background: #E91E63; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; margin: 10px; }
+        @keyframes grow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+        @keyframes shrink { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.7); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        .grow { animation: grow 1s ease-in-out; }
+        .shrink { animation: shrink 1s ease-in-out; }
+        .shake-effect { animation: shake 0.5s ease-in-out; }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <h1>🌈 Adjektive - Eigenschafts-Labor 🔬</h1>
+    <div class="container">
+        <h1>🌈 Adjektive-Labor 🔬</h1>
         
-        <div class="game-info">
-            <div class="score">Punkte: <span id="score">0</span></div>
-            <div class="score">Leben: <span id="lives">❤️❤️❤️</span></div>
-            <div class="score">Level: <span id="level">1</span></div>
+        <div class="info">
+            <span>Punkte: <span id="score">0</span></span>
+            <span>Leben: <span id="lives">❤️❤️❤️</span></span>
+            <span>Level: <span id="level">1</span></span>
         </div>
         
-        <div class="difficulty-info">
-            <span id="difficultyText">Level 1 - Offensichtliche Kombinationen</span>
-        </div>
-        
-        <div class="timer-bar">
+        <div class="timer">
             <div class="timer-fill" id="timerFill"></div>
-            <div class="timer-text" id="timerText">3s</div>
+            <div class="timer-text" id="timerText">5s</div>
         </div>
         
-        <div class="task-area">
-            <div class="task-text" id="taskText">Bereit für dein erstes Experiment?</div>
+        <div class="task" id="taskText">Bereit?</div>
+        
+        <div class="object-area">
+            <div class="object" id="object">🎯</div>
+            <div class="label" id="label">Objekt</div>
         </div>
         
-        <div class="experiment-area">
-            <div class="particles" id="particles"></div>
-            <div class="object-container">
-                <div class="main-object" id="mainObject">🎯</div>
-                <div class="object-label" id="objectLabel">Objekt</div>
-            </div>
-        </div>
-        
-        <div class="word-buttons" id="wordButtons">
-            <!-- Word-Buttons werden dynamisch erstellt -->
-        </div>
-        
+        <div class="buttons" id="buttons"></div>
         <div class="feedback" id="feedback"></div>
         
-        <div class="highscore-section">
-            <h3>🏆 Highscore - Adjektive</h3>
-            <div id="highscoreList">Lade Highscores...</div>
-        </div>
-        
         <div class="start-screen" id="startScreen">
-            <h2>🌈 Eigenschafts-Labor</h2>
-            <p>⏰ Du hast nur 3 Sekunden pro Aufgabe!</p>
-            <p>🔬 Experimentiere mit Adjektiven!</p>
-            <p>🎯 Wähle das passende Adjektiv für das Objekt!</p>
-            <p>📈 Level steigt alle 5 richtigen Antworten!</p>
-            <p>✨ Beobachte wie sich Objekte verwandeln!</p>
-            <p>🧠 2 richtige Adjektive (Gegenteile) sind versteckt!</p>
-            <p>❤️ Du hast 3 Leben - experimentiere klug!</p>
-            <button onclick="startGame()">Experiment starten!</button>
+            <h2>🌈 Adjektive-Labor</h2>
+            <p>⏰ 5 Sekunden pro Aufgabe!</p>
+            <p>🎯 Wähle das passende Adjektiv!</p>
+            <p>📈 Level steigt alle 5 Antworten!</p>
+            <p>❤️ Du hast 3 Leben!</p>
+            <button onclick="startGame()">Start!</button>
         </div>
         
         <div class="game-over" id="gameOver">
-            <h2>Experiment beendet!</h2>
-            <p>Deine Punkte: <span id="finalScore">0</span></p>
-            <input type="text" id="playerName" placeholder="Dein Name" maxlength="20">
-            <br>
-            <button onclick="saveHighscore()">Highscore speichern</button>
-            <button onclick="restartGame()">Nochmal experimentieren</button>
+            <h2>Ende!</h2>
+            <p>Punkte: <span id="finalScore">0</span></p>
+            <input type="text" id="playerName" placeholder="Name">
+            <br><button onclick="saveScore()">Speichern</button>
+            <button onclick="restart()">Nochmal</button>
         </div>
     </div>
 
     <script>
-        const firebaseUrl = 'https://wortartenspiele-default-rtdb.europe-west1.firebasedatabase.app';
+        // Minimale Datenstruktur
+                const basicExperiments = [
+            // Größe
+            {object: "🐘", label: "Der Elefant", correctAdjectives: ["groß", "schwer"], wrongAdjectives: ["klein", "leicht"], relatedNonAdjectives: ["Tier", "Rüssel"]},
+            {object: "🐭", label: "Die Maus", correctAdjectives: ["klein", "leicht"], wrongAdjectives: ["groß", "schwer"], relatedNonAdjectives: ["Tier", "Käse"]},
+            {object: "🏠", label: "Das Haus", correctAdjectives: ["groß", "hoch"], wrongAdjectives: ["klein", "niedrig"], relatedNonAdjectives: ["Gebäude", "Wohnung"]},
+            {object: "🐶", label: "Der Hund", correctAdjectives: ["klein", "schnell"], wrongAdjectives: ["groß", "langsam"], relatedNonAdjectives: ["Tier", "Haustier"]},
+            
+            // Temperatur
+            {object: "🔥", label: "Das Feuer", correctAdjectives: ["heiß", "warm"], wrongAdjectives: ["kalt", "kühl"], relatedNonAdjectives: ["Flamme", "Wärme"]},
+            {object: "❄️", label: "Der Schnee", correctAdjectives: ["kalt", "weiß"], wrongAdjectives: ["heiß", "schwarz"], relatedNonAdjectives: ["Winter", "Eis"]},
+            {object: "🌞", label: "Die Sonne", correctAdjectives: ["warm", "hell"], wrongAdjectives: ["kalt", "dunkel"], relatedNonAdjectives: ["Tag", "Licht"]},
+            {object: "🧊", label: "Das Eis", correctAdjectives: ["kalt", "hart"], wrongAdjectives: ["heiß", "weich"], relatedNonAdjectives: ["Würfel", "Wasser"]},
+            
+            // Geschwindigkeit
+            {object: "🏃‍♂️", label: "Der Läufer", correctAdjectives: ["schnell", "fit"], wrongAdjectives: ["langsam", "müde"], relatedNonAdjectives: ["Sport", "Mensch"]},
+            {object: "🐢", label: "Die Schildkröte", correctAdjectives: ["langsam", "alt"], wrongAdjectives: ["schnell", "jung"], relatedNonAdjectives: ["Tier", "Panzer"]},
+            {object: "🚗", label: "Das Auto", correctAdjectives: ["schnell", "laut"], wrongAdjectives: ["langsam", "leise"], relatedNonAdjectives: ["Fahrzeug", "Motor"]},
+            {object: "🚂", label: "Der Zug", correctAdjectives: ["schnell", "lang"], wrongAdjectives: ["langsam", "kurz"], relatedNonAdjectives: ["Fahrzeug", "Bahn"]},
+            
+            // Farben/Licht
+            {object: "🌙", label: "Der Mond", correctAdjectives: ["hell", "rund"], wrongAdjectives: ["dunkel", "eckig"], relatedNonAdjectives: ["Nacht", "Himmel"]},
+            {object: "⭐", label: "Der Stern", correctAdjectives: ["hell", "klein"], wrongAdjectives: ["dunkel", "groß"], relatedNonAdjectives: ["Himmel", "Licht"]},
+            {object: "🍎", label: "Der Apfel", correctAdjectives: ["rot", "rund"], wrongAdjectives: ["blau", "eckig"], relatedNonAdjectives: ["Obst", "Baum"]},
+            {object: "🍌", label: "Die Banane", correctAdjectives: ["gelb", "süß"], wrongAdjectives: ["blau", "sauer"], relatedNonAdjectives: ["Obst", "Frucht"]},
+            
+            // Eigenschaften
+            {object: "🪨", label: "Der Stein", correctAdjectives: ["hart", "schwer"], wrongAdjectives: ["weich", "leicht"], relatedNonAdjectives: ["Material", "Boden"]},
+            {object: "🧸", label: "Der Teddy", correctAdjectives: ["weich", "süß"], wrongAdjectives: ["hart", "hässlich"], relatedNonAdjectives: ["Spielzeug", "Kind"]},
+            {object: "🎈", label: "Der Ballon", correctAdjectives: ["leicht", "bunt"], wrongAdjectives: ["schwer", "grau"], relatedNonAdjectives: ["Luft", "Party"]},
+            {object: "🏔️", label: "Der Berg", correctAdjectives: ["hoch", "groß"], wrongAdjectives: ["niedrig", "klein"], relatedNonAdjectives: ["Natur", "Gipfel"]}
+        ];
         
-        let gameRunning = false;
-        let gameStarted = false;
-        let score = 0;
-        let lives = 3;
-        let currentTask = 0;
-        let taskCount = 0;
-        let currentLevel = 1;
-        let buttonsDisabled = false;
-        let timeRemaining = 3;
-        let timer = null;
-        
-        // Objekte nach Schwierigkeitsgrad sortiert
         const easyExperiments = [
-            {
-                object: "🐘", label: "Elefant",
-                correctAdjectives: ["groß", "schwer"],
-                wrongAdjectives: ["schnell", "klein"],
-                relatedNonAdjectives: ["Rüssel", "Afrika"]
-            },
-            {
-                object: "🐭", label: "Maus", 
-                correctAdjectives: ["klein", "schnell"],
-                wrongAdjectives: ["groß", "langsam"],
-                relatedNonAdjectives: ["Käse", "Loch"]
-            },
-            {
-                object: "🔥", label: "Feuer",
-                correctAdjectives: ["heiß", "hell"],
-                wrongAdjectives: ["kalt", "dunkel"],
-                relatedNonAdjectives: ["Rauch", "Holz"]
-            },
-            {
-                object: "❄️", label: "Schnee",
-                correctAdjectives: ["kalt", "weiß"],
-                wrongAdjectives: ["heiß", "schwarz"],
-                relatedNonAdjectives: ["Winter", "Schneemann"]
-            },
-            {
-                object: "🌞", label: "Sonne",
-                correctAdjectives: ["hell", "warm"],
-                wrongAdjectives: ["dunkel", "kalt"],
-                relatedNonAdjectives: ["Tag", "Himmel"]
-            }
+            // Erweiterte Größen
+            {object: "🦣", label: "Der Mammut", correctAdjectives: ["riesig", "ausgestorben"], wrongAdjectives: ["winzig", "lebendig"], relatedNonAdjectives: ["Urzeit", "Säugetier"]},
+            {object: "🐜", label: "Die Ameise", correctAdjectives: ["winzig", "fleißig"], wrongAdjectives: ["riesig", "faul"], relatedNonAdjectives: ["Insekt", "Kolonie"]},
+            {object: "🏰", label: "Das Schloss", correctAdjectives: ["majestätisch", "alt"], wrongAdjectives: ["bescheiden", "neu"], relatedNonAdjectives: ["Bauwerk", "Geschichte"]},
+            {object: "🏕️", label: "Das Zelt", correctAdjectives: ["tragbar", "einfach"], wrongAdjectives: ["fest", "kompliziert"], relatedNonAdjectives: ["Camping", "Stoff"]},
+            
+            // Erweiterte Temperaturen
+            {object: "🌋", label: "Der Vulkan", correctAdjectives: ["glühend", "gefährlich"], wrongAdjectives: ["eisig", "harmlos"], relatedNonAdjectives: ["Berg", "Lava"]},
+            {object: "🏔️", label: "Der Gletscher", correctAdjectives: ["eisig", "gewaltig"], wrongAdjectives: ["heiß", "winzig"], relatedNonAdjectives: ["Eis", "Klima"]},
+            {object: "☀️", label: "Die Hitze", correctAdjectives: ["brennend", "trocken"], wrongAdjectives: ["kühl", "feucht"], relatedNonAdjectives: ["Sommer", "Temperatur"]},
+            {object: "🌨️", label: "Der Schneesturm", correctAdjectives: ["klirrend", "heftig"], wrongAdjectives: ["mild", "sanft"], relatedNonAdjectives: ["Wetter", "Winter"]},
+            
+            // Tiere mit Eigenschaften
+            {object: "🦅", label: "Der Adler", correctAdjectives: ["stolz", "majestätisch"], wrongAdjectives: ["demütig", "gewöhnlich"], relatedNonAdjectives: ["Vogel", "Raubtier"]},
+            {object: "🐺", label: "Der Wolf", correctAdjectives: ["wild", "gefährlich"], wrongAdjectives: ["zahm", "harmlos"], relatedNonAdjectives: ["Rudel", "Raubtier"]},
+            {object: "🦋", label: "Der Schmetterling", correctAdjectives: ["zart", "farbenfroh"], wrongAdjectives: ["robust", "farblos"], relatedNonAdjectives: ["Insekt", "Metamorphose"]},
+            {object: "🐙", label: "Der Oktopus", correctAdjectives: ["glitschig", "intelligent"], wrongAdjectives: ["trocken", "dumm"], relatedNonAdjectives: ["Meer", "Tentakel"]},
+            
+            // Natur
+            {object: "🌊", label: "Das Meer", correctAdjectives: ["endlos", "salzhaltig"], wrongAdjectives: ["begrenzt", "süß"], relatedNonAdjectives: ["Wasser", "Ozean"]},
+            {object: "🌲", label: "Der Wald", correctAdjectives: ["dicht", "geheimnisvoll"], wrongAdjectives: ["licht", "durchschaubar"], relatedNonAdjectives: ["Natur", "Bäume"]},
+            {object: "⚡", label: "Der Blitz", correctAdjectives: ["blendend", "schnell"], wrongAdjectives: ["schwach", "langsam"], relatedNonAdjectives: ["Gewitter", "Elektrizität"]},
+            {object: "🌪️", label: "Der Tornado", correctAdjectives: ["wirbelnde", "zerstörerisch"], wrongAdjectives: ["still", "aufbauend"], relatedNonAdjectives: ["Sturm", "Wind"]}
+        ];
+        
+        const mediumExperiments = [
+            // Abstraktere Konzepte
+            {object: "🎭", label: "Das Theater", correctAdjectives: ["dramaturgisch", "bühnenwirksam"], wrongAdjectives: ["langweilig", "stumm"], relatedNonAdjectives: ["Schauspielhaus", "Aufführung"]},
+            {object: "🏛️", label: "Der Dom", correctAdjectives: ["ehrfurchtgebietend", "erhaben"], wrongAdjectives: ["unbedeutend", "niedrig"], relatedNonAdjectives: ["Bauwerk", "Gotteshaus"]},
+            {object: "🌹", label: "Die Rose", correctAdjectives: ["duftend", "dornig"], wrongAdjectives: ["geruchlos", "glatt"], relatedNonAdjectives: ["Blüte", "Liebe"]},
+            {object: "💎", label: "Der Diamant", correctAdjectives: ["kristallin", "wertvoll"], wrongAdjectives: ["trüb", "wertlos"], relatedNonAdjectives: ["Edelstein", "Schmuck"]},
+            {object: "🎨", label: "Die Kunst", correctAdjectives: ["ausdrucksstark", "kreativ"], wrongAdjectives: ["ausdruckslos", "einfallslos"], relatedNonAdjectives: ["Schöpfung", "Kultur"]},
+            {object: "🏔️", label: "Der Gipfel", correctAdjectives: ["schwindelerregend", "unzugänglich"], wrongAdjectives: ["bodenständig", "erreichbar"], relatedNonAdjectives: ["Bergspitze", "Höhepunkt"]},
+            {object: "🌙", label: "Die Nacht", correctAdjectives: ["geheimnisvoll", "romantisch"], wrongAdjectives: ["durchschaubar", "nüchtern"], relatedNonAdjectives: ["Dunkelheit", "Stille"]},
+            {object: "⚡", label: "Die Energie", correctAdjectives: ["dynamisch", "kraftvoll"], wrongAdjectives: ["träge", "schwach"], relatedNonAdjectives: ["Kraft", "Power"]},
+            {object: "🏺", label: "Die Antike", correctAdjectives: ["geschichtsträchtig", "ehrwürdig"], wrongAdjectives: ["geschichtslos", "profan"], relatedNonAdjectives: ["Vergangenheit", "Kultur"]},
+            {object: "🔮", label: "Das Mysterium", correctAdjectives: ["rätselhaft", "undurchdringlich"], wrongAdjectives: ["durchschaubar", "offensichtlich"], relatedNonAdjectives: ["Geheimnis", "Rätsel"]}
+        ];
+        
+        const hardExperiments = [
+            // Philosophische Konzepte
+            {object: "🎵", label: "Die Symphonie", correctAdjectives: ["harmonisch", "vielschichtig"], wrongAdjectives: ["dissonant", "eintönig"], relatedNonAdjectives: ["Komposition", "Orchesterwerk"]},
+            {object: "📚", label: "Die Weisheit", correctAdjectives: ["tiefgreifend", "erleuchtet"], wrongAdjectives: ["oberflächlich", "unwissend"], relatedNonAdjectives: ["Erkenntnis", "Philosophie"]},
+            {object: "🌸", label: "Die Hoffnung", correctAdjectives: ["zerbrechlich", "kostbar"], wrongAdjectives: ["unzerstörbar", "wertlos"], relatedNonAdjectives: ["Gefühl", "Zuversicht"]},
+            {object: "⚖️", label: "Die Gerechtigkeit", correctAdjectives: ["unparteiisch", "ausgewogen"], wrongAdjectives: ["voreingenommen", "einseitig"], relatedNonAdjectives: ["Prinzip", "Ethik"]},
+            {object: "🕊️", label: "Der Frieden", correctAdjectives: ["kostbar", "zerbrechlich"], wrongAdjectives: ["wertlos", "unzerstörbar"], relatedNonAdjectives: ["Harmonie", "Einigkeit"]},
+            {object: "💭", label: "Der Gedanke", correctAdjectives: ["flüchtig", "abstrakt"], wrongAdjectives: ["beständig", "konkret"], relatedNonAdjectives: ["Idee", "Bewusstsein"]},
+            {object: "⏳", label: "Die Zeit", correctAdjectives: ["vergänglich", "unaufhaltsam"], wrongAdjectives: ["ewig", "aufhaltbar"], relatedNonAdjectives: ["Dimension", "Vergänglichkeit"]},
+            {object: "🌀", label: "Das Chaos", correctAdjectives: ["unberechenbar", "verwirrend"], wrongAdjectives: ["vorhersagbar", "ordentlich"], relatedNonAdjectives: ["Unordnung", "Komplexität"]},
+            {object: "💎", label: "Die Perfektion", correctAdjectives: ["makellos", "unerreichbar"], wrongAdjectives: ["fehlerhaft", "erreichbar"], relatedNonAdjectives: ["Vollkommenheit", "Ideal"]},
+            {object: "🌌", label: "Das Universum", correctAdjectives: ["unendlich", "majestätisch"], wrongAdjectives: ["begrenzt", "unbedeutend"], relatedNonAdjectives: ["Kosmos", "Unendlichkeit"]},
+            {object: "🔥", label: "Die Leidenschaft", correctAdjectives: ["brennend", "verzehrend"], wrongAdjectives: ["lauwarm", "gleichgültig"], relatedNonAdjectives: ["Emotion", "Intensität"]},
+            {object: "🌊", label: "Die Seele", correctAdjectives: ["tiefgreifend", "unsterblich"], wrongAdjectives: ["oberflächlich", "vergänglich"], relatedNonAdjectives: ["Geist", "Essenz"]}
         ];
         
         const mediumExperiments = [
             {
-                object: "👗", label: "Kleid",
-                correctAdjectives: ["elegant", "schick"],
-                wrongAdjectives: ["hässlich", "schlampig"],
-                relatedNonAdjectives: ["Mode", "Stoff"]
-            },
-            {
-                object: "🍷", label: "Wein",
-                correctAdjectives: ["edel", "kostbar"],
-                wrongAdjectives: ["billig", "wertlos"],
-                relatedNonAdjectives: ["Traube", "Glas"]
-            },
-            {
-                object: "🎭", label: "Theater",
-                correctAdjectives: ["dramatisch", "künstlerisch"],
+                object: "🎭", label: "Das Theater",
+                correctAdjectives: ["dramaturgisch", "bühnenwirksam"],
                 wrongAdjectives: ["langweilig", "stumm"],
-                relatedNonAdjectives: ["Bühne", "Schauspieler"]
+                relatedNonAdjectives: ["Schauspielhaus", "Aufführung"]
             },
             {
-                object: "🏛️", label: "Tempel",
-                correctAdjectives: ["heilig", "ehrwürdig"],
-                wrongAdjectives: ["profan", "gewöhnlich"],
-                relatedNonAdjectives: ["Säule", "Gott"]
+                object: "🏛️", label: "Der Dom",
+                correctAdjectives: ["majestätisch", "erhaben"],
+                wrongAdjectives: ["bescheiden", "niedrig"],
+                relatedNonAdjectives: ["Bauwerk", "Gotteshaus"]
             },
             {
-                object: "💎", label: "Diamant",
-                correctAdjectives: ["wertvoll", "glänzend"],
-                wrongAdjectives: ["wertlos", "matt"],
-                relatedNonAdjectives: ["Schmuck", "Karat"]
+                object: "🌹", label: "Die Rose",
+                correctAdjectives: ["duftend", "dornig"],
+                wrongAdjectives: ["geruchlos", "glatt"],
+                relatedNonAdjectives: ["Blüte", "Gewächs"]
+            },
+            {
+                object: "🎨", label: "Die Kunst",
+                correctAdjectives: ["kreativ", "ausdrucksvoll"],
+                wrongAdjectives: ["einfallslos", "stumm"],
+                relatedNonAdjectives: ["Schöpfung", "Werk"]
+            },
+            {
+                object: "🏔️", label: "Der Gipfel",
+                correctAdjectives: ["schwindelerregend", "unzugänglich"],
+                wrongAdjectives: ["erreichbar", "flach"],
+                relatedNonAdjectives: ["Bergspitze", "Höhepunkt"]
+            },
+            {
+                object: "🌙", label: "Der Mond",
+                correctAdjectives: ["geheimnisvoll", "silbrig"],
+                wrongAdjectives: ["durchschaubar", "golden"],
+                relatedNonAdjectives: ["Himmelskörper", "Trabant"]
+            },
+            {
+                object: "⚡", label: "Der Blitz",
+                correctAdjectives: ["blendend", "gefährlich"],
+                wrongAdjectives: ["schwach", "harmlos"],
+                relatedNonAdjectives: ["Entladung", "Phänomen"]
             }
         ];
         
         const hardExperiments = [
             {
-                object: "🎵", label: "Musik",
-                correctAdjectives: ["friedlich", "harmonisch"],
-                wrongAdjectives: ["chaotisch", "dissonant"],
-                relatedNonAdjectives: ["Melodie", "Komponist"]
+                object: "🎵", label: "Die Symphonie",
+                correctAdjectives: ["harmonisch", "vielschichtig"],
+                wrongAdjectives: ["dissonant", "eintönig"],
+                relatedNonAdjectives: ["Komposition", "Orchesterwerk"]
             },
             {
-                object: "📚", label: "Wissen",
-                correctAdjectives: ["tiefgreifend", "umfassend"],
-                wrongAdjectives: ["oberflächlich", "begrenzt"],
-                relatedNonAdjectives: ["Bildung", "Erfahrung"]
+                object: "📚", label: "Die Literatur",
+                correctAdjectives: ["bedeutsam", "tiefgreifend"],
+                wrongAdjectives: ["oberflächlich", "unbedeutend"],
+                relatedNonAdjectives: ["Schrifttum", "Dichtung"]
             },
             {
-                object: "🌸", label: "Hoffnung",
+                object: "🌸", label: "Die Hoffnung",
                 correctAdjectives: ["zerbrechlich", "kostbar"],
                 wrongAdjectives: ["robust", "wertlos"],
-                relatedNonAdjectives: ["Traum", "Zukunft"]
+                relatedNonAdjectives: ["Gefühl", "Zuversicht"]
             },
             {
-                object: "⚖️", label: "Gerechtigkeit",
+                object: "⚖️", label: "Die Gerechtigkeit",
                 correctAdjectives: ["unparteiisch", "ausgewogen"],
                 wrongAdjectives: ["voreingenommen", "einseitig"],
-                relatedNonAdjectives: ["Recht", "Richter"]
+                relatedNonAdjectives: ["Prinzip", "Ideal"]
             },
             {
-                object: "🕊️", label: "Frieden",
-                correctAdjectives: ["still", "ruhig"],
-                wrongAdjectives: ["laut", "unruhig"],
-                relatedNonAdjectives: ["Harmonie", "Ruhe"]
+                object: "🕊️", label: "Der Frieden",
+                correctAdjectives: ["kostbar", "zerbrechlich"],
+                wrongAdjectives: ["wertlos", "unzerstörbar"],
+                relatedNonAdjectives: ["Zustand", "Ideal"]
+            },
+            {
+                object: "💭", label: "Der Gedanke",
+                correctAdjectives: ["flüchtig", "abstrakt"],
+                wrongAdjectives: ["beständig", "greifbar"],
+                relatedNonAdjectives: ["Idee", "Einfall"]
+            },
+            {
+                object: "⏳", label: "Die Zeit",
+                correctAdjectives: ["vergänglich", "unaufhaltsam"],
+                wrongAdjectives: ["beständig", "aufhaltbar"],
+                relatedNonAdjectives: ["Dimension", "Kontinuum"]
+            },
+            {
+                object: "🌀", label: "Das Chaos",
+                correctAdjectives: ["unberechenbar", "verwirrend"],
+                wrongAdjectives: ["vorhersagbar", "geordnet"],
+                relatedNonAdjectives: ["Unordnung", "Durcheinander"]
+            },
+            {
+                object: "💎", label: "Die Perfektion",
+                correctAdjectives: ["makellos", "unerreichbar"],
+                wrongAdjectives: ["fehlerhaft", "erreichbar"],
+                relatedNonAdjectives: ["Vollkommenheit", "Ideal"]
+            },
+            {
+                object: "🌌", label: "Das Universum",
+                correctAdjectives: ["unendlich", "rätselhaft"],
+                wrongAdjectives: ["begrenzt", "durchschaubar"],
+                relatedNonAdjectives: ["Kosmos", "Weltall"]
             }
         ];
         
-        let allExperiments = [];
-        
-        function updateExperimentPool() {
-            allExperiments = [];
-            
-            if (currentLevel <= 4) {
-                // Level 1-4: Nur einfache Experimente
-                allExperiments = [...easyExperiments];
-            } else if (currentLevel <= 9) {
-                // Level 5-9: Einfache + mittlere Experimente
-                allExperiments = [...easyExperiments, ...mediumExperiments];
-            } else {
-                // Level 10+: Alle Experimente inkl. abstrakte
-                allExperiments = [...easyExperiments, ...mediumExperiments, ...hardExperiments];
-            }
-        }
-        
-        // Zusätzliche Adjektive für falsche Antworten
-        const additionalAdjectives = [
-            "lustig", "traurig", "müde", "wach", "hungrig", "satt", "stark", "schwach",
-            "neu", "alt", "modern", "antik", "glatt", "rau", "spitz", "stumpf",
-            "dick", "dünn", "breit", "schmal", "tief", "flach", "hart", "weich"
-        ];
+        let game = {
+            running: false,
+            score: 0,
+            lives: 3,
+            level: 1,
+            correct: 0,
+            current: null,
+            timer: null,
+            timeLeft: 5
+        };
         
         function startGame() {
             document.getElementById('startScreen').style.display = 'none';
-            gameStarted = true;
-            gameRunning = true;
-            currentTask = 0;
-            taskCount = 0;
-            currentLevel = 1;
-            updateExperimentPool();
-            loadExperiment();
+            game.running = true;
+            loadNext();
+        }
+        
+        function loadNext() {
+            if (!game.running) return;
+            
+            // Level bestimmen
+            game.level = Math.floor(game.correct / 5) + 1;
+            let pool = game.level <= 2 ? data.basic : game.level <= 4 ? data.medium : data.hard;
+            
+            // Zufälliges Experiment
+            let exp = pool[Math.floor(Math.random() * pool.length)];
+            game.current = {
+                obj: exp[0], name: exp[1], 
+                correct: exp[2], wrong: exp[3], other: exp[4]
+            };
+            
+            // UI aktualisieren
+            document.getElementById('object').textContent = game.current.obj;
+            document.getElementById('label').textContent = game.current.name;
+            document.getElementById('taskText').textContent = game.current.name + " ist...";
+            document.getElementById('level').textContent = game.level;
+            
+            // Buttons erstellen
+            let words = [...game.current.correct, ...game.current.wrong, ...game.current.other];
+            words = words.sort(() => Math.random() - 0.5);
+            
+            let html = '';
+            words.forEach(word => {
+                html += `<button class="btn" onclick="select('${word}')">${word}</button>`;
+            });
+            document.getElementById('buttons').innerHTML = html;
+            
+            // Timer starten
+            startTimer();
+            document.getElementById('feedback').textContent = '';
         }
         
         function startTimer() {
-            timeRemaining = 3;
-            updateTimerDisplay();
-            
-            timer = setInterval(() => {
-                timeRemaining--;
-                updateTimerDisplay();
-                
-                if (timeRemaining <= 0) {
-                    clearInterval(timer);
+            game.timeLeft = 5;
+            updateTimer();
+            game.timer = setInterval(() => {
+                game.timeLeft--;
+                updateTimer();
+                if (game.timeLeft <= 0) {
+                    clearInterval(game.timer);
                     timeUp();
                 }
             }, 1000);
         }
         
-        function updateTimerDisplay() {
-            const timerFill = document.getElementById('timerFill');
-            const timerText = document.getElementById('timerText');
+        function updateTimer() {
+            let fill = document.getElementById('timerFill');
+            let text = document.getElementById('timerText');
+            fill.style.width = (game.timeLeft / 5 * 100) + '%';
+            text.textContent = game.timeLeft + 's';
+        }
+        
+        function select(word) {
+            if (!game.running) return;
+            clearInterval(game.timer);
             
-            const percentage = (timeRemaining / 3) * 100;
-            timerFill.style.width = percentage + '%';
-            timerText.textContent = timeRemaining + 's';
+            // Buttons deaktivieren
+            document.querySelectorAll('.btn').forEach(b => b.disabled = true);
+            
+            let feedback = document.getElementById('feedback');
+            let obj = document.getElementById('object');
+            
+            if (game.current.correct.includes(word)) {
+                // Richtig!
+                game.correct++;
+                let bonus = game.timeLeft * 5;
+                game.score += 25 + bonus;
+                feedback.textContent = `Richtig! +${25 + bonus} Punkte`;
+                feedback.className = 'feedback correct';
+                
+                // Animation
+                obj.className = 'object grow';
+                setTimeout(() => {
+                    obj.className = 'object';
+                    setTimeout(loadNext, 500);
+                }, 1500);
+                
+            } else {
+                // Falsch!
+                game.lives--;
+                feedback.textContent = `Falsch! Richtig: ${game.current.correct.join(", ")}`;
+                feedback.className = 'feedback wrong';
+                obj.className = 'object shake-effect';
+                
+                if (game.lives <= 0) {
+                    setTimeout(gameOver, 2000);
+                } else {
+                    setTimeout(() => {
+                        obj.className = 'object';
+                        setTimeout(loadNext, 500);
+                    }, 2000);
+                }
+            }
+            
+            updateDisplay();
         }
         
         function timeUp() {
-            if (!gameRunning || buttonsDisabled) return;
+            game.lives--;
+            let feedback = document.getElementById('feedback');
+            feedback.textContent = `Zeit um! Richtig: ${game.current.correct.join(", ")}`;
+            feedback.className = 'feedback wrong';
             
-            buttonsDisabled = true;
-            lives--;
-            
-            const feedbackElement = document.getElementById('feedback');
-            const experiment = allExperiments[currentTask % allExperiments.length];
-            const correctOptions = experiment.correctAdjectives.join(", ");
-            feedbackElement.textContent = `Zeit abgelaufen! ⏰ Richtig wäre gewesen: ${correctOptions}`;
-            feedbackElement.className = 'feedback wrong';
-            
-            const objectEl = document.getElementById('mainObject');
-            objectEl.className = 'main-object shake-effect';
-            
-            if (lives <= 0) {
-                setTimeout(() => {
-                    gameOver();
-                }, 2500);
+            if (game.lives <= 0) {
+                setTimeout(gameOver, 2000);
             } else {
-                setTimeout(() => {
-                    nextExperiment();
-                }, 2500);
+                setTimeout(loadNext, 2000);
             }
-            
             updateDisplay();
-        }
-        
-        function loadExperiment() {
-            // Level-System: Alle 5 richtige Antworten nächstes Level
-            const newLevel = Math.floor(taskCount / 5) + 1;
-            if (newLevel !== currentLevel) {
-                currentLevel = newLevel;
-                updateExperimentPool();
-            }
-            
-            // Schwierigkeits-Text aktualisieren
-            let difficultyText = '';
-            if (currentLevel <= 4) {
-                difficultyText = `Level ${currentLevel} - Offensichtliche Kombinationen`;
-            } else if (currentLevel <= 9) {
-                difficultyText = `Level ${currentLevel} - Subtilere Adjektive`;
-            } else {
-                difficultyText = `Level ${currentLevel} - Abstrakte Konzepte`;
-            }
-            
-            document.getElementById('level').textContent = currentLevel;
-            document.getElementById('difficultyText').textContent = difficultyText;
-            
-            // Experiment aus aktuellem Pool wählen
-            if (currentTask >= allExperiments.length) {
-                currentTask = 0;
-            }
-            
-            const experiment = allExperiments[currentTask];
-            document.getElementById('taskText').textContent = `Mache ${experiment.label}...`;
-            document.getElementById('mainObject').textContent = experiment.object;
-            document.getElementById('objectLabel').textContent = experiment.label;
-            
-            // Objekt zurücksetzen
-            const objectEl = document.getElementById('mainObject');
-            objectEl.className = 'main-object';
-            objectEl.style.transform = 'scale(1)';
-            objectEl.style.filter = 'none';
-            
-            // 6 Wörter erstellen: 2 korrekte Adjektive, 2 falsche Adjektive, 2 passende Nicht-Adjektive
-            const options = [];
-            
-            // 2 korrekte Adjektive (Gegenteile)
-            options.push(...experiment.correctAdjectives);
-            
-            // 2 falsche Adjektive für dieses Objekt
-            options.push(...experiment.wrongAdjectives);
-            
-            // 2 passende Nicht-Adjektive
-            options.push(...experiment.relatedNonAdjectives);
-            
-            // Mischen
-            const shuffledOptions = options.sort(() => Math.random() - 0.5);
-            
-            const buttonContainer = document.getElementById('wordButtons');
-            buttonContainer.innerHTML = '';
-            
-            shuffledOptions.forEach(word => {
-                const button = document.createElement('button');
-                button.className = 'word-button';
-                button.textContent = word;
-                button.onclick = () => selectWord(word);
-                buttonContainer.appendChild(button);
-            });
-            
-            document.getElementById('feedback').textContent = '';
-            buttonsDisabled = false;
-            
-            // Timer starten
-            startTimer();
-        }
-        
-        function selectWord(selectedWord) {
-            if (buttonsDisabled || !gameRunning) return;
-            
-            clearInterval(timer); // Timer stoppen
-            buttonsDisabled = true;
-            const experiment = allExperiments[currentTask % allExperiments.length];
-            const feedbackElement = document.getElementById('feedback');
-            const objectEl = document.getElementById('mainObject');
-            
-            document.querySelectorAll('.word-button').forEach(btn => {
-                btn.disabled = true;
-            });
-            
-            if (experiment.correctAdjectives.includes(selectedWord)) {
-                // Richtiges Adjektiv!
-                taskCount++;
-                const timeBonus = timeRemaining * 5; // Bonus für schnelle Antwort
-                score += 25 + timeBonus;
-                
-                let bonusText = timeBonus > 0 ? ` (+${timeBonus} Zeit-Bonus)` : '';
-                feedbackElement.textContent = `Perfekt! "${selectedWord}" passt zu ${experiment.label}! ✨ (+${25 + timeBonus} Punkte)${bonusText}`;
-                feedbackElement.className = 'feedback correct';
-                
-                // Visuelle Transformation basierend auf Adjektiv
-                applyTransformation(selectedWord, objectEl);
-                
-                setTimeout(() => {
-                    nextExperiment();
-                }, 2500);
-                
-            } else {
-                // Falsches Wort
-                lives--;
-                
-                if (experiment.wrongAdjectives.includes(selectedWord)) {
-                    feedbackElement.textContent = `Unlogisch! "${selectedWord}" passt nicht zu ${experiment.label}. Korrekt wären: ${experiment.correctAdjectives.join(", ")}`;
-                } else {
-                    feedbackElement.textContent = `"${selectedWord}" ist kein Adjektiv! Korrekt wären: ${experiment.correctAdjectives.join(", ")}`;
-                }
-                
-                feedbackElement.className = 'feedback wrong';
-                
-                // Fehler-Animation
-                objectEl.className = 'main-object shake-effect';
-                
-                if (lives <= 0) {
-                    setTimeout(() => {
-                        gameOver();
-                    }, 2500);
-                } else {
-                    setTimeout(() => {
-                        nextExperiment();
-                    }, 2500);
-                }
-            }
-            
-            updateDisplay();
-        }
-        
-        function applyTransformation(adjective, objectEl) {
-            // Verschiedene Transformationen basierend auf Adjektiven
-            switch(adjective) {
-                case "groß":
-                case "hoch":
-                    objectEl.className = 'main-object grow';
-                    break;
-                case "klein":
-                case "niedrig":
-                    objectEl.className = 'main-object shrink';
-                    break;
-                case "bunt":
-                case "schön":
-                case "hell":
-                    objectEl.className = 'main-object colorful';
-                    createSparkles();
-                    break;
-                case "heiß":
-                case "warm":
-                    objectEl.style.filter = 'hue-rotate(20deg) brightness(1.3)';
-                    createFireParticles();
-                    break;
-                case "kalt":
-                    objectEl.style.filter = 'hue-rotate(200deg) brightness(1.1)';
-                    createSnowParticles();
-                    break;
-                case "schnell":
-                    objectEl.style.transform = 'translateX(50px)';
-                    setTimeout(() => {
-                        objectEl.style.transform = 'translateX(-50px)';
-                        setTimeout(() => {
-                            objectEl.style.transform = 'translateX(0)';
-                        }, 200);
-                    }, 200);
-                    break;
-                case "langsam":
-                    objectEl.style.transition = 'all 3s ease';
-                    objectEl.style.transform = 'translateX(30px)';
-                    setTimeout(() => {
-                        objectEl.style.transform = 'translateX(0)';
-                    }, 1000);
-                    break;
-                default:
-                    objectEl.className = 'main-object grow';
-                    createSparkles();
-            }
-        }
-        
-        function createSparkles() {
-            const particlesContainer = document.getElementById('particles');
-            particlesContainer.innerHTML = '';
-            
-            for (let i = 0; i < 10; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.textContent = '✨';
-                sparkle.style.position = 'absolute';
-                sparkle.style.left = Math.random() * 100 + '%';
-                sparkle.style.top = Math.random() * 100 + '%';
-                sparkle.style.fontSize = Math.random() * 20 + 15 + 'px';
-                sparkle.style.animation = `sparkle ${Math.random() * 2 + 1}s ease-in-out`;
-                sparkle.style.pointerEvents = 'none';
-                particlesContainer.appendChild(sparkle);
-                
-                setTimeout(() => {
-                    sparkle.remove();
-                }, 3000);
-            }
-        }
-        
-        function createFireParticles() {
-            const particlesContainer = document.getElementById('particles');
-            
-            for (let i = 0; i < 8; i++) {
-                const fire = document.createElement('div');
-                fire.textContent = '🔥';
-                fire.style.position = 'absolute';
-                fire.style.left = Math.random() * 80 + 10 + '%';
-                fire.style.top = Math.random() * 80 + 10 + '%';
-                fire.style.fontSize = Math.random() * 15 + 10 + 'px';
-                fire.style.animation = `sparkle ${Math.random() * 1.5 + 1}s ease-in-out`;
-                fire.style.pointerEvents = 'none';
-                particlesContainer.appendChild(fire);
-                
-                setTimeout(() => {
-                    fire.remove();
-                }, 2500);
-            }
-        }
-        
-        function createSnowParticles() {
-            const particlesContainer = document.getElementById('particles');
-            
-            for (let i = 0; i < 12; i++) {
-                const snow = document.createElement('div');
-                snow.textContent = '❄️';
-                snow.style.position = 'absolute';
-                snow.style.left = Math.random() * 80 + 10 + '%';
-                snow.style.top = Math.random() * 80 + 10 + '%';
-                snow.style.fontSize = Math.random() * 12 + 8 + 'px';
-                snow.style.animation = `sparkle ${Math.random() * 2 + 1.5}s ease-in-out`;
-                snow.style.pointerEvents = 'none';
-                particlesContainer.appendChild(snow);
-                
-                setTimeout(() => {
-                    snow.remove();
-                }, 3000);
-            }
-        }
-        
-        function nextExperiment() {
-            const objectEl = document.getElementById('main-object');
-            objectEl.className = 'main-object';
-            objectEl.style.transform = 'scale(1)';
-            objectEl.style.filter = 'none';
-            objectEl.style.transition = 'all 0.8s ease';
-            
-            document.getElementById('particles').innerHTML = '';
-            currentTask++;
-            
-            setTimeout(() => {
-                loadExperiment();
-            }, 500);
         }
         
         function updateDisplay() {
-            document.getElementById('score').textContent = score;
-            
-            let heartsDisplay = '';
-            for (let i = 0; i < lives; i++) {
-                heartsDisplay += '❤️';
-            }
-            for (let i = lives; i < 3; i++) {
-                heartsDisplay += '🖤';
-            }
-            document.getElementById('lives').textContent = heartsDisplay;
+            document.getElementById('score').textContent = game.score;
+            let hearts = '';
+            for (let i = 0; i < game.lives; i++) hearts += '❤️';
+            for (let i = game.lives; i < 3; i++) hearts += '🖤';
+            document.getElementById('lives').textContent = hearts;
         }
         
         function gameOver() {
-            gameRunning = false;
-            
-            let message = 'Experiment beendet!';
-            if (taskCount >= 50) {
-                message = 'Adjektiv-Wissenschaftler! 🔬';
-            } else if (taskCount >= 25) {
-                message = 'Labor-Experte! 🧪';
-            } else if (taskCount >= 10) {
-                message = 'Eigenschafts-Forscher! 🌈';
-            } else if (taskCount >= 5) {
-                message = 'Guter Experimentator! ⭐';
-            }
-            
-            document.getElementById('gameOver').querySelector('h2').textContent = message;
-            document.getElementById('finalScore').textContent = score;
+            game.running = false;
+            document.getElementById('finalScore').textContent = game.score;
             document.getElementById('gameOver').style.display = 'block';
         }
         
-        function restartGame() {
-            clearInterval(timer);
-            gameRunning = false;
-            gameStarted = false;
-            score = 0;
-            lives = 3;
-            currentTask = 0;
-            taskCount = 0;
-            currentLevel = 1;
-            buttonsDisabled = false;
-            timeRemaining = 3;
+        function restart() {
+            game = { running: false, score: 0, lives: 3, level: 1, correct: 0, current: null, timer: null, timeLeft: 5 };
             document.getElementById('gameOver').style.display = 'none';
             document.getElementById('startScreen').style.display = 'flex';
-            document.getElementById('mainObject').textContent = '🎯';
-            document.getElementById('mainObject').className = 'main-object';
-            document.getElementById('particles').innerHTML = '';
+            document.getElementById('object').textContent = '🎯';
+            document.getElementById('object').className = 'object';
             updateDisplay();
         }
         
-        async function saveHighscore() {
-            const playerName = document.getElementById('playerName').value.trim();
-            if (!playerName) {
-                alert('Bitte gib deinen Namen ein!');
-                return;
-            }
+        function saveScore() {
+            let name = document.getElementById('playerName').value.trim();
+            if (!name) { alert('Bitte Name eingeben!'); return; }
             
-            try {
-                const highscoreData = {
-                    name: playerName,
-                    score: score,
+            fetch('https://wortartenspiele-default-rtdb.europe-west1.firebasedatabase.app/highscores.json', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: name,
+                    score: game.score,
                     game: 'adjektive',
-                    timestamp: Date.now(),
                     date: new Date().toLocaleDateString('de-DE')
-                };
-                
-                const response = await fetch(`${firebaseUrl}/highscores.json`, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(highscoreData)
-                });
-                
-                if (response.ok) {
-                    alert('Highscore gespeichert!');
-                    loadHighscores();
-                    document.getElementById('playerName').value = '';
-                } else {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-            } catch (error) {
-                console.error('Fehler beim Speichern des Highscores:', error);
-                alert('Fehler beim Speichern des Highscores. Überprüfe deine Internetverbindung und versuche es nochmal.');
-            }
-        }
-        
-        async function loadHighscores() {
-            try {
-                const response = await fetch(`${firebaseUrl}/highscores.json`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (!data) {
-                    document.getElementById('highscoreList').innerHTML = 'Noch keine Highscores vorhanden.';
-                    return;
-                }
-                
-                // Nur Adjektiv-Highscores filtern und sortieren
-                const adjektivHighscores = Object.values(data)
-                    .filter(entry => entry.game === 'adjektive')
-                    .sort((a, b) => b.score - a.score)
-                    .slice(0, 10); // Top 10
-                
-                if (adjektivHighscores.length === 0) {
-                    document.getElementById('highscoreList').innerHTML = 'Noch keine Adjektiv-Highscores vorhanden.';
-                    return;
-                }
-                
-                let html = '<ol>';
-                adjektivHighscores.forEach(entry => {
-                    html += `<li><strong>${entry.name}</strong>: ${entry.score} Punkte (${entry.date})</li>`;
-                });
-                html += '</ol>';
-                
-                document.getElementById('highscoreList').innerHTML = html;
-            } catch (error) {
-                console.error('Fehler beim Laden der Highscores:', error);
-                document.getElementById('highscoreList').innerHTML = 
-                    'Highscores werden geladen... <br><small>(Stelle sicher, dass deine Internetverbindung aktiv ist)</small>';
-                
-                setTimeout(() => {
-                    loadHighscores();
-                }, 3000);
-            }
+                })
+            }).then(() => {
+                alert('Gespeichert!');
+                document.getElementById('playerName').value = '';
+            }).catch(() => alert('Fehler beim Speichern'));
         }
         
         updateDisplay();
-        loadHighscores();
     </script>
 </body>
 </html>
