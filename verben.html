@@ -185,6 +185,13 @@
         .correct { color: #4CAF50; }
         .wrong { color: #F44336; }
         
+        .highscore-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff8e1;
+            border-radius: 10px;
+        }
+        
         .start-screen {
             position: absolute;
             top: 0;
@@ -350,6 +357,11 @@
         </div>
         
         <div class="feedback" id="feedback"></div>
+        
+        <div class="highscore-section">
+            <h3>🏆 Highscore - Verben</h3>
+            <div id="highscoreList">Lade Highscores...</div>
+        </div>
         
         <div class="start-screen" id="startScreen">
             <h2>🏃‍♂️ Verben-Aufträge</h2>
@@ -721,6 +733,7 @@
                 
                 if (response.ok) {
                     alert('Highscore gespeichert!');
+                    loadHighscores();
                     document.getElementById('playerName').value = '';
                 } else {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -731,7 +744,59 @@
             }
         }
         
+        // Highscores laden
+        async function loadHighscores() {
+            try {
+                const response = await fetch(`${firebaseUrl}/highscores.json`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data) {
+                    document.getElementById('highscoreList').innerHTML = 'Noch keine Highscores vorhanden.';
+                    return;
+                }
+                
+                // Nur Verben-Highscores filtern und sortieren
+                const verbenHighscores = Object.values(data)
+                    .filter(entry => entry.game === 'verben')
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 10); // Top 10
+                
+                if (verbenHighscores.length === 0) {
+                    document.getElementById('highscoreList').innerHTML = 'Noch keine Verben-Highscores vorhanden.';
+                    return;
+                }
+                
+                let html = '<ol>';
+                verbenHighscores.forEach(entry => {
+                    html += `<li><strong>${entry.name}</strong>: ${entry.score} Punkte (${entry.date})</li>`;
+                });
+                html += '</ol>';
+                
+                document.getElementById('highscoreList').innerHTML = html;
+            } catch (error) {
+                console.error('Fehler beim Laden der Highscores:', error);
+                document.getElementById('highscoreList').innerHTML = 
+                    'Highscores werden geladen... <br><small>(Stelle sicher, dass deine Internetverbindung aktiv ist)</small>';
+                
+                setTimeout(() => {
+                    loadHighscores();
+                }, 3000);
+            }
+        }
+        
         updateDisplay();
+        loadHighscores();
     </script>
 </body>
 </html>
