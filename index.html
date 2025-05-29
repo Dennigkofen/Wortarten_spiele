@@ -217,15 +217,15 @@
 
         <div class="stats">
             <div class="stat-card">
-                <span class="stat-number">4</span>
+                <span class="stat-number">5</span>
                 <span class="stat-label">Verfügbare Spiele</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number">5</span>
+                <span class="stat-number">6</span>
                 <span class="stat-label">Wortarten</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number">100+</span>
+                <span class="stat-number">300+</span>
                 <span class="stat-label">Übungswörter</span>
             </div>
             <div class="stat-card">
@@ -286,6 +286,23 @@
                 <a href="#" class="play-button" onclick="openAdjektiveSpiel()">Jetzt Spielen</a>
             </div>
 
+            <!-- Pronomen Spiel -->
+            <div class="game-card">
+                <span class="game-icon">👤</span>
+                <h2 class="game-title">Pronomen</h2>
+                <p class="game-description">
+                    <strong>Pronomen-Theater:</strong> Tritt auf die große Bühne und wähle die richtigen Pronomen! 
+                    In diesem Theater-Drama hast du nur 7 Sekunden pro Dialog - werde zum Pronomen-Star!
+                </p>
+                <ul class="game-features">
+                    <li>🎭 Authentische Theater-Atmosphäre</li>
+                    <li>⏰ 7-Sekunden Herausforderung</li>
+                    <li>🎪 7 Akte mit steigender Schwierigkeit</li>
+                    <li>🏆 Hall of Fame für Theater-Legenden</li>
+                </ul>
+                <a href="#" class="play-button" onclick="openPronomenSpiel()">Jetzt Spielen</a>
+            </div>
+
             <!-- Wortartenjagd Spiel -->
             <div class="game-card">
                 <span class="game-icon">🐦</span>
@@ -304,22 +321,6 @@
             </div>
 
             <!-- Platzhalter für zukünftige Spiele -->
-            <div class="game-card coming-soon">
-                <span class="game-icon">👤</span>
-                <h2 class="game-title">Pronomen - Wer ist Wer?</h2>
-                <p class="game-description">
-                    Identifiziere Personen und ordne die richtigen Pronomen zu! 
-                    Ein Memory-Spiel mit animierten Charakteren.
-                </p>
-                <ul class="game-features">
-                    <li>🎭 Animierte Charaktere</li>
-                    <li>🧠 Memory-Mechanik</li>
-                    <li>👥 Verschiedene Personen</li>
-                    <li>⏱️ Zeitbasierte Herausforderung</li>
-                </ul>
-                <button class="play-button" disabled>Bald verfügbar</button>
-            </div>
-
             <div class="game-card coming-soon">
                 <span class="game-icon">⚡</span>
                 <h2 class="game-title">Partikel - Verstärker-Labor</h2>
@@ -357,6 +358,11 @@
         function openAdjektiveSpiel() {
             // Direkt zum Adjektive-Spiel navigieren  
             window.location.href = 'adjektive.html';
+        }
+        
+        function openPronomenSpiel() {
+            // Direkt zum Pronomen-Spiel navigieren
+            window.location.href = 'pronomen.html';
         }
         
         function openWortartenjagd() {
