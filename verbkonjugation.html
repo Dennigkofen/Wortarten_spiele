@@ -547,10 +547,6 @@ if (currentGame.currentChallenge.person === 'Er/Sie/Es') {
             nextChallenge();
                     }
                 }, 1500);
-            } else {
-                currentGame.streak = 0;
-                showFeedback(false, currentGame.currentChallenge.correctAnswer);
-                setTimeout(endGame, 2000);
             }
         }
 
