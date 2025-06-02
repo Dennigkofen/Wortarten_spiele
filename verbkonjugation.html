@@ -240,7 +240,7 @@
             </div>
             <div class="stat">
                 <div class="stat-label">Zeit</div>
-                <div class="stat-value timer" id="timer">10</div>
+                <div class="stat-value timer" id="timer">15</div>
             </div>
         </div>
 
@@ -746,7 +746,7 @@
         let currentGame = {
             correct: 0,
             streak: 0,
-            timeLeft: 10,
+            timeLeft: 15,
             isPlaying: false,
             timer: null,
             currentChallenge: null,
@@ -778,7 +778,7 @@
     
     currentGame.playerName = name;
     currentGame.isPlaying = true;
-    currentGame.timeLeft = 10; // Nur hier initialisieren!
+    currentGame.timeLeft = 15; // Nur hier initialisieren!
     
     document.querySelector('.name-input').style.display = 'none';
     document.getElementById('challengeArea').style.display = 'block';
@@ -841,7 +841,7 @@ function submitAnswer() {
      if (isCorrect) {
         currentGame.correct++;
         currentGame.streak++;
-        currentGame.timeLeft += 8;  
+        currentGame.timeLeft += 12;  
         showFeedback(true, currentGame.currentChallenge.correctAnswer);
     } else {
         currentGame.streak = 0;
