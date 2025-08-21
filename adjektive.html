@@ -167,7 +167,7 @@
             correct: 0,
             current: null,
             timer: null,
-            timeLeft: 5
+            timeLeft: 8
         };
         
         function startGame() {
@@ -222,7 +222,7 @@
         }
         
         function startTimer() {
-            game.timeLeft = 5;
+            game.timeLeft = 8;
             updateTimer();
             game.timer = setInterval(() => {
                 game.timeLeft--;
@@ -237,7 +237,7 @@
         function updateTimer() {
             let fill = document.getElementById('timerFill');
             let text = document.getElementById('timerText');
-            fill.style.width = (game.timeLeft / 5 * 100) + '%';
+            fill.style.width = (game.timeLeft / 8 * 100) + '%';
             text.textContent = game.timeLeft + 's';
         }
         
@@ -254,7 +254,7 @@
             if (game.current.correct.includes(word)) {
                 // Richtig!
                 game.correct++;
-                let bonus = game.timeLeft * 5;
+                let bonus = game.timeLeft * 8;
                 game.score += 25 + bonus;
                 feedback.textContent = `Richtig! +${25 + bonus} Punkte`;
                 feedback.className = 'feedback correct';
